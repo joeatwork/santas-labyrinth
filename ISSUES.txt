@@ -40,6 +40,8 @@ cycle counter for job
 
 prewritten jobs and job library
 
+Highlight and show multiple errors in Job editor
+
 Moves take time to perform / walk animation
 
 feedback for look and touch
