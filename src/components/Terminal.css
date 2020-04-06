@@ -1,0 +1,51 @@
+.Terminal-infobox,
+.Terminal-inputline,
+.Terminal-command-palette {
+  margin: var(--default-spacing) 0;
+}
+
+.Terminal-inputbox {
+  display: grid;
+  grid-template-columns: [field] 1fr [play] 40px [stop] 40px;
+}
+
+.Terminal-inputfield {
+  box-sizing: border-box;
+  width: calc(var(--content-width) - 80px);
+  line-height: 18px;
+  padding: 4px 8px;
+}
+
+.Terminal-command-palette {
+  min-height: 84px;
+}
+
+.Terminal-palette-word {
+  display: inline-block;
+  margin: 4px;
+  padding: 2px 8px;
+  border-radius: 14px;
+}
+
+.Terminal-palette-word--enabled.Terminal-palette-word--exec {
+  background-color: rgb(154, 218, 217);
+}
+
+.Terminal-palette-word--enabled {
+  cursor: pointer;
+  background-color: rgb(244, 106, 84);
+}
+
+.Terminal-playbutton,
+.Terminal-stopbutton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 50%;
+}
+
+.Terminal-playbutton.Terminal-playbutton--enabled,
+.Terminal-stopbutton.Terminal-stopbutton--enabled {
+  cursor: pointer;
+  opacity: 100%;
+}

@@ -1,0 +1,20 @@
+.App-header-container {
+  background-color: #282c34;
+  font-size: 12px;
+  color: white;
+  margin: 0;
+}
+
+.App-header {
+  margin: var(--default-spacing) auto 0 auto;
+  width: calc(448px + var(--default-spacing) + 448px);
+}
+
+.App-universe {
+  --column-width: 448px;
+  display: grid;
+  width: calc(448px + var(--default-spacing) + 448px);
+  grid-template-columns: [controls] 448px [feedback] 448px;
+  column-gap: var(--default-spacing);
+  margin: 0 auto;
+}

@@ -1,0 +1,23 @@
+.JobTabs-tab {
+  padding: 6px;
+  text-align: center;
+}
+
+.JobTabs-pick {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.JobTabs-selectable {
+  cursor: pointer;
+}
+
+.JobTabs-selectable:hover {
+  color: white;
+  background-color: black;
+}
+
+.JobTabs-tab.JobTabs-pick--selected {
+  border-right: 0px;
+}

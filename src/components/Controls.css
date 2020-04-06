@@ -1,0 +1,26 @@
+.Controls-container {
+  --tab-width: 148px;
+  --content-width: calc(
+    var(--column-width) - calc(var(--default-spacing) + var(--tab-width))
+  );
+}
+
+.Controls-inset {
+  padding-left: calc(var(--tab-width) + var(--default-spacing));
+}
+
+.Controls-jobdefs {
+  border-top: 1px solid rgb(91, 98, 113);
+  display: grid;
+  grid-template-columns: [tabs] var(--tab-width) [job] var(--content-width);
+  column-gap: var(--default-spacing);
+}
+
+.Controls-inputfield {
+  line-height: 18px;
+  padding: 4px 8px;
+}
+
+.Controls-inputbox {
+  margin: 8px 0;
+}

@@ -1,0 +1,14 @@
+.RobotStatus-container {
+  margin: var(--default-spacing) 0;
+}
+
+.RobotStatus-label,
+.RobotStatus-registers,
+.RobotStatus-orientation,
+.RobotStatus-jobname {
+  display: inline;
+}
+
+.RobotStatus-label {
+  font-weight: bold;
+}

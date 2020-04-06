@@ -1,0 +1,76 @@
+# MILESTONE 1:
+
+Highlight errors and good commands in job editor
+
+Basic acceptable level of layout and styling
+
+Hide unused commands "eat" and "Punch"
+
+Exit as sense argument
+
+Congratulations for finding the exit
+
+# MILESTONE 2/ Friends and Family Alpha:
+
+Out of box experience / Tutorial level
+
+Command info with tutorial
+
+Comments in command language
+
+Play icon in blue "ready to run" command buttons
+
+Marks leave red underneath images
+
+Feedback when the robot hits a wall
+
+Help command that shows help
+
+redesign autocomplete and suggestions
+
+Fix Bug where robot doesn't render on first load
+
+# SOMEDAY:
+
+Delete job
+
+User ability to pause and step through job
+
+cycle counter for job
+
+prewritten jobs and job library
+
+Moves take time to perform / walk animation
+
+feedback for look and touch
+
+better mark images
+
+Variable time for cycles based on action
+
+Text language manual
+
+Command palette is context sensitive and only shows words that work with the previous word
+
+Bar above map with yes/no state, orientation, job and stack info
+
+User adjustable cycle speed
+
+Room to room transitions
+
+Redesign room (isometric)?
+
+Monsters and combat
+
+Treasure and points
+
+Story and dialog blocks
+
+Pokemon Fights
+
+Quest and story
+
+Analytics
+
+itch.io availability
+

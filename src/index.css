@@ -1,0 +1,15 @@
+:root {
+  --default-spacing: 14px;
+}
+
+body {
+  margin: 0;
+  font-family: "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input[type="text"] {
+  font-family: monospace;
+}
