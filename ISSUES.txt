@@ -1,14 +1,6 @@
-# MILESTONE 1:
-
-Basic acceptable level of layout and styling
-
-Hide unused commands "eat" and "Punch"
-
-Exit as sense argument
-
-Congratulations for finding the exit
-
 # MILESTONE 2/ Friends and Family Alpha:
+
+Recruit advisors
 
 Out of box experience / Tutorial level
 
