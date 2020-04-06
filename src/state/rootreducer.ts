@@ -94,11 +94,12 @@ export function rootReducer(
       const txt = getSourceText(action.source);
       const defined = defineJob(state.cpu, action.source.jobname, txt);
       let dirty = false;
-      let source = action.source;
+      let errlines: number[] = [];
       if (defined.commandError && defined.commandError.line >= 0) {
         dirty = true;
-        source = annotateErrors(action.source, [defined.commandError.line]);
+        errlines = [defined.commandError.line];
       }
+      const source = annotateErrors(action.source, errlines);
       return {
         ...state,
         sourceLibrary: {
