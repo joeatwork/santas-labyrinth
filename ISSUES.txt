@@ -1,7 +1,5 @@
 # MILESTONE 1:
 
-Highlight errors and good commands in job editor
-
 Basic acceptable level of layout and styling
 
 Hide unused commands "eat" and "Punch"
