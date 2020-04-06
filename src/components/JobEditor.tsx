@@ -66,14 +66,14 @@ export const JobEditor = connect(
     onPlay,
     onStop
   }: JobEditorParams) => {
-    const showInstructionsTip =
+    const showTip =
       commandError && commandError.site === CommandErrorSite.jobBody;
 
     const tooltip = commandError ? <div>{commandError.message}</div> : "";
 
     const playEnabled = !(playing || sourceToEdit.dirty);
 
-    const setJobBody = (editor: EditorState) => {
+    const handleEditorChange = (editor: EditorState) => {
       const contentSame = sourceToEdit.editor
         .getCurrentContent()
         .equals(editor.getCurrentContent());
@@ -124,9 +124,12 @@ export const JobEditor = connect(
             <StopIcon />
           </div>
         </div>
-        <LargeTooltip show={!!showInstructionsTip} tip={tooltip}>
+        <LargeTooltip show={!!showTip} tip={tooltip}>
           <div className="JobEditor-body">
-            <Editor editorState={sourceToEdit.editor} onChange={setJobBody} />
+            <Editor
+              editorState={sourceToEdit.editor}
+              onChange={handleEditorChange}
+            />
           </div>
         </LargeTooltip>
       </div>

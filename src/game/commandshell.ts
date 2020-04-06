@@ -14,7 +14,7 @@ import { gameActuators, gameSenses } from "../game/physics";
 
 const minMillisPerCycle = 50;
 
-export enum CommandErrorSite { // TODO rename or remove
+export enum CommandErrorSite {
   jobBody = "jobBody",
   jobName = "jobName",
   command = "command"

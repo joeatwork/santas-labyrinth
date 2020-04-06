@@ -9,7 +9,7 @@ import {
   halt
 } from "../game/commandshell";
 import { hero } from "../levels/levelstate";
-import { emptySource, getSourceText } from "../editor/sourcecode";
+import { emptySource, getSourceText, annotateErrorLine } from "../editor/sourcecode";
 
 const initialState: AllState = {
   game: levelGen(),
@@ -89,18 +89,22 @@ export function rootReducer(
         sourceToEdit: action.source
       };
     case Actions.buildJob:
+      // TODO this isn't right anymore.
+      // We want MANY ERRORS, and a LOOSE BINDING between
+      // Editor and CommandShell
       const txt = getSourceText(action.source);
       const defined = defineJob(state.cpu, action.source.jobname, txt);
 
+      const source = annotateErrorLine(2, action.source);
       return {
         ...state,
         sourceLibrary: {
           ...state.sourceLibrary,
-          [action.source.jobname]: action.source
+          [action.source.jobname]: source
         },
         sourceToEdit: {
-          ...action.source,
-          dirty: false
+          ...source,
+          dirty: false // TODO not accurate! What if it's an error?
         },
         ...defined
       };
