@@ -30,11 +30,13 @@ cycle counter for job
 
 prewritten jobs and job library
 
-Highlight and show multiple errors in Job editor
+show multiple errors in Job editor
 
 Moves take time to perform / walk animation
 
 feedback for look and touch
+
+Save jobs to localstorage
 
 better mark images
 
@@ -42,9 +44,7 @@ Variable time for cycles based on action
 
 Text language manual
 
-Command palette is context sensitive and only shows words that work with the previous word
-
-Bar above map with yes/no state, orientation, job and stack info
+Ensure characters can't walk through each other
 
 User adjustable cycle speed
 

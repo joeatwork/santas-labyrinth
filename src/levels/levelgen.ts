@@ -1,25 +1,11 @@
 import { Orientation } from "../utils/geometry";
-import { Tile, Terrain } from "./terrain";
-import { deathMountain } from "./terraingen";
+import { Tile } from "./terrain";
 import { CharacterType } from "../levels/levelstate";
-
-function searchTerrain(tr: Terrain, needle: Tile) {
-  return tr.furniture.flatMap((row, y) => {
-    return row
-      .map((t, x) => {
-        if (t === needle) {
-          return { x, y };
-        }
-        return undefined;
-      })
-      .filter(p => p);
-  });
-}
+import { deathMountain } from "../levels/generate/death_mountain";
 
 export function levelGen() {
-  const terrain = deathMountain();
-
-  const entrance = searchTerrain(terrain, Tile.entrance)[0]!;
+  const { entrance, exit, terrain } = deathMountain(6, 6);
+  terrain.furniture[entrance.y][entrance.x] = Tile.entrance;
 
   return {
     terrain,
@@ -31,6 +17,16 @@ export function levelGen() {
         position: {
           top: entrance.y,
           left: entrance.x,
+          width: 1,
+          height: 1
+        }
+      },
+      {
+        ctype: CharacterType.heart,
+        orientation: Orientation.south,
+        position: {
+          top: exit.y,
+          left: exit.x,
           width: 1,
           height: 1
         }

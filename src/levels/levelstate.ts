@@ -2,8 +2,8 @@ import { Point, Rect, Orientation } from "../utils/geometry";
 import { Terrain } from "./terrain";
 
 export enum CharacterType {
-  hero,
-  goblin
+  hero = "hero",
+  heart = "heart"
 }
 
 export interface Actor {

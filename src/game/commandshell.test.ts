@@ -18,8 +18,8 @@ const robot = {
   }
 };
 
-const goblin = {
-  ctype: CharacterType.goblin,
+const heart = {
+  ctype: CharacterType.heart,
   orientation: Orientation.west,
   position: {
     top: 1,
@@ -29,7 +29,7 @@ const goblin = {
   }
 };
 
-const actors0 = [goblin, robot];
+const actors0 = [heart, robot];
 
 const game0 = {
   terrain: {
@@ -45,13 +45,13 @@ const game0 = {
   actors: actors0
 };
 
-test("look monster", () => {
+test("look treasure", () => {
   const newRobot = { ...robot, orientation: Orientation.north };
   const game = {
     ...game0,
-    actors: [goblin, newRobot]
+    actors: [heart, newRobot]
   };
-  const found = runCommand("look monster\n", newRobot, newProcessor, game);
+  const found = runCommand("look treasure\n", newRobot, newProcessor, game);
   expect(found.cpu.registers.yes).toBeTruthy();
 });
 
@@ -61,7 +61,7 @@ test("look wall", () => {
 });
 
 test("look fail", () => {
-  const found = runCommand("look monster\n", robot, newProcessor, game0);
+  const found = runCommand("look treasure\n", robot, newProcessor, game0);
   expect(found.cpu.registers.yes).toBeFalsy();
 });
 
