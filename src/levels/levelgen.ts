@@ -1,6 +1,6 @@
 import { Orientation } from "../utils/geometry";
 import { Tile, Terrain } from "./terrain";
-import { deathMountain } from "./terraingen";
+import { deathMountain } from "../levels/generate/death_mountain";
 import { CharacterType } from "../levels/levelstate";
 
 function searchTerrain(tr: Terrain, needle: Tile) {

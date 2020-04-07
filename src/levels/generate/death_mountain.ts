@@ -1,7 +1,7 @@
 import _ from "lodash";
 
-import { Point } from "../utils/geometry";
-import { Tile } from "./terrain";
+import { Point } from "../../utils/geometry";
+import { Tile } from "../terrain";
 
 // A hand-wave in the general direction of testability.
 let sample = _.sample;
