@@ -17,7 +17,7 @@ first<sup id="linknote1">[1](#note1)</sup> fully automated adventurer.
 Adventurebot 2000 is a fully programmable adventuring solution, featuring:
 
 * Advanced computing capabilities.
-* Complete automatic dungeon mobility.
+* Automatic dungeon mobility.
 * Cutting-edge stored procedure technology.
 * A complete library of adventuring software<sup id="linknote2">[2](#note2)</sup>.
 * A fully integrated development environment for custom programming.
@@ -27,9 +27,9 @@ Adventurebot 2000 is a fully programmable adventuring solution, featuring:
 Be a part of the future of adventuring! The next time you have to find the seven
 scepters of virtue hidden in their shrines throughout the world, or defeat the
 evil overlord Nekrotek, you won't have to wait around for the warrior fortold by
-prophesy - you'll be able to rely on Adventurebot 2000!
+prophesy - **you'll be able to rely on Adventurebot 2000!**
 
-[I'm Ready to Join the Revolution!](GettingStarted.md)
+**[I'm Ready to Join the Revolution!](GettingStarted.md)**
 
 ---
 
