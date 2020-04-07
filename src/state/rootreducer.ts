@@ -66,10 +66,13 @@ export function rootReducer(
         state.cpu,
         state.game
       );
-      return {
-        ...state,
-        ...ran
-      };
+      return rootReducer(
+        {
+          ...state,
+          ...ran
+        },
+        { type: Actions.halt }
+      );
     case Actions.pickCreateNewJob:
       return {
         ...state,

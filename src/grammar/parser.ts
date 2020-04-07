@@ -354,7 +354,7 @@ export class Parser {
 
     return {
       kind: "continue",
-      completions: completions.map(cp => `${completionPrefix} ${cp}`),
+      completions: completions.map(cp => `${completionPrefix}${cp}`),
       line: 0
     };
   }
