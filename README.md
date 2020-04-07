@@ -1,14 +1,10 @@
 Write assembly-like programs to guide a Robot through life.
 
-## Origins of Content
+This document is mostly about how to build and run the software. For more
+information about what the game is and how to play, see the
+[Introductory Documentation](docs/MarketingCopy.md)
 
-Some of the images used in this program is the public domain roguelike tileset "RLTiles". Some of the tiles have been modified.
-
-You can find the original tileset at: http://rltiles.sf.net
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
+## Developing and Running the Project
 
 In the project directory, you can run:
 
@@ -35,8 +31,15 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Learn More
+## Origins of Content
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Some of the images used in this program are from the public domain roguelike
+tileset "RLTiles". Some of the tiles have been modified. You can find the
+original tileset at: http://rltiles.sf.net
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project uses icons from Google's Material project, licensed under the
+Apache 2.0 license. You can get these icons and others from
+https://material.io/resources/icons/
+
+This project was bootstrapped with
+[Create React App](https://github.com/facebook/create-react-app).

@@ -2,17 +2,17 @@
 
     TODO Diagram to come
 
-The adventurebot 2000 operates by interpreting text commands. To execute a
+The Adventurebot 2000 operates by interpreting text commands. To execute a
 command immediately, type the command into the *command field* and press the
 enter key on your keyboard. You can also execute the command in the command
-field by clicking the "Play" icon next to the command field.
+field by clicking the ![play](./images/play_circle_filled_24px.svg) icon next to
+the command field.
 
 ## Moving the Robot
 
-To move the robot, you'll need four commands: `forward`, `backward`, `left`, and `right`:
+To move the robot, you'll need three commands: `forward`, `left`, and `right`:
 
 * `forward` moves the robot forward one tile
-* `backward` moves the robot backward one tile
 * `left` turns the robot 90 degrees counterclockwise
 * `right` turns the robot 90 degrees clockwise
 
@@ -53,13 +53,15 @@ following into the editor:
 As you type, you'll see an asterisk after the name of the job above the editor.
 That means that the version of the job you're looking at in the editor doesn't
 match the version that the robot is using. Once you've typed the commands for
-the job into the editor, click the "save" icon to send the job to the robot.
-You'll see the asterisk go away, and you'll be able to have the robot run the
-job by clicking the "play" icon.
+the job into the editor, click the ![save](./images/save-24px.svg) save icon to send
+the job to the robot. You'll see the asterisk go away, and you'll be able to
+have the robot run the job by clicking the
+![play icon](./images/play_circle_filled_24px.svg) play icon.
 
-Try defining a job, saving your work, and clicking the "play" icon. If you type
-things the robot doesn't understand, you'll get a message with a suggestion
-about how to change your job so the robot can execute it.
+Try defining a job, saving your work, and clicking the play icon to run your job
+with the robot. If you type things the robot doesn't understand, you'll get a
+message with a suggestion about how to change your job so the robot can execute
+it.
 
 ## Advanced Commands: Walk to the Next Wall
 
@@ -75,10 +77,10 @@ at a job with some commands you've never seen before. Create a new job named
     forward
     repeat
 
-Click the "save" icon and then the "play" icon next to the job name to save and
+Click the save icon and then the play icon next to the job name to save and
 run the job. The robot will walk forward until it gets to a wall, and then turn
-left. It will keep going like this until you press the "stop" button next to the
-job name.
+left. It will keep going like this until you press the
+![stop icon](./images/stop-24px.svg) stop icon next to the job name.
 
 ### `touch wall` and `if yes`
 
@@ -115,5 +117,21 @@ command. But what about the last line of the job, `repeat`?
 
 The `repeat` command tells the robot to start the whole job over from the
 beginning. In this case, the robot goes right back to `touch wall` and does the
-whole thing over again. If you never pressed the "stop" button, the robot would
+whole thing over again. If you never pressed the stop icon, the robot would
 keep going around walls forever.
+
+## Next Steps
+
+With just `forward`, `left`, `right`, `touch wall`, `if yes ...`, and `repeat`,
+you can get some pretty complex behavior from the robot. But there are even more
+commands you can try:
+
+* You can move the robot backwards with the `backward` command.
+* You can stop a job automatically with the `finish` command.
+* Jobs can run other jobs with `do ...` commands.
+* There is an `if no ...` command that is the opposite of `if yes ...`.
+
+You can learn more about these commands and others in the [Command Language
+Reference](LanguageReference.md), or just experiment with them on the robot!
+
+Happy Adventuring!
