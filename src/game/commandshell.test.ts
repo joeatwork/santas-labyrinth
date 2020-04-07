@@ -8,7 +8,7 @@ import { InstructionType } from "../robot/instructions";
 import { newProcessor, addJob } from "../robot/processor";
 
 const robot = {
-  ctype: CharacterType.Hero,
+  ctype: CharacterType.hero,
   orientation: Orientation.east,
   position: {
     top: 2,
@@ -19,7 +19,7 @@ const robot = {
 };
 
 const goblin = {
-  ctype: CharacterType.Goblin,
+  ctype: CharacterType.goblin,
   orientation: Orientation.west,
   position: {
     top: 1,
@@ -34,11 +34,11 @@ const actors0 = [goblin, robot];
 const game0 = {
   terrain: {
     furniture: [
-      [Tile.Nothing, Tile.Wall, Tile.Wall, Tile.Wall, Tile.Nothing],
-      [Tile.Wall, Tile.Floor, Tile.Floor, Tile.Floor, Tile.Wall],
-      [Tile.Entrance, Tile.Floor, Tile.Floor, Tile.Floor, Tile.Wall],
-      [Tile.Wall, Tile.Floor, Tile.Floor, Tile.Floor, Tile.Wall],
-      [Tile.Nothing, Tile.Wall, Tile.Exit, Tile.Wall, Tile.Nothing]
+      [Tile.nothing, Tile.wall, Tile.wall, Tile.wall, Tile.nothing],
+      [Tile.wall, Tile.floor, Tile.floor, Tile.floor, Tile.wall],
+      [Tile.entrance, Tile.floor, Tile.floor, Tile.floor, Tile.wall],
+      [Tile.wall, Tile.floor, Tile.floor, Tile.floor, Tile.wall],
+      [Tile.nothing, Tile.wall, Tile.exit, Tile.wall, Tile.nothing]
     ]
   },
   marks: _.range(5).map(y => _.range(5).map(x => false)),

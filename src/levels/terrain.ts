@@ -1,10 +1,9 @@
-// TODO lowercase Tiles
 export enum Tile {
-  Nothing = "Nothing",
-  Floor = "Floor",
-  Wall = "Wall",
-  Entrance = "Entrance",
-  Exit = "Exit"
+  nothing = "nothing",
+  floor = "floor",
+  wall = "wall",
+  entrance = "entrance",
+  exit = "exit"
 }
 
 export interface Terrain {
@@ -22,5 +21,5 @@ export function inbounds(terr: Terrain, x: number, y: number) {
 }
 
 export function passable(t: Tile) {
-  return t !== Tile.Nothing && t !== Tile.Wall;
+  return t !== Tile.nothing && t !== Tile.wall;
 }

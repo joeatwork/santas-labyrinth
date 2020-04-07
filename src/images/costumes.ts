@@ -18,16 +18,16 @@ function toImage(s: string) {
 }
 
 const furnitureImages = {
-  [Tile.Nothing]: toImage(nothing),
-  [Tile.Floor]: toImage(floor),
-  [Tile.Wall]: toImage(wall),
-  [Tile.Entrance]: toImage(entrance),
-  [Tile.Exit]: toImage(exit)
+  [Tile.nothing]: toImage(nothing),
+  [Tile.floor]: toImage(floor),
+  [Tile.wall]: toImage(wall),
+  [Tile.entrance]: toImage(entrance),
+  [Tile.exit]: toImage(exit)
 };
 
 const characterImages = {
-  [CharacterType.Hero]: toImage(hero),
-  [CharacterType.Goblin]: toImage(gremlin)
+  [CharacterType.hero]: toImage(hero),
+  [CharacterType.goblin]: toImage(gremlin)
 };
 
 export const heroSpriteMap = {

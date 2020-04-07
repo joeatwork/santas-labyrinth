@@ -1,10 +1,9 @@
 import { Point, Rect, Orientation } from "../utils/geometry";
 import { Terrain } from "./terrain";
 
-// TODO no initalcaps
 export enum CharacterType {
-  Hero,
-  Goblin
+  hero,
+  goblin
 }
 
 export interface Actor {
@@ -58,7 +57,7 @@ export function eraseMark(game: LevelState, x: number, y: number) {
 }
 
 export function hero(game: LevelState) {
-  return game.actors.find(a => a.ctype === CharacterType.Hero)!;
+  return game.actors.find(a => a.ctype === CharacterType.hero)!;
 }
 
 export function stuffAt(game: LevelState, check: Point) {

@@ -30,10 +30,10 @@ function drawMap(terrain: Terrain, ctx: CanvasRenderingContext2D) {
           const pixel = imageSpot * 4;
           image.data[pixel + 3] = 255; // alpha channel
           switch (tile) {
-            case Tile.Entrance:
+            case Tile.entrance:
               image.data[pixel + 2] = 255;
               break;
-            case Tile.Exit:
+            case Tile.exit:
               image.data[pixel + 1] = 255;
               break;
           }

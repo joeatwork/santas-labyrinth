@@ -66,3 +66,4 @@ Analytics
 
 itch.io availability
 
+Use per-subject register (wall, monster, mark) rather than yes/no registers, spell them "if monster ..."

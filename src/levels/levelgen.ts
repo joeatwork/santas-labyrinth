@@ -19,14 +19,14 @@ function searchTerrain(tr: Terrain, needle: Tile) {
 export function levelGen() {
   const terrain = deathMountain();
 
-  const entrance = searchTerrain(terrain, Tile.Entrance)[0]!;
+  const entrance = searchTerrain(terrain, Tile.entrance)[0]!;
 
   return {
     terrain,
     marks: terrain.furniture.map(r => r.map(x => false)),
     actors: [
       {
-        ctype: CharacterType.Hero,
+        ctype: CharacterType.hero,
         orientation: Orientation.east,
         position: {
           top: entrance.y,

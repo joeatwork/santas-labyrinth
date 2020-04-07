@@ -34,7 +34,7 @@ export function gameSenses(game: LevelState, robot: Actor) {
           return { what: Prop.monster, where: i };
         }
 
-        if (furniture === Tile.Wall) {
+        if (furniture === Tile.wall) {
           return { what: Prop.wall, where: i };
         }
 

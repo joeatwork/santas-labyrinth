@@ -88,8 +88,8 @@ function deathMountainRoom(
   southDoor: boolean,
   westDoor: boolean
 ): Tile[][] {
-  const w = Tile.Wall;
-  const f = Tile.Floor;
+  const w = Tile.wall;
+  const f = Tile.floor;
   const nr = northDoor ? f : w;
   const es = eastDoor ? f : w;
   const so = southDoor ? f : w;
@@ -134,7 +134,7 @@ export function deathMountain() {
   const mazeDoors = maze(start, end, allDoors);
 
   const retTiles: Tile[][] = _.range(mapHeight * roomHeight).map(y => {
-    return _.range(mapWidth * roomWidth).map(x => Tile.Nothing);
+    return _.range(mapWidth * roomWidth).map(x => Tile.nothing);
   });
 
   _.range(mapWidth * mapHeight).forEach(ix => {
@@ -167,12 +167,12 @@ export function deathMountain() {
   const startRoomX = start - startRoomY * mapWidth;
 
   retTiles[startRoomY * roomHeight + 3][startRoomX * roomWidth + 3] =
-    Tile.Entrance;
+    Tile.entrance;
 
   const endRoomY = Math.floor(end / mapWidth);
   const endRoomX = end - endRoomY * mapWidth;
 
-  retTiles[endRoomY * roomHeight + 3][endRoomX * roomWidth + 3] = Tile.Exit;
+  retTiles[endRoomY * roomHeight + 3][endRoomX * roomWidth + 3] = Tile.exit;
 
   return {
     furniture: retTiles
