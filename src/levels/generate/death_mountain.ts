@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 import { Point } from "../../utils/geometry";
-import { Tile } from "../terrain";
+import { Terrain, Tile } from "../terrain";
 
 // A hand-wave in the general direction of testability.
 let sample = _.sample;
@@ -116,13 +116,16 @@ function spliceInto<T>(dest: T[][], src: T[][], offset: Point) {
   });
 }
 
+export interface DeathMountainLevel {
+  terrain: Terrain;
+  entrance: Point;
+  exit: Point;
+}
+
 // Death Mountain levels are a grid of
 // uniformly sized rooms, with doors connecting
 // them.
-export function deathMountain() {
-  const mapWidth = 6,
-    mapHeight = 6;
-
+export function deathMountain(mapWidth: number, mapHeight: number) {
   const allDoors = roomGrid(mapWidth, mapHeight);
 
   const start = _.random(allDoors.length - 1);
@@ -166,15 +169,20 @@ export function deathMountain() {
   const startRoomY = Math.floor(start / mapWidth);
   const startRoomX = start - startRoomY * mapWidth;
 
-  retTiles[startRoomY * roomHeight + 3][startRoomX * roomWidth + 3] =
-    Tile.entrance;
-
   const endRoomY = Math.floor(end / mapWidth);
   const endRoomX = end - endRoomY * mapWidth;
 
-  retTiles[endRoomY * roomHeight + 3][endRoomX * roomWidth + 3] = Tile.exit;
-
   return {
-    furniture: retTiles
+    entrance: {
+      x: startRoomX * roomWidth + 3,
+      y: startRoomY * roomHeight + 3
+    },
+    exit: {
+      x: endRoomX * roomWidth + 3,
+      y: endRoomY * roomHeight + 3
+    },
+    terrain: {
+      furniture: retTiles
+    }
   };
 }

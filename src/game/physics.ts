@@ -9,9 +9,19 @@ import {
   eraseMark
 } from "../levels/levelstate";
 import { Prop } from "../robot/instructions";
+import { CharacterType } from "../levels/levelstate";
 import { Tile, inbounds } from "../levels/terrain";
 
 const visionDistance = 10;
+
+function characterToProp(c: CharacterType): Prop {
+  switch (c) {
+    case CharacterType.hero:
+      return Prop.hero;
+    case CharacterType.heart:
+      return Prop.treasure;
+  }
+}
 
 export function gameSenses(game: LevelState, robot: Actor) {
   return {
@@ -31,7 +41,10 @@ export function gameSenses(game: LevelState, robot: Actor) {
         }
         const { actors, furniture, mark } = stuff;
         if (actors.length > 0) {
-          return { what: Prop.monster, where: i };
+          return {
+            what: characterToProp(actors[0].ctype),
+            where: i
+          };
         }
 
         if (furniture === Tile.wall) {
