@@ -162,31 +162,8 @@ The `repeat` command restarts the current job from the beginning.
 
 ## Sample Robot Programs
 
-    # DFS
-    create job search
-        
-        touch wall
-        if yes finish
-        
-        touch mark
-        if yes finish
-        
-        forward
-        setmark
-        do search
-         
-        right
-        do search
-        
-        left
-        left
-        do search
-        
-        right
-        backward
-    end job search
+Here's a program that looks for monsters to fight and treasure to plunder.
    
-    # Actively pursue adventure!
     create job aggro
         touch monster
         if yes punch
@@ -222,6 +199,10 @@ The `repeat` command restarts the current job from the beginning.
         repeat
     end job aggro
 
+And here's a pair of programs that work together to keep our robot out of
+danger! Notice that the `coward` job calls the `spin180` job in several
+different circumstances.
+
     create job coward
         look monster
         if no forward
@@ -246,3 +227,30 @@ The `repeat` command restarts the current job from the beginning.
         move left
         finish job
     end job spin180
+
+This job will visit every tile in the whole level. It uses `setmark` to keep
+track of the spots it has already visited, and then uses `touch mark` to make
+sure it doesn't visit the same spots twice.
+
+    create job search
+        
+        touch wall
+        if yes finish
+        
+        touch mark
+        if yes finish
+        
+        forward
+        setmark
+        do search
+         
+        right
+        do search
+        
+        left
+        left
+        do search
+        
+        right
+        backward
+    end job search
