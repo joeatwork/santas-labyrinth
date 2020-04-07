@@ -45,11 +45,6 @@ instructions are:
 - **registers**: `yes` and `no`, corresponding to the yes and no registers.
 - **jobs names**: You can define job names for the robot, and then execute those jobs with the `do` command.
 
-<!--
-  Commands and/or jobs will also likely be a type
-  at some point
--->
-
 #### the motions: forward, backward, left, and right
 
 Motion commands attempt to change the physical position or orientation of the
@@ -105,15 +100,15 @@ arguments.
 Punching hurts monsters, it may damage treasure, and other things can react to
 punching, too.
 
-#### mark
+#### setmark
 
-`mark` leaves a mark on the floor where the robot is standing. Later, the robot
-can look for the mark with `touch mark`. Marks can be removed with `unmark`
+`setmark` leaves a mark on the floor where the robot is standing. Later, the robot
+can look for the mark with `touch mark`. Marks can be removed with `erase`
 
-#### unmark
+#### erase
 
-`unmark` removes any mark on the floor where the robot is standing. If there is
-no mark on the floor, `unmark` does nothing.
+`erase` removes any mark on the floor where the robot is standing. If there is
+no mark on the floor, `erase` does nothing.
 
 #### do
 

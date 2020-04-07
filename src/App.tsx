@@ -8,7 +8,6 @@ import { Actions } from "./state/actions";
 import { Controls } from "./components/Controls";
 import { RobotStatus } from "./components/RobotStatus";
 import { GameScreen } from "./components/GameScreen";
-import { GameMap } from "./components/GameMap";
 
 import "./App.css";
 
@@ -34,9 +33,8 @@ function App() {
               <Controls />
             </div>
             <div className="App-feedback">
-              <RobotStatus />
               <GameScreen />
-              <GameMap />
+              <RobotStatus />
             </div>
           </div>
         </main>
