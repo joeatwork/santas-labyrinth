@@ -9,7 +9,7 @@ import entrance from "./rltiles/nh-dngn_staircase_up.png";
 import exit from "./rltiles/nh-dngn_staircase_down.png";
 
 import hero from "./sprites/spaceman_overworld_64x64.png";
-import gremlin from "./rltiles/g_gremlin.png";
+import heart from "./outfits/red_heart.png";
 
 function toImage(s: string) {
   const ret = new Image();
@@ -27,14 +27,22 @@ const furnitureImages = {
 
 const characterImages = {
   [CharacterType.hero]: toImage(hero),
-  [CharacterType.goblin]: toImage(gremlin)
+  [CharacterType.heart]: toImage(heart)
 };
 
-export const heroSpriteMap = {
-  [Orientation.north]: { top: 0, left: 64, width: 64, height: 64 },
-  [Orientation.east]: { top: 0, left: 640, width: 64, height: 64 },
-  [Orientation.south]: { top: 0, left: 0, width: 64, height: 64 },
-  [Orientation.west]: { top: 0, left: 128, width: 64, height: 64 }
+export const spriteMaps = {
+  [CharacterType.hero]: {
+    [Orientation.north]: { top: 0, left: 64, width: 64, height: 64 },
+    [Orientation.east]: { top: 0, left: 640, width: 64, height: 64 },
+    [Orientation.south]: { top: 0, left: 0, width: 64, height: 64 },
+    [Orientation.west]: { top: 0, left: 128, width: 64, height: 64 }
+  },
+  [CharacterType.heart]: {
+    [Orientation.north]: { top: 0, left: 0, width: 64, height: 64 },
+    [Orientation.east]: { top: 0, left: 0, width: 64, height: 64 },
+    [Orientation.south]: { top: 0, left: 0, width: 64, height: 64 },
+    [Orientation.west]: { top: 0, left: 0, width: 64, height: 64 }
+  }
 };
 
 export function furniture(t: Tile) {
@@ -42,5 +50,8 @@ export function furniture(t: Tile) {
 }
 
 export function character(c: CharacterType, ot: Orientation) {
-  return { image: characterImages[c]!, sprite: heroSpriteMap[ot]! };
+  return {
+    image: characterImages[c]!,
+    sprite: spriteMaps[c][ot]!
+  };
 }
