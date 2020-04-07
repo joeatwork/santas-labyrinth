@@ -5,7 +5,7 @@
 The Adventurebot 2000 operates by interpreting text commands. To execute a
 command immediately, type the command into the *command field* and press the
 enter key on your keyboard. You can also execute the command in the command
-field by clicking the ![play](./images/play_circle_filled_24px.svg) icon next to
+field by clicking the ![play](./images/play_circle_filled-24px.svg) icon next to
 the command field.
 
 ## Moving the Robot
@@ -56,7 +56,7 @@ match the version that the robot is using. Once you've typed the commands for
 the job into the editor, click the ![save](./images/save-24px.svg) save icon to send
 the job to the robot. You'll see the asterisk go away, and you'll be able to
 have the robot run the job by clicking the
-![play icon](./images/play_circle_filled_24px.svg) play icon.
+![play icon](./images/play_circle_filled-24px.svg) play icon.
 
 Try defining a job, saving your work, and clicking the play icon to run your job
 with the robot. If you type things the robot doesn't understand, you'll get a
