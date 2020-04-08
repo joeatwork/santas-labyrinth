@@ -78,7 +78,7 @@ function maze(start: number, end: number, paths: number[][]): number[][] {
 }
 
 // Room size in tiles, including walls
-const roomWidth = 10;
+const roomWidth = 12;
 const roomHeight = 10;
 
 // Returned rooms will be roomWidth x roomHeight
@@ -123,16 +123,16 @@ function deathMountainRoom(
 
   // prettier-ignore
   return [
-    [nwc, nw, nw, ndw, nd, nd, nde, nw, nw, nec],
-    [ ww,  f,  f,   f,  f,  f,   f,  f,  f,  ew],
-    [ ww,  f,  f,   f,  f,  f,   f,  f,  f,  ew],
-    [wdn,  f,  f,   f,  f,  f,   f,  f,  f, edn],
-    [ wd,  f,  f,   f,  f,  f,   f,  f,  f,  ed],
-    [ wd,  f,  f,   f,  f,  f,   f,  f,  f,  ed],
-    [wds,  f,  f,   f,  f,  f,   f,  f,  f, eds],
-    [ ww,  f,  f,   f,  f,  f,   f,  f,  f,  ew],
-    [ ww,  f,  f,   f,  f,  f,   f,  f,  f,  ew],
-    [swc, sw, sw, sdw, sd, sd, sde, sw, sw, sec]
+    [nwc, nw, nw, nw, ndw, nd, nd, nde, nw, nw, nw, nec],
+    [ ww,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f,  ew],
+    [ ww,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f,  ew],
+    [wdn,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f, edn],
+    [ wd,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f,  ed],
+    [ wd,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f,  ed],
+    [wds,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f, eds],
+    [ ww,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f,  ew],
+    [ ww,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f,  ew],
+    [swc, sw, sw, sw, sdw, sd, sd, sde, sw, sw, sw, sec]
   ];
 }
 
@@ -202,8 +202,8 @@ export function deathMountain(mapWidth: number, mapHeight: number) {
 
   return {
     entrance: {
-      x: startRoomX * roomWidth + 3,
-      y: startRoomY * roomHeight + 3
+      x: startRoomX * roomWidth + 5,
+      y: startRoomY * roomHeight + 4
     },
     exit: {
       x: endRoomX * roomWidth + 3,

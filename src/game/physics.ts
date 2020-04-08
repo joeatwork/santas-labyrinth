@@ -10,7 +10,7 @@ import {
 } from "../levels/levelstate";
 import { Prop } from "../robot/instructions";
 import { CharacterType } from "../levels/levelstate";
-import { Tile, inbounds, passable } from "../levels/terrain";
+import { inbounds, passable } from "../levels/terrain";
 
 const visionDistance = 10;
 

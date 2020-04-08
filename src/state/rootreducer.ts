@@ -16,6 +16,7 @@ import {
 } from "../editor/sourcecode";
 
 const initialState: AllState = {
+  loaded: false,
   game: levelGen(),
   cpu: newProcessor,
   lastTick: -1,
@@ -49,7 +50,11 @@ function reduction(
   thisTick: number | undefined
 ): AllState {
   switch (action.type) {
-    // Robot actions
+    case Actions.loaded:
+      return {
+        ...state,
+        loaded: true
+      };
     case Actions.tick:
       thisTick = thisTick || Date.now();
       const up = continueExecution(

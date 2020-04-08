@@ -1,5 +1,6 @@
+import _ from "lodash";
 import { Rect, Orientation } from "../utils/geometry";
-import { Terrain, Tile, inbounds } from "../levels/terrain";
+import { Terrain, Tile } from "../levels/terrain";
 import { CharacterType } from "../levels/levelstate";
 
 import nothing from "./rltiles/nh-dngn_dark_part_of_a_room.png";
@@ -7,6 +8,63 @@ import deathMountainParadigmRoom from "./sprites/death_mountain_paradigm_room.pn
 
 import hero from "./sprites/spaceman_overworld_64x64.png";
 import heart from "./outfits/red_heart.png";
+
+class ImageLoader {
+  status: { [src: string]: boolean | null };
+  resolvers: { resolve: Function; reject: Function } | undefined;
+
+  constructor() {
+    this.status = {};
+  }
+
+  public toImage(s: string) {
+    if (this.resolvers) {
+      throw Error("toImage() must be called before promise()");
+    }
+
+    this.status[s] = null;
+    const ret = new Image();
+    ret.onload = () => {
+      this.status[s] = true;
+      this.observeLoad();
+    };
+    ret.onerror = () => {
+      this.status[s] = false;
+      this.observeLoad();
+    };
+    ret.src = s;
+    return ret;
+  }
+
+  public promise() {
+    if (this.resolvers) {
+      throw Error("promise() must be called no more than once");
+    }
+
+    const ret = new Promise((resolve, reject) => {
+      this.resolvers = { resolve, reject };
+    });
+
+    this.observeLoad();
+    return ret;
+  }
+
+  private observeLoad() {
+    if (!this.resolvers) {
+      return;
+    }
+
+    if (_.every(this.status)) {
+      this.resolvers.resolve();
+    }
+
+    if (_.some(this.status, s => s === false)) {
+      this.resolvers.reject();
+    }
+  }
+}
+
+const loader = new ImageLoader();
 
 export interface ImageSprite {
   image: CanvasImageSource;
@@ -61,15 +119,9 @@ export function character(c: CharacterType, ot: Orientation) {
   };
 }
 
-function toImage(s: string) {
-  const ret = new Image();
-  ret.src = s;
-  return ret;
-}
-
 const characterImages = {
-  [CharacterType.hero]: toImage(hero),
-  [CharacterType.heart]: toImage(heart)
+  [CharacterType.hero]: loader.toImage(hero),
+  [CharacterType.heart]: loader.toImage(heart)
 };
 
 export const characterSprites = {
@@ -88,11 +140,11 @@ export const characterSprites = {
 };
 
 const nothingSprite = {
-  image: toImage(nothing),
+  image: loader.toImage(nothing),
   sprite: { top: 0, left: 0, width: 64, height: 64 }
 };
 
-const deathMountainImage = toImage(deathMountainParadigmRoom);
+const deathMountainImage = loader.toImage(deathMountainParadigmRoom);
 
 const floorSprite = {
   image: deathMountainImage,
@@ -164,148 +216,4 @@ const southeastPointWall = {
   sprite: { top: 576, left: 384, width: 64, height: 64 }
 };
 
-function chooseWallSprite(terrain: Terrain, x: number, y: number): ImageSprite {
-  // prettier-ignore
-  const points = [[y - 1, x - 1], [y - 1, x], [y - 1, x + 1],
-                  [y,     x - 1],             [y,     x + 1],
-                  [y + 1, x - 1], [y + 1, x], [y + 1, x + 1]];
-
-  let mask = 0;
-  points.forEach(([px, py], i) => {
-    if (!inbounds(terrain, px, py)) {
-      mask = mask | (128 >> i);
-    }
-  });
-
-  console.log(
-    `${x}, ${y}: ${terrain.furniture[y][x]} ${mask.toString(2)} ${mask ===
-      0b11111110}`
-  );
-  console.dir(
-    points.map(([px, py]) => {
-      if (py < 0 || py >= terrain.furniture.length) {
-        return undefined;
-      }
-      return terrain.furniture[py][px];
-    })
-  );
-  switch (mask) {
-    case 0b11111110:
-      /*
-        111
-        1.1
-        110
-      */
-      return northwestCornerWall;
-  }
-
-  const neighbors = mask & 0b01011010;
-
-  switch (neighbors) {
-    case 0b01011000:
-      /*
-       *1*
-       1.1
-       *0*
-       */
-      return northWall;
-  }
-
-  return nothingSprite;
-
-  switch (mask) {
-    case 0b11111111:
-      /*
-      111
-      1.1
-      111
-      */
-      return surroundedWall;
-    case 0b11111011:
-      /*
-      111
-      1.1
-      011
-      */
-      return northeastCornerWall;
-    case 0b11011111:
-      /*
-      110
-      1.1
-      111
-      */
-      return southwestCornerWall;
-    case 0b01111111:
-      /*
-      011
-      1.1
-      111
-      */
-      return southeastCornerWall;
-  }
-
-  switch (neighbors) {
-    case 0b01011000:
-      /*
-       *1*
-       1.1
-       *0*
-       */
-      return northWall;
-    case 0b00011010:
-      /*
-       *0*
-       1.1
-       *1*
-       */
-      return southWall;
-    case 0b01010010:
-      /*
-       *1*
-       1.0
-       *1*
-       */
-      return westWall;
-    case 0b01001010:
-      /*
-       *1*
-       0.1 - east wall
-       *1*
-       */
-      return eastWall;
-    case 0b01010000:
-      /*
-       *1*
-       1.0
-       *0*
-       */
-      return northwestPointWall;
-    case 0b01001000:
-      /*
-       *1*
-       0.1
-       *0*
-       */
-      return northeastPointWall;
-    case 0b00010010:
-      /*
-       *0*
-       1.0
-       *1*
-       */
-      return southwestPointWall;
-    case 0b00001010:
-      /*
-       *0*
-       0.1
-       *1*
-       */
-      return southeastPointWall;
-  }
-
-  throw new Error(
-    `Don't know how render wall sprite at ${x}, ${y} (tile ${
-      terrain.furniture[y][x]
-    }) (mask ${mask.toString(2)})`
-  );
-}
+export const costumesLoaded = loader.promise();

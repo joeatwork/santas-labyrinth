@@ -4,6 +4,7 @@ import { CommandError } from "../game/commandshell";
 import { SourceCode } from "../editor/sourcecode";
 
 export interface AllState {
+  loaded: boolean;
   game: LevelState;
   cpu: Processor;
   lastTick: number;

@@ -50,14 +50,20 @@ function drawMarks(
   marks: boolean[][],
   ctx: CanvasRenderingContext2D
 ) {
+  const inset = 4;
   const screenSlice = sliceToRect(viewport, marks);
   ctx.save();
   ctx.strokeStyle = "red";
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 2;
   screenSlice.forEach((row, y) => {
     row.forEach((marked, x) => {
       if (marked) {
-        ctx.strokeRect(tileSize * x, tileSize * y, tileSize, tileSize);
+        ctx.strokeRect(
+          tileSize * x + inset,
+          tileSize * y + inset,
+          tileSize - inset * 2,
+          tileSize - inset * 2
+        );
       }
     });
   });
@@ -93,45 +99,47 @@ function drawActors(
 
 type GameScreenProps = {
   game: LevelState;
+  loaded: boolean;
 };
 
-export const GameScreen = connect((state: AllState) => ({ game: state.game }))(
-  ({ game }: GameScreenProps) => {
-    const canvasRef = React.useRef<HTMLCanvasElement>(null);
+export const GameScreen = connect((state: AllState) => ({
+  game: state.game,
+  loaded: state.loaded
+}))(({ loaded, game }: GameScreenProps) => {
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-    const you = hero(game)!;
+  const you = hero(game)!;
 
-    const mapViewport = {
-      top: Math.max(0, you.position.top - 3),
-      left: Math.max(0, you.position.left - 3),
-      width: 14,
-      height: 10
-    };
+  const mapViewport = {
+    top: Math.max(0, you.position.top - 4),
+    left: Math.max(0, you.position.left - 5),
+    width: 12,
+    height: 10
+  };
 
-    React.useEffect(() => {
-      const canvas = canvasRef.current;
-      if (!canvas) {
-        return;
-      }
-      const ctx = canvas.getContext("2d")!;
-      ctx.save();
-      drawRoom(mapViewport, game.terrain, ctx);
-      drawMarks(mapViewport, game.marks, ctx);
-      drawActors(mapViewport, game.actors, ctx);
-      ctx.restore();
-    }, [mapViewport, game]);
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    const ctx = canvas.getContext("2d")!;
+    ctx.save();
+    drawRoom(mapViewport, game.terrain, ctx);
+    drawMarks(mapViewport, game.marks, ctx);
+    drawActors(mapViewport, game.actors, ctx);
+    ctx.restore();
+  }, [loaded, mapViewport, game]);
 
-    return (
-      <div className="GameScreen-container">
-        <canvas
-          width={mapViewport.width * tileSize}
-          height={mapViewport.height * tileSize}
-          style={{
-            border: "1px solid black"
-          }}
-          ref={canvasRef}
-        />
-      </div>
-    );
-  }
-);
+  return (
+    <div className="GameScreen-container">
+      <canvas
+        width={mapViewport.width * tileSize}
+        height={mapViewport.height * tileSize}
+        style={{
+          border: "1px solid black"
+        }}
+        ref={canvasRef}
+      />
+    </div>
+  );
+});

@@ -1,6 +1,7 @@
 import { SourceCode } from "../editor/sourcecode";
 
 export enum Actions {
+  loaded = "loaded",
   newCommand = "newCommand",
   buildJob = "buildJob",
   editJob = "editJob",
@@ -28,7 +29,7 @@ export interface EditJobAction {
 }
 
 export interface NoContextAction {
-  type: Actions.halt | Actions.pickCreateNewJob;
+  type: Actions.halt | Actions.pickCreateNewJob | Actions.loaded;
 }
 
 export interface CreateNewJobAction {

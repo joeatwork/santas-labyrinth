@@ -2,9 +2,9 @@ import React from "react";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 
+import { costumesLoaded } from "./images/costumes";
 import { rootReducer } from "./state/rootreducer";
 import { Actions } from "./state/actions";
-
 import { Controls } from "./components/Controls";
 import { RobotStatus } from "./components/RobotStatus";
 import { GameScreen } from "./components/GameScreen";
@@ -20,9 +20,15 @@ setInterval(() => {
   });
 }, millisPerTick);
 
+costumesLoaded.then(() => {
+  store.dispatch({
+    type: Actions.loaded
+  });
+});
+
 function App() {
   return (
-    <div className="App">
+    <div className="App-container">
       <Provider store={store}>
         <header className="App-header-container">
           <h1 className="App-header">Santa's Labyrinth</h1>

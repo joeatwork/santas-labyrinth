@@ -56,7 +56,7 @@ export function simpleLevel() {
 }
 
 export function levelGen() {
-  const { entrance, exit, terrain } = deathMountain(2, 2);
+  const { entrance, exit, terrain } = deathMountain(6, 6);
 
   return {
     terrain,
