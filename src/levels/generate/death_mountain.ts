@@ -78,7 +78,7 @@ function maze(start: number, end: number, paths: number[][]): number[][] {
 }
 
 // Room size in tiles, including walls
-const roomWidth = 14;
+const roomWidth = 10;
 const roomHeight = 10;
 
 // Returned rooms will be roomWidth x roomHeight
@@ -88,23 +88,51 @@ function deathMountainRoom(
   southDoor: boolean,
   westDoor: boolean
 ): Tile[][] {
-  const w = Tile.wall;
+  const nw = Tile.northWall;
+  const ew = Tile.eastWall;
+  const sw = Tile.southWall;
+  const ww = Tile.westWall;
+
+  const nwc = Tile.northwestCornerWall;
+  const nec = Tile.northeastCornerWall;
+  const sec = Tile.southeastCornerWall;
+  const swc = Tile.southwestCornerWall;
+
+  const nwp = Tile.northwestPointWall;
+  const nep = Tile.northeastPointWall;
+  const sep = Tile.southeastPointWall;
+  const swp = Tile.southwestPointWall;
+
   const f = Tile.floor;
-  const nr = northDoor ? f : w;
-  const es = eastDoor ? f : w;
-  const so = southDoor ? f : w;
-  const ws = westDoor ? f : w;
+
+  const nd = northDoor ? f : nw;
+  const ndw = northDoor ? nwp : nw;
+  const nde = northDoor ? nep : nw;
+
+  const ed = eastDoor ? f : ew;
+  const edn = eastDoor ? nep : ew;
+  const eds = eastDoor ? sep : ew;
+
+  const sd = southDoor ? f : sw;
+  const sdw = southDoor ? swp : sw;
+  const sde = southDoor ? sep : sw;
+
+  const wd = westDoor ? f : ww;
+  const wdn = westDoor ? nwp : ww;
+  const wds = westDoor ? swp : ww;
+
+  // prettier-ignore
   return [
-    [w, w, w, w, w, w, nr, nr, w, w, w, w, w, w],
-    [w, f, f, f, f, f, f, f, f, f, f, f, f, w],
-    [w, f, f, f, f, f, f, f, f, f, f, f, f, w],
-    [w, f, f, f, f, f, f, f, f, f, f, f, f, w],
-    [ws, f, f, f, f, f, f, f, f, f, f, f, f, es],
-    [ws, f, f, f, f, f, f, f, f, f, f, f, f, es],
-    [w, f, f, f, f, f, f, f, f, f, f, f, f, w],
-    [w, f, f, f, f, f, f, f, f, f, f, f, f, w],
-    [w, f, f, f, f, f, f, f, f, f, f, f, f, w],
-    [w, w, w, w, w, w, so, so, w, w, w, w, w, w]
+    [nwc, nw, nw, ndw, nd, nd, nde, nw, nw, nec],
+    [ ww,  f,  f,   f,  f,  f,   f,  f,  f,  ew],
+    [ ww,  f,  f,   f,  f,  f,   f,  f,  f,  ew],
+    [wdn,  f,  f,   f,  f,  f,   f,  f,  f, edn],
+    [ wd,  f,  f,   f,  f,  f,   f,  f,  f,  ed],
+    [ wd,  f,  f,   f,  f,  f,   f,  f,  f,  ed],
+    [wds,  f,  f,   f,  f,  f,   f,  f,  f, eds],
+    [ ww,  f,  f,   f,  f,  f,   f,  f,  f,  ew],
+    [ ww,  f,  f,   f,  f,  f,   f,  f,  f,  ew],
+    [swc, sw, sw, sdw, sd, sd, sde, sw, sw, sec]
   ];
 }
 

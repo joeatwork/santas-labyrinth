@@ -30,14 +30,6 @@ function drawMap(
           const imageSpot = imageY * iWidth + imageX;
           const pixel = imageSpot * 4;
           image.data[pixel + 3] = 255; // alpha channel
-          switch (tile) {
-            case Tile.entrance:
-              image.data[pixel + 2] = 255;
-              break;
-            case Tile.exit:
-              image.data[pixel + 1] = 255;
-              break;
-          }
         }
       }
     });

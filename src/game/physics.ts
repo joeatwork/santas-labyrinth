@@ -10,7 +10,7 @@ import {
 } from "../levels/levelstate";
 import { Prop } from "../robot/instructions";
 import { CharacterType } from "../levels/levelstate";
-import { Tile, inbounds } from "../levels/terrain";
+import { Tile, inbounds, passable } from "../levels/terrain";
 
 const visionDistance = 10;
 
@@ -47,7 +47,7 @@ export function gameSenses(game: LevelState, robot: Actor) {
           };
         }
 
-        if (furniture === Tile.wall) {
+        if (!passable(furniture)) {
           return { what: Prop.wall, where: i };
         }
 

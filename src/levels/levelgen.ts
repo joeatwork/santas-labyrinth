@@ -10,11 +10,23 @@ export function simpleLevel() {
   return {
     terrain: {
       furniture: [
-        [Tile.nothing, Tile.wall, Tile.wall, Tile.wall, Tile.nothing],
-        [Tile.wall, Tile.floor, Tile.floor, Tile.floor, Tile.wall],
-        [Tile.entrance, Tile.floor, Tile.floor, Tile.floor, Tile.wall],
-        [Tile.wall, Tile.floor, Tile.floor, Tile.floor, Tile.wall],
-        [Tile.nothing, Tile.wall, Tile.exit, Tile.wall, Tile.nothing]
+        [
+          Tile.nothing,
+          Tile.northWall,
+          Tile.northWall,
+          Tile.northWall,
+          Tile.nothing
+        ],
+        [Tile.westWall, Tile.floor, Tile.floor, Tile.floor, Tile.eastWall],
+        [Tile.westWall, Tile.floor, Tile.floor, Tile.floor, Tile.eastWall],
+        [Tile.westWall, Tile.floor, Tile.floor, Tile.floor, Tile.eastWall],
+        [
+          Tile.nothing,
+          Tile.southWall,
+          Tile.southWall,
+          Tile.southWall,
+          Tile.nothing
+        ]
       ]
     },
     marks: _.range(5).map(y => _.range(5).map(x => false)),
@@ -44,8 +56,7 @@ export function simpleLevel() {
 }
 
 export function levelGen() {
-  const { entrance, exit, terrain } = deathMountain(6, 6);
-  terrain.furniture[entrance.y][entrance.x] = Tile.entrance;
+  const { entrance, exit, terrain } = deathMountain(2, 2);
 
   return {
     terrain,

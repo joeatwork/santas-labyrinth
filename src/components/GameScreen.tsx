@@ -25,12 +25,17 @@ function drawRoom(
   terrain: Terrain,
   ctx: CanvasRenderingContext2D
 ) {
-  const screenSlice = sliceToRect(viewport, terrain.furniture);
+  const sprites = furniture(terrain);
+  const screenSlice = sliceToRect(viewport, sprites);
 
   screenSlice.forEach((row, y) => {
-    row.forEach((tile, x) => {
+    row.forEach((sp, x) => {
       ctx.drawImage(
-        furniture(tile),
+        sp.image,
+        sp.sprite.left,
+        sp.sprite.top,
+        sp.sprite.width,
+        sp.sprite.height,
         tileSize * x,
         tileSize * y,
         tileSize,
