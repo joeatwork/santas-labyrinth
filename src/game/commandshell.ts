@@ -4,10 +4,8 @@ import { LevelState, Actor } from "../levels/levelstate";
 import { Parser, validateJobName } from "../grammar/parser";
 import {
   Processor,
-  executeInstruction,
+  pushInstruction,
   addJob,
-  Senses,
-  Actuators,
   cycle
 } from "../robot/processor";
 import { gameActuators, gameSenses } from "../game/physics";
@@ -45,9 +43,16 @@ export function continueExecution(
     return { lastTick: thisTick, cpu, game };
   }
 
-  const vals = withWorld(game, robot, (s, a) => cycle(cpu, s, a));
+  const senses = gameSenses(game, robot);
+  const actuators = gameActuators(game, robot);
+  const newCpu = cycle(cpu, senses, actuators);
+  const newGame = actuators.newgame;
 
-  return { lastTick: thisTick, ...vals };
+  return {
+    lastTick: thisTick,
+    cpu: newCpu,
+    game: newGame
+  };
 }
 
 export function halt(cpu: Processor) {
@@ -131,23 +136,9 @@ export function runCommand(
       commandError: null
     };
   }
+
   return {
     commandError: null,
-    ...withWorld(game, robot, (s, a) => {
-      return executeInstruction(cmd.result, cpu, s, a);
-    })
+    cpu: pushInstruction(cmd.result, cpu)
   };
-}
-
-function withWorld(
-  game: LevelState,
-  robot: Actor,
-  f: (s: Senses, a: Actuators) => Processor
-) {
-  const senses = gameSenses(game, robot);
-  const actuators = gameActuators(game, robot);
-  const newCpu = f(senses, actuators);
-  const newGame = actuators.newgame;
-
-  return { cpu: newCpu, game: newGame };
 }
