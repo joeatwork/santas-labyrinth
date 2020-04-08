@@ -1,5 +1,7 @@
 .RobotStatus-container {
   margin: var(--default-spacing) 0;
+  display: grid;
+  grid-template-columns: [facts] 1fr [map] 168px;
 }
 
 .RobotStatus-label,

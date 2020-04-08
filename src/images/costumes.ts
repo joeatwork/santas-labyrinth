@@ -1,36 +1,130 @@
-import { Orientation } from "../utils/geometry";
-import { Tile } from "../levels/terrain";
+import _ from "lodash";
+import { Rect, Orientation } from "../utils/geometry";
+import { Terrain, Tile } from "../levels/terrain";
 import { CharacterType } from "../levels/levelstate";
 
 import nothing from "./rltiles/nh-dngn_dark_part_of_a_room.png";
-import floor from "./rltiles/nh-dngn_floor_of_a_room.png";
-import wall from "./rltiles/dc-dngn_dngn_rock_wall_07.png";
-import entrance from "./rltiles/nh-dngn_staircase_up.png";
-import exit from "./rltiles/nh-dngn_staircase_down.png";
+import deathMountainParadigmRoom from "./sprites/death_mountain_paradigm_room.png";
 
 import hero from "./sprites/spaceman_overworld_64x64.png";
 import heart from "./outfits/red_heart.png";
 
-function toImage(s: string) {
-  const ret = new Image();
-  ret.src = s;
-  return ret;
+class ImageLoader {
+  status: { [src: string]: boolean | null };
+  resolvers: { resolve: Function; reject: Function } | undefined;
+
+  constructor() {
+    this.status = {};
+  }
+
+  public toImage(s: string) {
+    if (this.resolvers) {
+      throw Error("toImage() must be called before promise()");
+    }
+
+    this.status[s] = null;
+    const ret = new Image();
+    ret.onload = () => {
+      this.status[s] = true;
+      this.observeLoad();
+    };
+    ret.onerror = () => {
+      this.status[s] = false;
+      this.observeLoad();
+    };
+    ret.src = s;
+    return ret;
+  }
+
+  public promise() {
+    if (this.resolvers) {
+      throw Error("promise() must be called no more than once");
+    }
+
+    const ret = new Promise((resolve, reject) => {
+      this.resolvers = { resolve, reject };
+    });
+
+    this.observeLoad();
+    return ret;
+  }
+
+  private observeLoad() {
+    if (!this.resolvers) {
+      return;
+    }
+
+    if (_.every(this.status)) {
+      this.resolvers.resolve();
+    }
+
+    if (_.some(this.status, s => s === false)) {
+      this.resolvers.reject();
+    }
+  }
 }
 
-const furnitureImages = {
-  [Tile.nothing]: toImage(nothing),
-  [Tile.floor]: toImage(floor),
-  [Tile.wall]: toImage(wall),
-  [Tile.entrance]: toImage(entrance),
-  [Tile.exit]: toImage(exit)
-};
+const loader = new ImageLoader();
+
+export interface ImageSprite {
+  image: CanvasImageSource;
+  sprite: Rect;
+}
+
+export function furniture(terrain: Terrain): ImageSprite[][] {
+  return terrain.furniture.map((row, y) =>
+    row.map((t, x) => {
+      switch (t) {
+        case Tile.nothing:
+          return nothingSprite;
+        case Tile.floor:
+          return floorSprite;
+        case Tile.surroundedWall:
+          return surroundedWall;
+        case Tile.northwestCornerWall:
+          return northwestCornerWall;
+        case Tile.northeastCornerWall:
+          return northeastCornerWall;
+        case Tile.southwestCornerWall:
+          return southwestCornerWall;
+        case Tile.southeastCornerWall:
+          return southeastCornerWall;
+        case Tile.northWall:
+          return northWall;
+        case Tile.eastWall:
+          return eastWall;
+        case Tile.southWall:
+          return southWall;
+        case Tile.westWall:
+          return westWall;
+        case Tile.northwestPointWall:
+          return northwestPointWall;
+        case Tile.northeastPointWall:
+          return northeastPointWall;
+        case Tile.southwestPointWall:
+          return southwestPointWall;
+        case Tile.southeastPointWall:
+          return southeastPointWall;
+      }
+
+      throw Error(`unknown tile type ${t} at ${x}, ${y}`);
+    })
+  );
+}
+
+export function character(c: CharacterType, ot: Orientation) {
+  return {
+    image: characterImages[c]!,
+    sprite: characterSprites[c][ot]!
+  };
+}
 
 const characterImages = {
-  [CharacterType.hero]: toImage(hero),
-  [CharacterType.heart]: toImage(heart)
+  [CharacterType.hero]: loader.toImage(hero),
+  [CharacterType.heart]: loader.toImage(heart)
 };
 
-export const spriteMaps = {
+export const characterSprites = {
   [CharacterType.hero]: {
     [Orientation.north]: { top: 0, left: 64, width: 64, height: 64 },
     [Orientation.east]: { top: 0, left: 640, width: 64, height: 64 },
@@ -45,13 +139,81 @@ export const spriteMaps = {
   }
 };
 
-export function furniture(t: Tile) {
-  return furnitureImages[t]!;
-}
+const nothingSprite = {
+  image: loader.toImage(nothing),
+  sprite: { top: 0, left: 0, width: 64, height: 64 }
+};
 
-export function character(c: CharacterType, ot: Orientation) {
-  return {
-    image: characterImages[c]!,
-    sprite: spriteMaps[c][ot]!
-  };
-}
+const deathMountainImage = loader.toImage(deathMountainParadigmRoom);
+
+const floorSprite = {
+  image: deathMountainImage,
+  sprite: { top: 64, left: 64, width: 64, height: 64 }
+};
+
+const surroundedWall = {
+  image: deathMountainImage,
+  sprite: { top: 192, left: 192, width: 64, height: 64 }
+};
+
+const northwestCornerWall = {
+  image: deathMountainImage,
+  sprite: { top: 0, left: 0, width: 64, height: 64 }
+};
+
+const northeastCornerWall = {
+  image: deathMountainImage,
+  sprite: { top: 0, left: 576, width: 64, height: 64 }
+};
+
+const southwestCornerWall = {
+  image: deathMountainImage,
+  sprite: { top: 576, left: 0, width: 64, height: 64 }
+};
+
+const southeastCornerWall = {
+  image: deathMountainImage,
+  sprite: { top: 576, left: 576, width: 64, height: 64 }
+};
+
+const northWall = {
+  image: deathMountainImage,
+  sprite: { top: 0, left: 64, width: 64, height: 64 }
+};
+
+const southWall = {
+  image: deathMountainImage,
+  sprite: { top: 576, left: 64, width: 64, height: 64 }
+};
+
+const westWall = {
+  image: deathMountainImage,
+  sprite: { top: 64, left: 0, width: 64, height: 64 }
+};
+
+const eastWall = {
+  image: deathMountainImage,
+  sprite: { top: 64, left: 576, width: 64, height: 64 }
+};
+
+const northwestPointWall = {
+  image: deathMountainImage,
+  sprite: { top: 0, left: 192, width: 64, height: 64 }
+};
+
+const northeastPointWall = {
+  image: deathMountainImage,
+  sprite: { top: 0, left: 384, width: 64, height: 64 }
+};
+
+const southwestPointWall = {
+  image: deathMountainImage,
+  sprite: { top: 576, left: 192, width: 64, height: 64 }
+};
+
+const southeastPointWall = {
+  image: deathMountainImage,
+  sprite: { top: 576, left: 384, width: 64, height: 64 }
+};
+
+export const costumesLoaded = loader.promise();
