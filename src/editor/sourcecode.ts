@@ -16,11 +16,14 @@ export interface SourceCode {
   editor: EditorState;
 }
 
-export function emptySource(jobname: string) {
+export function createSource(jobname: string, initialText: string) {
   return {
     jobname,
     dirty: false,
-    editor: EditorState.createEmpty(errorDecorator)
+    editor: EditorState.createWithContent(
+      ContentState.createFromText(initialText),
+      errorDecorator
+    )
   };
 }
 

@@ -10,7 +10,7 @@ import {
 } from "../game/commandshell";
 import { hero } from "../levels/levelstate";
 import {
-  emptySource,
+  createSource,
   getSourceText,
   annotateErrors
 } from "../editor/sourcecode";
@@ -28,13 +28,30 @@ const initialState: AllState = {
 
 export function rootReducer(
   state: AllState = initialState,
-  action: AllActions
+  action: AllActions,
+  thisTick: number | undefined = undefined
+) {
+  let ret = reduction(state, action, thisTick);
+
+  if (ret.cpu.stack.length === 0 && state.cpu.stack.length > 0) {
+    ret = {
+      ...ret,
+      terminalLine: ""
+    };
+  }
+
+  return ret;
+}
+
+function reduction(
+  state: AllState,
+  action: AllActions,
+  thisTick: number | undefined
 ): AllState {
   switch (action.type) {
     // Robot actions
     case Actions.tick:
-      const thisTick = Date.now();
-      const stackBefore = state.cpu.stack.length;
+      thisTick = thisTick || Date.now();
       const up = continueExecution(
         state.lastTick,
         thisTick,
@@ -42,22 +59,15 @@ export function rootReducer(
         state.cpu,
         state.game
       );
-      const retState = {
+      return {
         ...state,
         ...up
       };
-      if (stackBefore > 0 && retState.cpu.stack.length === 0) {
-        return rootReducer(retState, {
-          type: Actions.halt
-        });
-      }
-      return retState;
     case Actions.halt:
       const halted = halt(state.cpu);
       return {
         ...state,
-        ...halted,
-        terminalLine: ""
+        ...halted
       };
     case Actions.newCommand:
       const ran = runCommand(
@@ -66,20 +76,17 @@ export function rootReducer(
         state.cpu,
         state.game
       );
-      return rootReducer(
-        {
-          ...state,
-          ...ran
-        },
-        { type: Actions.halt }
-      );
+      return {
+        ...state,
+        ...ran
+      };
     case Actions.pickCreateNewJob:
       return {
         ...state,
         sourceToEdit: null
       };
     case Actions.createNewJob:
-      const newjob = emptySource(action.jobname);
+      const newjob = createSource(action.jobname, "");
       return {
         ...state,
         sourceLibrary: {

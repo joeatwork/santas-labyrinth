@@ -48,13 +48,8 @@ export interface Actuators {
   erase: () => void;
 }
 
-export function executeInstruction(
-  instr: Instruction,
-  cpu: Processor,
-  senses: Senses,
-  actuators: Actuators
-) {
-  const interactor = {
+export function pushInstruction(instr: Instruction, cpu: Processor) {
+  return {
     ...addJob(cpu, {
       jobname: "#interactive",
       work: [instr]
@@ -65,12 +60,6 @@ export function executeInstruction(
         instruction: 0
       }
     ])
-  };
-
-  const after = cycle(interactor, senses, actuators);
-  return {
-    ...after,
-    stack: after.stack.filter(st => st.jobname !== "#interactive")
   };
 }
 
