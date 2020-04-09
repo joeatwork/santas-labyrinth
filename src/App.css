@@ -17,13 +17,13 @@
   font-weight: normal;
   font-family: "chicagoflfregular", sans-serif;
   line-height: 18px;
-  width: calc(448px + var(--default-spacing) + 384px);
+  width: calc(386px + var(--default-spacing) + 386px);
 }
 
 .App-universe {
   display: grid;
-  width: calc(448px + var(--default-spacing) + 384px);
-  grid-template-columns: [controls] 448px [feedback] 384px;
+  width: calc(386px + var(--default-spacing) + 386px);
+  grid-template-columns: [controls] 386px [feedback] 386px;
   column-gap: var(--default-spacing);
   margin: 0 auto;
 }
@@ -35,7 +35,7 @@
 }
 
 .App-controls {
-  --column-width: 448px;
+  --column-width: 384px;
 }
 
 .App-feedback {

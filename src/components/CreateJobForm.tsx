@@ -50,7 +50,6 @@ export const CreateJobForm = connect(
       <div className="CreateJobForm-body">
         <LargeTooltip show={error !== ""} tip={tooltip}>
           {" "}
-          <label htmlFor="CreateJobForm-name">Create Job Named:</label>
           <div className="JobEditor-inputbox Controls-inputbox">
             <input
               className="JobEditor-inputfield Controls-inputfield"

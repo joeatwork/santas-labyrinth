@@ -1,9 +1,3 @@
-.JobEditor-container,
-.JobEditor-headerline .JobEditor-body {
-  margin-left: var(--default-spacing);
-  margin-right: var(--default-spacing);
-}
-
 .JobEditor-headerline {
   display: grid;
   grid-template-columns: [header] 1fr [save] 40px [play] 40px [stop] 40px;

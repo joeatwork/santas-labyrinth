@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
 
@@ -65,8 +65,7 @@ export const Terminal = connect(
     onPlay,
     onStop
   }: TerminalProps) => {
-    const show = commandError && commandError.site === CommandErrorSite.command;
-    const tooltip = commandError ? <div>{commandError.message}</div> : "";
+    const [focused, setFocused] = useState(false);
 
     const paletteClick = (completion: string) => {
       if (completion[completion.length - 1] === "\n") {
@@ -82,15 +81,49 @@ export const Terminal = connect(
       }
     };
 
+    const errorMessage = <div>{commandError?.message}</div>;
     const completions = completeCommand(terminalLine);
+    const palette = (
+      <div className="Terminal-command-palette">
+        {completions.map(w => {
+          return (
+            <span
+              key={`palette-word-${w}`}
+              className={classNames(
+                "Terminal-palette-word",
+                "Terminal-palette-word--enabled",
+                { "Terminal-palette-word--exec": w[w.length - 1] === "\n" }
+              )}
+              onMouseDown={evt => evt.preventDefault()}
+              onClick={() => paletteClick(w)}
+            >
+              {w}
+            </span>
+          );
+        })}
+      </div>
+    );
+
+    const tooltip = commandError ? errorMessage : palette;
+    const showError =
+      commandError && commandError.site === CommandErrorSite.command;
+    const show = focused && (showError || completions.length);
 
     return (
       <div className="Terminal">
-        <div className="Terminal-inputline">
+        <div
+          className="Terminal-inputline"
+          onFocus={() => {
+            setFocused(true);
+          }}
+          onBlur={() => {
+            setFocused(false);
+          }}
+        >
           <LargeTooltip show={!!show} tip={tooltip}>
-            <label htmlFor="Terminal-inputfield">Command:</label>
             <div className="Terminal-inputbox Controls-inputbox">
               <input
+                autoComplete="off"
                 disabled={playing}
                 className="Terminal-inputfield Controls-inputfield"
                 name="Terminal-inputfield"
@@ -127,23 +160,6 @@ export const Terminal = connect(
               </div>
             </div>
           </LargeTooltip>
-        </div>
-        <div className="Terminal-command-palette">
-          {completions.map(w => {
-            return (
-              <span
-                key={`palette-word-${w}`}
-                className={classNames(
-                  "Terminal-palette-word",
-                  "Terminal-palette-word--enabled",
-                  { "Terminal-palette-word--exec": w[w.length - 1] === "\n" }
-                )}
-                onClick={_ => paletteClick(w)}
-              >
-                {w}
-              </span>
-            );
-          })}
         </div>
       </div>
     );

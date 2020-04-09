@@ -41,7 +41,6 @@ function App() {
             </div>
             <div className="App-feedback App-window">
               <GameScreen />
-              <Terminal />
               <RobotStatus />
             </div>
           </div>
