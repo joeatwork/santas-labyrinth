@@ -37,6 +37,9 @@ Some of the images used in this program are from the public domain roguelike
 tileset "RLTiles". Some of the tiles have been modified. You can find the
 original tileset at: http://rltiles.sf.net
 
+The project uses the Chicago FLF font, released into the public domain by Robin
+Casady.
+
 This project uses icons from Google's Material project, licensed under the
 Apache 2.0 license. You can get these icons and others from
 https://material.io/resources/icons/

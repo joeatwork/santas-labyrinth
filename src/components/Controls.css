@@ -5,10 +5,6 @@
   );
 }
 
-.Controls-inset {
-  padding-left: calc(var(--tab-width) + var(--default-spacing));
-}
-
 .Controls-jobdefs {
   border-top: 1px solid rgb(91, 98, 113);
   display: grid;

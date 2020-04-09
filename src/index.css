@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "chicagoflfregular";
+  src: url("./fonts/chicagoflf-webfont.woff2") format("woff2"),
+    url("./fonts/chicagoflf-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --default-spacing: 14px;
 }
@@ -8,6 +16,13 @@ body {
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url("./images/backgrounds/halftone_gray.png");
+}
+
+.windowheader {
+  background-image: url("./images/backgrounds/six_bars_17px.png");
+  background-repeat: repeat-x;
+  min-height: 18px;
 }
 
 input[type="text"] {

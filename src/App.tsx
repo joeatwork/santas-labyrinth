@@ -8,6 +8,7 @@ import { Actions } from "./state/actions";
 import { Controls } from "./components/Controls";
 import { RobotStatus } from "./components/RobotStatus";
 import { GameScreen } from "./components/GameScreen";
+import { Terminal } from "./components/Terminal";
 
 import "./App.css";
 
@@ -35,11 +36,12 @@ function App() {
         </header>
         <main>
           <div className="App-universe">
-            <div className="App-controls">
+            <div className="App-controls App-window">
               <Controls />
             </div>
-            <div className="App-feedback">
+            <div className="App-feedback App-window">
               <GameScreen />
+              <Terminal />
               <RobotStatus />
             </div>
           </div>
