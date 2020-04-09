@@ -1,6 +1,7 @@
 .JobTabs-tab {
   padding: 6px;
   text-align: center;
+  line-height: 32px;
 }
 
 .JobTabs-pick {

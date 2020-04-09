@@ -8,7 +8,6 @@ import { Actions } from "./state/actions";
 import { Controls } from "./components/Controls";
 import { RobotStatus } from "./components/RobotStatus";
 import { GameScreen } from "./components/GameScreen";
-import { Terminal } from "./components/Terminal";
 
 import "./App.css";
 

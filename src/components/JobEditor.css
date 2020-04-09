@@ -6,6 +6,7 @@
 .JobEditor-header {
   padding-top: 6px;
   padding-bottom: 6px;
+  line-height: 32px;
 }
 
 .JobEditor-savebutton,
@@ -13,6 +14,7 @@
 .JobEditor-stopbutton {
   display: flex;
   justify-content: center;
+  align-items: center;
   opacity: 50%;
 }
 
