@@ -1,8 +1,11 @@
 .JobEditor-headerline {
   display: grid;
   grid-template-columns: [header] 1fr [save] 40px [play] 40px [stop] 40px;
-  margin-top: 8px;
-  margin-bottom: 8px;
+}
+
+.JobEditor-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .JobEditor-savebutton,
@@ -15,6 +18,10 @@
 
 .JobEditor-button--enabled {
   opacity: 100%;
+}
+
+.JobEditor-body {
+  padding-right: var(--default-spacing);
 }
 
 .JobEditor-body .DraftEditor-editorContainer {
