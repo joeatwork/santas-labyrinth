@@ -48,7 +48,6 @@ export const Terminal = connect(
         command
       }),
     onHalt: () =>
-      // TODO RENAME onHalt and onRun
       dispatch({
         type: Actions.halt
       })
