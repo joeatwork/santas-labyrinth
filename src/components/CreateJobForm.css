@@ -1,7 +1,1 @@
 /* Styles here */
-.CreateJobForm-inputbox {
-  display: grid;
-  grid-template-columns: [field] calc(var(--content-width) - 8px - 8px - 64px) [button] 64px;
-  column-gap: 8px;
-  padding: 8px 0;
-}

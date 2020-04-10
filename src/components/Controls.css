@@ -34,6 +34,13 @@
   padding: 0px 8px 0px 0px;
 }
 
+.Controls-inputbox {
+  display: grid;
+  grid-template-columns: [field] calc(var(--content-width) - 8px - 8px - 64px) [button] 64px;
+  column-gap: 8px;
+  padding: 8px 0;
+}
+
 .Controls-inputfield {
   line-height: 18px;
   padding: 4px 8px;

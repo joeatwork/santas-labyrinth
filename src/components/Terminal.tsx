@@ -51,6 +51,7 @@ export const Terminal = connect(
         command
       }),
     onStop: () =>
+      // TODO RENAME onStop and onPlay
       dispatch({
         type: Actions.halt
       })
@@ -138,26 +139,21 @@ export const Terminal = connect(
                   }
                 }}
               />{" "}
-              <div
-                className={classNames("Terminal-playbutton", {
-                  "Terminal-playbutton--enabled": !playing
-                })}
-                onClick={_ => writeLine(terminalLine + "\n")}
-              >
-                <PlayIcon />
-              </div>
-              <div
-                className={classNames("Terminal-stopbutton", {
-                  "Terminal-stopbutton--enabled": playing
-                })}
-                onClick={_ => {
-                  if (playing) {
-                    onStop();
-                  }
-                }}
-              >
-                <StopIcon />
-              </div>
+              {playing ? (
+                <button
+                  className="Terminal-button Terminal-haltButton"
+                  onClick={() => onStop()}
+                >
+                  Halt
+                </button>
+              ) : (
+                <button
+                  className="Terminal-button Terminal-runButton"
+                  onClick={() => writeLine(terminalLine + "\n")}
+                >
+                  Run
+                </button>
+              )}
             </div>
           </LargeTooltip>
         </div>
