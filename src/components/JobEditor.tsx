@@ -1,16 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Editor, EditorState } from "draft-js";
-import classNames from "classnames/bind";
 
 import { Actions } from "../state/actions";
 import { AllState } from "../state/states";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
 import { SourceCode } from "../editor/sourcecode";
 import { LargeTooltip } from "../components/LargeTooltip";
-import { SaveIcon } from "../components/icons/SaveIcon";
-import { PlayIcon } from "../components/icons/PlayIcon";
-import { StopIcon } from "../components/icons/StopIcon";
 
 import "./JobEditor.css";
 

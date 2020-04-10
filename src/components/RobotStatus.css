@@ -1,16 +1,68 @@
-.RobotStatus-container {
-  margin: var(--default-spacing) 0;
-  display: grid;
-  grid-template-columns: [facts] 1fr [map] 168px;
+.RobotStatus-facts {
+  display: flex;
+  background-image: url("../images/backgrounds/six_bars_17px.png");
+  font-family: "chicagoflfregular";
+  background-repeat: repeat-x;
+  background-position-y: center;
+  border-bottom: 1px solid black;
 }
 
-.RobotStatus-label,
-.RobotStatus-registers,
-.RobotStatus-orientation,
-.RobotStatus-jobname {
-  display: inline;
+.RobotStatus-facts__contents {
+  display: flex;
+  flex: initial;
+  margin: 0 auto;
+  background-color: white;
+  min-height: 22px;
+  align-items: center;
 }
 
-.RobotStatus-label {
-  font-weight: bold;
+.RobotStatus-facts__fact {
+  padding: 0 8px;
+  border-right: 1px solid black;
+}
+
+.RobotStatus-facts__fact:last-child {
+  border-right: 0;
+}
+
+.RobotStatus-registers {
+  display: flex;
+}
+
+.RobotStatus-registers__light {
+  width: 16px;
+  height: 16px;
+  background-position: -16px 0px;
+  background-image: url("../images/details/blinkinlights.png");
+}
+
+.RobotStatus-registers__light.RobotStatus-registers__light--enabled {
+  background-position: 0px 0px;
+}
+
+.RobotStatus-orientation {
+  display: flex;
+}
+
+.RobotStatus-orientation__compass {
+  width: 16px;
+  height: 16px;
+  background-image: url("../images/details/compass.png");
+  background-repeat: no-repeat;
+}
+
+.RobotStatus-orientation__compass.RobotStatus-orientation__compass--north {
+  background-position: 0px 0px;
+}
+
+.RobotStatus-orientation__compass.RobotStatus-orientation__compass--east {
+  background-position: -16px 0px;
+}
+
+.RobotStatus-orientation__compass.RobotStatus-orientation__compass--south {
+  background-position: -32px 0px;
+}
+
+.RobotStatus-orientation__compass.RobotStatus-orientation__compass--west {
+  background-position: -48px 0px;
 }

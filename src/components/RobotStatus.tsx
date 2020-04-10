@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React from "react";
 import { connect } from "react-redux";
+import classNames from "classnames/bind";
 
 import { AllState } from "../state/states";
 import { Processor } from "../robot/processor";
@@ -18,29 +19,40 @@ export const RobotStatus = connect((s: AllState) => ({
   cpu: s.cpu,
   robot: hero(s.game)
 }))(({ cpu, robot }: RobotStatusParams) => {
-  const frame = cpu.stack.length > 0 && cpu.stack[cpu.stack.length - 1];
+  const depth = cpu.stack.length;
+  const job = depth === 0 ? "(idle)" : cpu.stack[cpu.stack.length - 1].jobname;
   return (
     <div className="RobotStatus-container">
       <div className="RobotStatus-facts">
-        <div className="RobotStatus-label">Registers:</div>
-        <div className="RobotStatus-registers">
-          {_.toPairs(cpu.registers).map(([name, state]) => {
-            return (
-              <span
-                key={`register-${name}-status`}
-                className="RobotStatus-registers__unit"
-              >
-                <input type="checkbox" readOnly checked={state} />
-                {name}
-              </span>
-            );
-          })}
-        </div>{" "}
-        <div className="RobotStatus-label">Orientation:</div>
-        <div className="RobotStatus-orientation">{robot.orientation}</div>{" "}
-        <div className="RobotStatus-label">Running Job:</div>
-        <div className="RobotStatus-jobname">
-          {frame ? frame.jobname : "(idle)"}
+        <div className="RobotStatus-facts__contents">
+          <div className="RobotStatus-registers RobotStatus-facts__fact">
+            {_.toPairs(cpu.registers)
+              .filter(([name]) => name !== "no")
+              .map(([name, state]) => {
+                return (
+                  <div
+                    className="RobotStatus-registers__unit"
+                    key={`register-${name}-status`}
+                  >
+                    <div
+                      title={name}
+                      className={classNames("RobotStatus-registers__light", {
+                        "RobotStatus-registers__light--enabled": state
+                      })}
+                    ></div>
+                  </div>
+                );
+              })}
+          </div>
+          <div className="RobotStatus-orientation RobotStatus-facts__fact">
+            <div
+              className={classNames(
+                "RobotStatus-orientation__compass",
+                `RobotStatus-orientation__compass--${robot.orientation}`
+              )}
+            ></div>
+          </div>
+          <div className="RobotStatus-jobname RobotStatus-facts__fact">{`[${depth}] ${job}`}</div>
         </div>
       </div>
       {/* /RobotStatus-facts */}
