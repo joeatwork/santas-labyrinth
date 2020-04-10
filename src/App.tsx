@@ -35,10 +35,10 @@ function App() {
         </header>
         <main>
           <div className="App-universe">
-            <div className="App-controls">
+            <div className="App-controls App-window">
               <Controls />
             </div>
-            <div className="App-feedback">
+            <div className="App-feedback App-window">
               <GameScreen />
               <RobotStatus />
             </div>

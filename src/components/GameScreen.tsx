@@ -135,9 +135,6 @@ export const GameScreen = connect((state: AllState) => ({
       <canvas
         width={mapViewport.width * tileSize}
         height={mapViewport.height * tileSize}
-        style={{
-          border: "1px solid black"
-        }}
         ref={canvasRef}
       />
     </div>

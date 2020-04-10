@@ -1,14 +1,13 @@
-.JobEditor-container,
-.JobEditor-headerline .JobEditor-body {
-  margin-left: var(--default-spacing);
-  margin-right: var(--default-spacing);
-}
+/* #606060 */
 
 .JobEditor-headerline {
   display: grid;
   grid-template-columns: [header] 1fr [save] 40px [play] 40px [stop] 40px;
-  margin-top: 8px;
-  margin-bottom: 8px;
+  padding: 8px 0;
+}
+
+.JobEditor-header {
+  line-height: 28px;
 }
 
 .JobEditor-savebutton,
@@ -16,6 +15,7 @@
 .JobEditor-stopbutton {
   display: flex;
   justify-content: center;
+  align-items: center;
   opacity: 50%;
 }
 
@@ -23,8 +23,13 @@
   opacity: 100%;
 }
 
+.JobEditor-body {
+  padding-right: var(--default-spacing);
+}
+
 .JobEditor-body .DraftEditor-editorContainer {
-  border: 1px solid rgb(91, 98, 113);
+  border: 1px solid #a8a8a8;
+  border-style: inset;
   padding: 10px;
 }
 

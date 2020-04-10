@@ -20,6 +20,8 @@ redesign autocomplete and suggestions
 
 Fix Bug where robot doesn't render on first load
 
+Big button to clear all marks
+
 # SOMEDAY:
 
 Delete job
@@ -43,6 +45,8 @@ better mark images
 Variable time for cycles based on action
 
 Text language manual
+
+Scaling the game screen with CSS (image-rendering: pixelated and image-rendering: crisp-edges)
 
 Ensure characters can't walk through each other
 

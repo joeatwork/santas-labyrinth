@@ -47,27 +47,28 @@ export const CreateJobForm = connect(
 
   return (
     <div className="CreateJobForm-container">
-      <div className="CreateJobForm-body">
-        <LargeTooltip show={error !== ""} tip={tooltip}>
-          {" "}
-          <label htmlFor="CreateJobForm-name">Create Job Named:</label>
-          <div className="JobEditor-inputbox Controls-inputbox">
-            <input
-              className="JobEditor-inputfield Controls-inputfield"
-              name="JobEditor-inputfield"
-              type="text"
-              value={jobname}
-              onChange={e => setJobName(e.target.value)}
-              onKeyUp={e => {
-                if (e.key === "Enter") {
-                  tryCreateJob();
-                }
-              }}
-            />
-          </div>
-        </LargeTooltip>
-        <button onClick={e => tryCreateJob()}>Create Job</button>
-      </div>
+      <LargeTooltip show={error !== ""} tip={tooltip}>
+        <div className="Controls-inputbox CreateJobForm-inputbox">
+          <input
+            className="JobEditor-inputfield Controls-inputfield"
+            name="JobEditor-inputfield"
+            type="text"
+            value={jobname}
+            onChange={e => setJobName(e.target.value)}
+            onKeyUp={e => {
+              if (e.key === "Enter") {
+                tryCreateJob();
+              }
+            }}
+          />
+          <button
+            className="CreateJobForm-createbutton"
+            onClick={e => tryCreateJob()}
+          >
+            Create
+          </button>
+        </div>
+      </LargeTooltip>
     </div>
   );
 });

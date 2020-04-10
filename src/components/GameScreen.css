@@ -1,3 +1,4 @@
 .GameScreen-container {
-  margin: var(--default-spacing) 0;
+  margin: 0;
+  border-bottom: 1px solid black;
 }

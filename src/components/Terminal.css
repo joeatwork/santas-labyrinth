@@ -1,9 +1,3 @@
-.Terminal-infobox,
-.Terminal-inputline,
-.Terminal-command-palette {
-  margin: var(--default-spacing) 0;
-}
-
 .Terminal-inputbox {
   display: grid;
   grid-template-columns: [field] 1fr [play] 40px [stop] 40px;

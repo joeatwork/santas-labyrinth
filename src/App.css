@@ -4,21 +4,38 @@
     same values a lot here.
 */
 
+.App-header-container {
+  background-color: white;
+  border-bottom: 1px solid black;
+  margin: 0 0 var(--default-spacing) 0;
+  box-shadow: 1px 2px 3px -2px #101010;
+}
+
 .App-header {
-  margin: var(--default-spacing) auto 0 auto;
-  width: calc(448px + var(--default-spacing) + 384px);
+  margin: 0 auto;
+  font-size: 14px;
+  font-weight: normal;
+  font-family: "chicagoflfregular", sans-serif;
+  line-height: 18px;
+  width: calc(386px + var(--default-spacing) + 386px);
 }
 
 .App-universe {
   display: grid;
-  width: calc(448px + var(--default-spacing) + 384px);
-  grid-template-columns: [controls] 448px [feedback] 384px;
+  width: calc(386px + var(--default-spacing) + 386px);
+  grid-template-columns: [controls] 386px [feedback] 386px;
   column-gap: var(--default-spacing);
   margin: 0 auto;
 }
 
+.App-window {
+  background-color: white;
+  border: 1px solid black;
+  box-shadow: 1px 2px 3px -2px #101010;
+}
+
 .App-controls {
-  --column-width: 448px;
+  --column-width: 384px;
 }
 
 .App-feedback {

@@ -18,8 +18,13 @@ export const Controls = connect((s: AllState) => ({
 }))(({ editing }: ControlsParams) => {
   return (
     <div className="Controls-container">
-      <div className="Controls-inset">
-        <Terminal />
+      <div className="Controls-terminal">
+        <div className="Controls-terminal-label-container">
+          <div className="Controls-terminal-label">Command:</div>
+        </div>
+        <div className="Controls-terminal-form">
+          <Terminal />
+        </div>
       </div>
       <div className="Controls-jobdefs">
         <div className="Controls-jobdefs-tabs">

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
 
@@ -7,10 +7,7 @@ import { AllState } from "../state/states";
 import { Actions } from "../state/actions";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
 import { Parser } from "../grammar/parser";
-
 import { LargeTooltip } from "../components/LargeTooltip";
-import { PlayIcon } from "../components/icons/PlayIcon";
-import { StopIcon } from "../components/icons/StopIcon";
 
 import "./Terminal.css";
 
@@ -20,8 +17,8 @@ export interface TerminalProps {
   commandError: CommandError | null;
   completeCommand: (s: string) => string[];
   onEdit: (command: string) => void;
-  onPlay: (event: string) => void;
-  onStop: () => void;
+  onRun: (event: string) => void;
+  onHalt: () => void;
 }
 
 export const Terminal = connect(
@@ -45,12 +42,12 @@ export const Terminal = connect(
         type: Actions.editTerminalLine,
         terminalLine
       }),
-    onPlay: (command: string) =>
+    onRun: (command: string) =>
       dispatch({
         type: Actions.newCommand,
         command
       }),
-    onStop: () =>
+    onHalt: () =>
       dispatch({
         type: Actions.halt
       })
@@ -62,11 +59,10 @@ export const Terminal = connect(
     commandError,
     completeCommand,
     onEdit,
-    onPlay,
-    onStop
+    onRun,
+    onHalt
   }: TerminalProps) => {
-    const show = commandError && commandError.site === CommandErrorSite.command;
-    const tooltip = commandError ? <div>{commandError.message}</div> : "";
+    const [focused, setFocused] = useState(false);
 
     const paletteClick = (completion: string) => {
       if (completion[completion.length - 1] === "\n") {
@@ -78,19 +74,45 @@ export const Terminal = connect(
 
     const writeLine = (toWrite: string) => {
       if (!playing) {
-        onPlay(toWrite);
+        onRun(toWrite);
       }
     };
 
+    const errorMessage = <div>{commandError?.message}</div>;
     const completions = completeCommand(terminalLine);
+    const palette = (
+      <div className="Terminal-command-palette">
+        {completions.map(w => {
+          return (
+            <span
+              key={`palette-word-${w}`}
+              className={classNames(
+                "Terminal-palette-word",
+                "Terminal-palette-word--enabled",
+                { "Terminal-palette-word--exec": w[w.length - 1] === "\n" }
+              )}
+              onMouseDown={evt => evt.preventDefault()}
+              onClick={() => paletteClick(w)}
+            >
+              {w}
+            </span>
+          );
+        })}
+      </div>
+    );
+
+    const tooltip = commandError ? errorMessage : palette;
+    const showError =
+      commandError && commandError.site === CommandErrorSite.command;
+    const show = focused && !playing && (showError || completions.length);
 
     return (
       <div className="Terminal">
         <div className="Terminal-inputline">
           <LargeTooltip show={!!show} tip={tooltip}>
-            <label htmlFor="Terminal-inputfield">Command:</label>
             <div className="Terminal-inputbox Controls-inputbox">
               <input
+                autoComplete="off"
                 disabled={playing}
                 className="Terminal-inputfield Controls-inputfield"
                 name="Terminal-inputfield"
@@ -104,46 +126,30 @@ export const Terminal = connect(
                     writeLine(terminalLine + "\n");
                   }
                 }}
-              />{" "}
-              <div
-                className={classNames("Terminal-playbutton", {
-                  "Terminal-playbutton--enabled": !playing
-                })}
-                onClick={_ => writeLine(terminalLine + "\n")}
-              >
-                <PlayIcon />
-              </div>
-              <div
-                className={classNames("Terminal-stopbutton", {
-                  "Terminal-stopbutton--enabled": playing
-                })}
-                onClick={_ => {
-                  if (playing) {
-                    onStop();
-                  }
+                onFocus={() => {
+                  setFocused(true);
                 }}
-              >
-                <StopIcon />
-              </div>
+                onBlur={() => {
+                  setFocused(false);
+                }}
+              />{" "}
+              {playing ? (
+                <button
+                  className="Terminal-button Terminal-haltButton"
+                  onClick={() => onHalt()}
+                >
+                  Halt
+                </button>
+              ) : (
+                <button
+                  className="Terminal-button Terminal-runButton"
+                  onClick={() => writeLine(terminalLine + "\n")}
+                >
+                  Run
+                </button>
+              )}
             </div>
           </LargeTooltip>
-        </div>
-        <div className="Terminal-command-palette">
-          {completions.map(w => {
-            return (
-              <span
-                key={`palette-word-${w}`}
-                className={classNames(
-                  "Terminal-palette-word",
-                  "Terminal-palette-word--enabled",
-                  { "Terminal-palette-word--exec": w[w.length - 1] === "\n" }
-                )}
-                onClick={_ => paletteClick(w)}
-              >
-                {w}
-              </span>
-            );
-          })}
         </div>
       </div>
     );
