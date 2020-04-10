@@ -5,8 +5,25 @@
   );
 }
 
-.Controls-inset {
-  padding-left: calc(var(--tab-width) + var(--default-spacing));
+.Controls-terminal,
+.Controls-jobdefs {
+  display: grid;
+  grid-template-columns: [tabs] var(--tab-width) [job] var(--content-width);
+  column-gap: var(--default-spacing);
+}
+
+.Controls-jobdefs {
+  border-top: 1px solid #a8a8a8;
+}
+
+.Controls-terminal-label-container {
+  display: flex;
+  align-items: center;
+}
+
+.Controls-terminal-label {
+  flex: auto;
+  text-align: right;
 }
 
 .Controls-terminal-form {
@@ -15,13 +32,6 @@
 
 .Controls-jobdefs-forms {
   padding: 0px 8px 0px 0px;
-}
-
-.Controls-jobdefs {
-  border-top: 1px solid rgb(91, 98, 113);
-  display: grid;
-  grid-template-columns: [tabs] var(--tab-width) [job] var(--content-width);
-  column-gap: var(--default-spacing);
 }
 
 .Controls-inputfield {

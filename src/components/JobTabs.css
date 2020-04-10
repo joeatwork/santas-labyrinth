@@ -5,8 +5,8 @@
 }
 
 .JobTabs-pick {
-  border-bottom: 1px solid black;
-  border-right: 1px solid black;
+  border-bottom: 1px solid #a8a8a8;
+  border-right: 1px solid #a8a8a8;
 }
 
 .JobTabs-selectable {
@@ -15,7 +15,7 @@
 
 .JobTabs-selectable:hover {
   color: white;
-  background-color: black;
+  background-color: #606060;
 }
 
 .JobTabs-tab.JobTabs-pick--selected {
