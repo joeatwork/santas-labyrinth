@@ -1,5 +1,5 @@
 .Controls-container {
-  --tab-width: 148px;
+  --tab-width: 134px;
   --content-width: calc(
     var(--column-width) - calc(var(--default-spacing) + var(--tab-width))
   );
@@ -7,6 +7,14 @@
 
 .Controls-inset {
   padding-left: calc(var(--tab-width) + var(--default-spacing));
+}
+
+.Controls-terminal-form {
+  padding: 8px 8px 8px 0;
+}
+
+.Controls-jobdefs-forms {
+  padding: 0px 8px 0px 0px;
 }
 
 .Controls-jobdefs {
@@ -19,8 +27,4 @@
 .Controls-inputfield {
   line-height: 18px;
   padding: 4px 8px;
-}
-
-.Controls-inputbox {
-  margin: 8px 0;
 }

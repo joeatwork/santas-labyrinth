@@ -1,12 +1,13 @@
+/* #606060 */
+
 .JobEditor-headerline {
   display: grid;
   grid-template-columns: [header] 1fr [save] 40px [play] 40px [stop] 40px;
+  padding: 8px 0;
 }
 
 .JobEditor-header {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  line-height: 32px;
+  line-height: 28px;
 }
 
 .JobEditor-savebutton,
@@ -27,7 +28,8 @@
 }
 
 .JobEditor-body .DraftEditor-editorContainer {
-  border: 1px solid rgb(91, 98, 113);
+  border: 1px solid #a8a8a8;
+  border-style: inset;
   padding: 10px;
 }
 
