@@ -7,10 +7,7 @@ import { AllState } from "../state/states";
 import { Actions } from "../state/actions";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
 import { Parser } from "../grammar/parser";
-
 import { LargeTooltip } from "../components/LargeTooltip";
-import { PlayIcon } from "../components/icons/PlayIcon";
-import { StopIcon } from "../components/icons/StopIcon";
 
 import "./Terminal.css";
 
@@ -20,8 +17,8 @@ export interface TerminalProps {
   commandError: CommandError | null;
   completeCommand: (s: string) => string[];
   onEdit: (command: string) => void;
-  onPlay: (event: string) => void;
-  onStop: () => void;
+  onRun: (event: string) => void;
+  onHalt: () => void;
 }
 
 export const Terminal = connect(
@@ -45,13 +42,13 @@ export const Terminal = connect(
         type: Actions.editTerminalLine,
         terminalLine
       }),
-    onPlay: (command: string) =>
+    onRun: (command: string) =>
       dispatch({
         type: Actions.newCommand,
         command
       }),
-    onStop: () =>
-      // TODO RENAME onStop and onPlay
+    onHalt: () =>
+      // TODO RENAME onHalt and onRun
       dispatch({
         type: Actions.halt
       })
@@ -63,8 +60,8 @@ export const Terminal = connect(
     commandError,
     completeCommand,
     onEdit,
-    onPlay,
-    onStop
+    onRun,
+    onHalt
   }: TerminalProps) => {
     const [focused, setFocused] = useState(false);
 
@@ -78,7 +75,7 @@ export const Terminal = connect(
 
     const writeLine = (toWrite: string) => {
       if (!playing) {
-        onPlay(toWrite);
+        onRun(toWrite);
       }
     };
 
@@ -108,19 +105,11 @@ export const Terminal = connect(
     const tooltip = commandError ? errorMessage : palette;
     const showError =
       commandError && commandError.site === CommandErrorSite.command;
-    const show = focused && (showError || completions.length);
+    const show = focused && !playing && (showError || completions.length);
 
     return (
       <div className="Terminal">
-        <div
-          className="Terminal-inputline"
-          onFocus={() => {
-            setFocused(true);
-          }}
-          onBlur={() => {
-            setFocused(false);
-          }}
-        >
+        <div className="Terminal-inputline">
           <LargeTooltip show={!!show} tip={tooltip}>
             <div className="Terminal-inputbox Controls-inputbox">
               <input
@@ -138,11 +127,17 @@ export const Terminal = connect(
                     writeLine(terminalLine + "\n");
                   }
                 }}
+                onFocus={() => {
+                  setFocused(true);
+                }}
+                onBlur={() => {
+                  setFocused(false);
+                }}
               />{" "}
               {playing ? (
                 <button
                   className="Terminal-button Terminal-haltButton"
-                  onClick={() => onStop()}
+                  onClick={() => onHalt()}
                 >
                   Halt
                 </button>
