@@ -53,7 +53,7 @@ export const JobTabs = connect(
         className="JobTabs-tab JobTabs-create JobTabs-selectable"
         onClick={onNewJobClicked}
       >
-        + Create New Job
+        + New Job
       </div>
     </div>
   );

@@ -249,3 +249,30 @@ sure it doesn't visit the same spots twice.
         right
         backward
     end job search
+
+Here's a job for use with other jobs. The robot tries to be sure it's facing somewhere unblocked at the end of the job:
+
+    create job avoidblock
+        touch wall
+        if no touch mark
+        if no finish
+        
+        left
+        touch wall
+        if no touch mark
+        if no finish
+        
+        left
+        touch wall
+        if no touch mark
+        if no finish
+        
+        left
+        touch wall
+        if no touch mark
+        if no finish
+        
+        left
+        backward
+        do avoidblock
+    end job avoidblock

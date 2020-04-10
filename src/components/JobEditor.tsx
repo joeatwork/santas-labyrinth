@@ -71,7 +71,12 @@ export const JobEditor = connect(
 
     const tooltip = commandError ? <div>{commandError.message}</div> : "";
 
-    const playEnabled = !(playing || sourceToEdit.dirty);
+    let button = "RUN";
+    if (playing) {
+      button = "HALT";
+    } else if (sourceToEdit.dirty) {
+      button = "SAVE";
+    }
 
     const handleEditorChange = (editor: EditorState) => {
       const contentSame = sourceToEdit.editor
@@ -87,42 +92,41 @@ export const JobEditor = connect(
 
     return (
       <div className="JobEditor-container">
-        <div className="JobEditor-headerline">
+        <div className="Controls-inputbox JobEditor-headerline">
           <div className="JobEditor-header">
-            Job {sourceToEdit.jobname} {sourceToEdit.dirty ? "*" : ""}
+            {sourceToEdit.jobname} {sourceToEdit.dirty ? "*" : ""}
           </div>
-          <div
-            className={classNames("JobEditor-savebutton", {
-              "JobEditor-button--enabled": !playing
-            })}
-            onClick={e => onBuild(sourceToEdit)}
-          >
-            <SaveIcon />
-          </div>
-          <div
-            className={classNames("JobEditor-playbutton", {
-              "JobEditor-button--enabled": playEnabled
-            })}
-            onClick={e => {
-              if (playEnabled) {
-                onPlay(sourceToEdit);
-              }
-            }}
-          >
-            <PlayIcon />
-          </div>
-          <div
-            className={classNames("JobEditor-stopbutton", {
-              "JobEditor-button--enabled": playing
-            })}
-            onClick={e => {
-              if (playing) {
-                onStop();
-              }
-            }}
-          >
-            <StopIcon />
-          </div>
+          {(() => {
+            switch (button) {
+              case "SAVE":
+                return (
+                  <button
+                    className="JobEditor-button JobEditor-savebutton"
+                    onClick={() => onBuild(sourceToEdit)}
+                  >
+                    Save
+                  </button>
+                );
+              case "RUN":
+                return (
+                  <button
+                    className="JobEditor-button JobEditor-runbutton"
+                    onClick={() => onPlay(sourceToEdit)}
+                  >
+                    Run
+                  </button>
+                );
+              case "HALT":
+                return (
+                  <button
+                    className="JobEditor-button JobEditor-haltbutton"
+                    onClick={onStop}
+                  >
+                    Halt
+                  </button>
+                );
+            }
+          })()}
         </div>
         <LargeTooltip show={!!showTip} tip={tooltip}>
           <div className="JobEditor-body">

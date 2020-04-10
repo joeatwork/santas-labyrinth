@@ -8,23 +8,10 @@
 
 .JobEditor-header {
   line-height: 28px;
-}
-
-.JobEditor-savebutton,
-.JobEditor-playbutton,
-.JobEditor-stopbutton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 50%;
-}
-
-.JobEditor-button--enabled {
-  opacity: 100%;
-}
-
-.JobEditor-body {
-  padding-right: var(--default-spacing);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bold;
 }
 
 .JobEditor-body .DraftEditor-editorContainer {
