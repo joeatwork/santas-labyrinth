@@ -20,6 +20,8 @@ redesign autocomplete and suggestions
 
 Fix Bug where robot doesn't render on first load
 
+Big button to clear all marks
+
 # SOMEDAY:
 
 Delete job
