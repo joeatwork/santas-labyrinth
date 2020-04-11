@@ -7,10 +7,18 @@ import {
 } from "../utils/geometry";
 import { Job, Instruction, InstructionType, Prop } from "./instructions";
 
-export interface StackFrame {
-  jobname: string;
-  instruction: number;
+interface Immediate {
+  kind: "immediate";
+  instr: Instruction;
 }
+
+interface JobFrame {
+  kind: "jobframe";
+  jobname: string;
+  index: number;
+}
+
+type StackFrame = Immediate | JobFrame;
 
 export interface Processor {
   readonly registers: { yes: boolean; no: boolean };
@@ -50,14 +58,11 @@ export interface Actuators {
 
 export function pushInstruction(instr: Instruction, cpu: Processor) {
   return {
-    ...addJob(cpu, {
-      jobname: "#interactive",
-      work: [instr]
-    }),
+    ...cpu,
     stack: cpu.stack.concat([
       {
-        jobname: "#interactive",
-        instruction: 0
+        kind: "immediate",
+        instr
       }
     ])
   };
@@ -72,133 +77,143 @@ export function cycle(
     throw Error("Stack underflow");
   }
 
-  const ir = cpu.stack[cpu.stack.length - 1];
-  const job = cpu.jobs[ir.jobname];
-  let inst = job.work[ir.instruction];
-
   const nextStack = cpu.stack.concat();
   const frame = nextStack.pop()!;
-  let nextInstruction: StackFrame | undefined = {
-    jobname: frame.jobname,
-    instruction: frame.instruction + 1
-  };
 
-  if (nextInstruction.instruction === job.work.length) {
-    nextInstruction = undefined;
+  let instr: Instruction;
+  let nextFrame: StackFrame | undefined;
+  switch (frame.kind) {
+    case "immediate":
+      instr = frame.instr;
+      break;
+    case "jobframe":
+      const job = cpu.jobs[frame.jobname];
+      instr = job.work[frame.index];
+      nextFrame = {
+        ...frame,
+        index: frame.index + 1
+      };
+      if (nextFrame.index === job.work.length) {
+        nextFrame = undefined;
+      }
+      break;
   }
 
-  while ("condition" in inst) {
-    const reg = cpu.registers[inst.condition];
+  while ("condition" in instr) {
+    const reg = cpu.registers[instr.condition];
     if (reg === false) {
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       return { ...cpu, stack: nextStack };
     }
 
-    inst = inst.subject;
+    instr = instr.subject;
   }
 
   const nextReg = { ...cpu.registers };
-  switch (inst.kind) {
+  switch (instr.kind) {
     // Control
     case InstructionType.repeat:
-      nextStack.push({
-        jobname: frame.jobname,
-        instruction: 0
-      });
+      if ("jobname" in frame) {
+        nextStack.push({
+          ...frame,
+          index: 0
+        });
+      }
       break;
     case InstructionType.finish:
       // handle by declining to push another instruction
       break;
     case InstructionType.doit:
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       nextStack.push({
-        jobname: inst.jobname,
-        instruction: 0
+        kind: "jobframe",
+        jobname: instr.jobname,
+        index: 0
       });
       break;
     // Senses
     case InstructionType.look:
       {
         const saw = senses.look(toDelta(senses.orientation()));
-        const yes = saw && saw.what === inst.prop;
+        const yes = saw && saw.what === instr.prop;
         nextReg.yes = !!yes;
         nextReg.no = !yes;
-        if (nextInstruction) {
-          nextStack.push(nextInstruction);
+        if (nextFrame) {
+          nextStack.push(nextFrame);
         }
       }
       break;
     case InstructionType.touch:
       {
         const saw = senses.look(toDelta(senses.orientation()));
-        const yes = saw && saw.what === inst.prop && saw.where === 0;
+        const yes = saw && saw.what === instr.prop && saw.where === 0;
         nextReg.yes = !!yes;
         nextReg.no = !yes;
-        if (nextInstruction) {
-          nextStack.push(nextInstruction);
+        if (nextFrame) {
+          nextStack.push(nextFrame);
         }
       }
       break;
     // Interventions
     case InstructionType.eat:
       actuators.eat(toDelta(senses.orientation()));
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       break;
     case InstructionType.punch:
       actuators.punch(toDelta(senses.orientation()));
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       break;
     // Moves
     case InstructionType.forward:
       actuators.go(toDelta(senses.orientation()));
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       break;
     case InstructionType.backward:
       actuators.go(toDelta(clockwise(clockwise(senses.orientation()))));
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       break;
     // Turns
     case InstructionType.left:
       const leftward = counterclockwise(senses.orientation());
       actuators.turn(leftward);
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       break;
     case InstructionType.right:
       const rightward = clockwise(senses.orientation());
       actuators.turn(rightward);
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       break;
     // Marks
     case InstructionType.setmark:
       actuators.setmark();
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       break;
     case InstructionType.erase:
       actuators.erase();
-      if (nextInstruction) {
-        nextStack.push(nextInstruction);
+      if (nextFrame) {
+        nextStack.push(nextFrame);
       }
       break;
     default:
-      throw new Error("unknown instruction type: " + inst);
+      throw new Error("unknown instruction type: " + instr);
   }
 
   return {

@@ -1,6 +1,6 @@
 import { Point, Orientation } from "../utils/geometry";
 import { InstructionType, Prop, Register } from "./instructions";
-import { cycle, addJob } from "./processor";
+import { newProcessor, cycle, addJob, pushInstruction } from "./processor";
 
 const newMock = () => {
   return {
@@ -106,6 +106,66 @@ const testJob = {
   ]
 };
 
+test("pushInstruction", () => {
+  const found = pushInstruction(
+    { kind: InstructionType.forward },
+    newProcessor
+  );
+  expect(found.stack).toEqual([
+    {
+      kind: "immediate",
+      instr: {
+        kind: InstructionType.forward
+      }
+    }
+  ]);
+});
+
+describe("immediates", () => {
+  let mock;
+  beforeEach(() => {
+    mock = newMock();
+  });
+
+  test("simple", () => {
+    const pr = {
+      ...newProcessor,
+      stack: [{ kind: "immediate", instr: { kind: InstructionType.setmark } }]
+    };
+    cycle(pr, mock, mock);
+    expect(mock.orders).toEqual(["setmark"]);
+  });
+
+  test("start job from immediate", () => {
+    const pr = {
+      ...newProcessor,
+      stack: [
+        {
+          kind: "immediate",
+          instr: { kind: InstructionType.doit, jobname: "test job" }
+        }
+      ]
+    };
+    const found = cycle(pr, mock, mock);
+    expect(found.stack).toEqual([
+      {
+        kind: "jobframe",
+        jobname: "test job",
+        index: 0
+      }
+    ]);
+  });
+
+  test("repeat is a noop", () => {
+    const pr = {
+      ...newProcessor,
+      stack: [{ kind: "immediate", instr: { kind: InstructionType.repeat } }]
+    };
+    const found = cycle(pr, mock, mock);
+    expect(found.stack).toEqual([]);
+  });
+});
+
 describe("cycle changes", () => {
   const pr = addJob(
     {
@@ -123,13 +183,14 @@ describe("cycle changes", () => {
 
   test("eat", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 0
+      index: 0
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 1 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 1 }]
     });
   });
   test("condition fail", () => {
@@ -138,13 +199,14 @@ describe("cycle changes", () => {
       registers: { yes: false, no: true }
     };
     cond.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 1
+      index: 1
     };
 
     expect(cycle(cond, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 2 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 2 }]
     });
   });
   test("condition succeed", () => {
@@ -153,191 +215,208 @@ describe("cycle changes", () => {
       registers: { yes: true, no: false }
     };
     cond.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 1
+      index: 1
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 2 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 2 }]
     });
   });
   test("look find", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 2
+      index: 2
     };
     mock.saw = { what: Prop.wall, where: 3 };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
       registers: { yes: true, no: false },
-      stack: [{ jobname: "test job", instruction: 3 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 3 }]
     });
   });
   test("look find wrong", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 2
+      index: 2
     };
     mock.saw = { what: Prop.treasure, where: 3 };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 3 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 3 }]
     });
   });
   test("look not find", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 2
+      index: 2
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 3 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 3 }]
     });
   });
   test("setmark", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 3
+      index: 3
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 4 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 4 }]
     });
   });
   test("left", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 4
+      index: 4
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 5 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 5 }]
     });
   });
   test("right", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 5
+      index: 5
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 6 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 6 }]
     });
   });
   test("forward", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 6
+      index: 6
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 7 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 7 }]
     });
   });
   test("backward", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 7
+      index: 7
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 8 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 8 }]
     });
   });
   test("punch", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 8
+      index: 8
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 9 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 9 }]
     });
   });
   test("touch too far", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 9
+      index: 9
     };
     mock.saw = { what: Prop.treasure, where: 3 };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 10 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 10 }]
     });
   });
   test("touch not find", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 9
+      index: 9
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 10 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 10 }]
     });
   });
   test("touch wrong find", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 9
+      index: 9
     };
     mock.saw = { what: Prop.treasure, where: 0 };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 10 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 10 }]
     });
   });
   test("touch find", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 9
+      index: 9
     };
     mock.saw = { what: Prop.wall, where: 0 };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
       registers: { yes: true, no: false },
-      stack: [{ jobname: "test job", instruction: 10 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 10 }]
     });
   });
   test("erase", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 10
+      index: 10
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 11 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 11 }]
     });
   });
   test("repeat", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 11
+      index: 11
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
-      stack: [{ jobname: "test job", instruction: 0 }]
+      stack: [{ kind: "jobframe", jobname: "test job", index: 0 }]
     });
   });
   test("finish", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 13
+      index: 13
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
@@ -347,20 +426,23 @@ describe("cycle changes", () => {
   });
   test("do", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 12
+      index: 12
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
       stack: [
         {
+          kind: "jobframe",
           jobname: "test job",
-          instruction: 13
+          index: 13
         },
         {
+          kind: "jobframe",
           jobname: "refname",
-          instruction: 0
+          index: 0
         }
       ]
     });
@@ -368,8 +450,9 @@ describe("cycle changes", () => {
 
   test("run off the end of the job", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 14
+      index: 14
     };
 
     expect(cycle(pr, mock, mock)).toEqual({
@@ -395,8 +478,9 @@ describe("actuation", () => {
 
   test("eat", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 0
+      index: 0
     };
     cycle(pr, mock, mock);
     expect(mock.orders).toEqual([["eat", { x: 1, y: 0 }]]);
@@ -407,8 +491,9 @@ describe("actuation", () => {
       registers: { yes: false, no: true }
     };
     cond.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 1
+      index: 1
     };
 
     cycle(pr, mock, mock);
@@ -420,8 +505,9 @@ describe("actuation", () => {
       registers: { yes: true, no: false }
     };
     cond.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 1
+      index: 1
     };
 
     cycle(cond, mock, mock);
@@ -429,8 +515,9 @@ describe("actuation", () => {
   });
   test("setmark", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 3
+      index: 3
     };
 
     cycle(pr, mock, mock);
@@ -438,8 +525,9 @@ describe("actuation", () => {
   });
   test("left", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 4
+      index: 4
     };
 
     cycle(pr, mock, mock);
@@ -447,8 +535,9 @@ describe("actuation", () => {
   });
   test("right", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 5
+      index: 5
     };
 
     cycle(pr, mock, mock);
@@ -456,8 +545,9 @@ describe("actuation", () => {
   });
   test("forward", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 6
+      index: 6
     };
 
     cycle(pr, mock, mock);
@@ -465,8 +555,9 @@ describe("actuation", () => {
   });
   test("backward", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 7
+      index: 7
     };
 
     cycle(pr, mock, mock);
@@ -474,8 +565,9 @@ describe("actuation", () => {
   });
   test("punch", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 8
+      index: 8
     };
 
     cycle(pr, mock, mock);
@@ -483,8 +575,9 @@ describe("actuation", () => {
   });
   test("erase", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 10
+      index: 10
     };
 
     cycle(pr, mock, mock);
@@ -492,8 +585,9 @@ describe("actuation", () => {
   });
   test("repeat", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 11
+      index: 11
     };
 
     cycle(pr, mock, mock);
@@ -501,8 +595,9 @@ describe("actuation", () => {
   });
   test("finish", () => {
     pr.stack[0] = {
+      kind: "jobframe",
       jobname: "test job",
-      instruction: 13
+      index: 13
     };
 
     cycle(pr, mock, mock);

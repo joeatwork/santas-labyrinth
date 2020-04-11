@@ -20,7 +20,14 @@ export const RobotStatus = connect((s: AllState) => ({
   robot: hero(s.game)
 }))(({ cpu, robot }: RobotStatusParams) => {
   const depth = cpu.stack.length;
-  const job = depth === 0 ? "(idle)" : cpu.stack[cpu.stack.length - 1].jobname;
+  let job = "(idle)";
+  if (depth) {
+    const frame = cpu.stack[cpu.stack.length - 1];
+    if ("jobname" in frame) {
+      job = frame.jobname;
+    }
+  }
+
   return (
     <div className="RobotStatus-container">
       <div className="RobotStatus-facts">

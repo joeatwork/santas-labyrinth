@@ -48,8 +48,9 @@ test("do job", () => {
   const found = continueExecution(10, 1000, robot, cpu, game0);
   expect(found.cpu.stack).toEqual([
     {
+      kind: "jobframe",
       jobname: "testjob",
-      instruction: 0
+      index: 0
     }
   ]);
 });

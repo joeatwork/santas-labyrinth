@@ -32,7 +32,7 @@ describe("tick", () => {
         terminalLine: "present",
         cpu: {
           ...state0.cpu,
-          stack: [{ jobname: "haltjob", instruction: 0 }],
+          stack: [{ kind: "jobframe", jobname: "haltjob", index: 0 }],
           jobs: {
             haltjob: {
               jobname: "haltjob",
@@ -76,8 +76,10 @@ describe("newCommand", () => {
     );
     expect(found.cpu.stack).toEqual([
       {
-        jobname: "#interactive",
-        instruction: 0
+        kind: "immediate",
+        instr: {
+          kind: "forward",
+        }
       }
     ]);
   });
