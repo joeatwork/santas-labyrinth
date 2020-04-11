@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
 
@@ -63,11 +63,27 @@ export const Terminal = connect(
     onHalt
   }: TerminalProps) => {
     const [focused, setFocused] = useState(false);
+    const [wasPlaying, setWasPlaying] = useState(false);
+    const fieldRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+      if (playing && focused && fieldRef.current) {
+        fieldRef.current.blur();
+      }
+
+      if (!playing && wasPlaying && fieldRef.current) {
+        fieldRef.current.focus();
+      }
+      setWasPlaying(playing);
+    }, [playing, focused, wasPlaying]);
 
     const paletteClick = (completion: string) => {
       if (completion[completion.length - 1] === "\n") {
         writeLine(completion);
       } else {
+        if (fieldRef.current) {
+          fieldRef.current.focus();
+        }
         onEdit(completion);
       }
     };
@@ -117,6 +133,7 @@ export const Terminal = connect(
                 className="Terminal-inputfield Controls-inputfield"
                 name="Terminal-inputfield"
                 type="text"
+                ref={fieldRef}
                 value={terminalLine}
                 onChange={evt => {
                   onEdit(evt.target.value);
