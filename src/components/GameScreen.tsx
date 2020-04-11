@@ -110,9 +110,12 @@ export const GameScreen = connect((state: AllState) => ({
 
   const you = hero(game)!;
 
+  const maxTop = game.terrain.furniture.length - 10;
+  const maxLeft =
+    Math.max(...game.terrain.furniture.map(row => row.length)) - 12;
   const mapViewport = {
-    top: Math.max(0, you.position.top - 4),
-    left: Math.max(0, you.position.left - 5),
+    top: Math.min(maxTop, Math.max(0, you.position.top - 4)),
+    left: Math.min(maxLeft, Math.max(0, you.position.left - 5)),
     width: 12,
     height: 10
   };
