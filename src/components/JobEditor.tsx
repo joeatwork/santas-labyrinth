@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Editor, EditorState } from "draft-js";
 
@@ -62,6 +62,15 @@ export const JobEditor = connect(
     onPlay,
     onStop
   }: JobEditorParams) => {
+    const editorRef = useRef<Editor>(null);
+    const [wasName, setWasName] = useState("");
+    useEffect(() => {
+      if (wasName !== sourceToEdit.jobname && editorRef.current) {
+        editorRef.current.focus();
+        setWasName(sourceToEdit.jobname);
+      }
+    }, [wasName, sourceToEdit.jobname]);
+
     const showTip =
       commandError && commandError.site === CommandErrorSite.jobBody;
 
@@ -129,6 +138,7 @@ export const JobEditor = connect(
             <Editor
               editorState={sourceToEdit.editor}
               onChange={handleEditorChange}
+              ref={editorRef}
             />
           </div>
         </LargeTooltip>

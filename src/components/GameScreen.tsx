@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AllState } from "../state/states";
-
 import { Rect, rectIntersect } from "../utils/geometry";
 import { Terrain } from "../levels/terrain";
 import { LevelState, Actor, hero } from "../levels/levelstate";
