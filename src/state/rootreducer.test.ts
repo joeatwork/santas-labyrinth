@@ -4,6 +4,7 @@ import { newProcessor } from "../robot/processor";
 import { Actions } from "../state/actions";
 import { createSource } from "../editor/sourcecode";
 import { rootReducer } from "../state/rootreducer";
+import { GameStateKind } from "../game/gamestate";
 
 const state0 = {
   level: simpleLevel(),
@@ -16,6 +17,7 @@ const state0 = {
       }
     }
   },
+  game: { kind: GameStateKind.level },
   lastTick: 10,
   terminalLine: "",
   commandError: null,
@@ -78,7 +80,7 @@ describe("newCommand", () => {
       {
         kind: "immediate",
         instr: {
-          kind: "forward",
+          kind: "forward"
         }
       }
     ]);

@@ -8,6 +8,7 @@ import {
   continueExecution,
   halt
 } from "../game/commandshell";
+import { startGameState, GameStateKind } from "../game/gamestate";
 import { hero } from "../levels/levelstate";
 import {
   createSource,
@@ -20,6 +21,7 @@ const initialState: AllState = {
   level: levelGen(),
   cpu: newProcessor,
   lastTick: -1,
+  game: startGameState,
   terminalLine: "",
   commandError: null,
   completions: null,
@@ -34,6 +36,7 @@ export function rootReducer(
 ) {
   let ret = reduction(state, action, thisTick);
 
+  // TODO - Should this be a stateful subscriber + an action?
   if (ret.cpu.stack.length === 0 && state.cpu.stack.length > 0) {
     ret = {
       ...ret,
@@ -53,9 +56,13 @@ function reduction(
     case Actions.loaded:
       return {
         ...state,
+        game: { kind: GameStateKind.level },
         loaded: true
       };
     case Actions.tick:
+      if (state.game.kind !== GameStateKind.level) {
+        return state;
+      }
       thisTick = thisTick || Date.now();
       const up = continueExecution(
         state.lastTick,
@@ -139,7 +146,7 @@ function reduction(
       };
     case Actions.runJob:
       const terminalLine = `do ${action.jobname}`;
-      return rootReducer(
+      return reduction(
         {
           ...state,
           terminalLine
@@ -147,8 +154,14 @@ function reduction(
         {
           type: Actions.newCommand,
           command: terminalLine + "\n"
-        }
+        },
+        undefined
       );
+    case Actions.victoryTrigger:
+      return {
+        ...reduction(state, { type: Actions.halt }, undefined),
+        game: { kind: GameStateKind.cutscene }
+      };
   }
 
   return state;

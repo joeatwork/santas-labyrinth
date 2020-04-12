@@ -62,7 +62,7 @@ export function rectIntersect(r1: Rect, r2: Rect) {
   const left = Math.max(r1.left, r2.left);
   const right = Math.min(r1.left + r1.width, r2.left + r2.width);
 
-  if (top <= bottom && left <= right) {
+  if (top < bottom && left < right) {
     return {
       top,
       left,

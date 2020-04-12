@@ -11,7 +11,9 @@ export enum Actions {
   createNewJob = "createNewJob",
   editTerminalLine = "editTerminalLine",
   tick = "tick",
-  halt = "halt"
+  halt = "halt",
+
+  victoryTrigger = "victoryTrigger"
 }
 
 export interface TickAction {
@@ -47,6 +49,10 @@ export interface EditTerminalLineAction {
   terminalLine: string;
 }
 
+export interface VictoryTriggerAction {
+  type: Actions.victoryTrigger;
+}
+
 export type AllActions =
   | TickAction
   | NoContextAction
@@ -54,4 +60,5 @@ export type AllActions =
   | CreateNewJobAction
   | EditJobAction
   | EditTerminalLineAction
-  | RunJobAction;
+  | RunJobAction
+  | VictoryTriggerAction;
