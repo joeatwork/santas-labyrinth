@@ -5,13 +5,14 @@ import { Editor, EditorState } from "draft-js";
 import { Actions } from "../state/actions";
 import { AllState } from "../state/states";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
+import { GameStateKind } from "../game/gamestate";
 import { SourceCode } from "../editor/sourcecode";
 import { LargeTooltip } from "../components/LargeTooltip";
 
 import "./JobEditor.css";
 
 export type JobEditorParams = {
-  playing: boolean;
+  composing: boolean;
   sourceToEdit: SourceCode;
   commandError: CommandError | null;
   onEdit: (ed: SourceCode) => void;
@@ -22,7 +23,7 @@ export type JobEditorParams = {
 
 export const JobEditor = connect(
   (state: AllState) => ({
-    playing: state.cpu.stack.length !== 0,
+    composing: state.game.kind === GameStateKind.composing,
     cpu: state.cpu,
     commandError: state.commandError,
     sourceToEdit: state.sourceToEdit!
@@ -54,7 +55,7 @@ export const JobEditor = connect(
   })
 )(
   ({
-    playing,
+    composing,
     sourceToEdit,
     commandError,
     onEdit,
@@ -76,11 +77,11 @@ export const JobEditor = connect(
 
     const tooltip = commandError ? <div>{commandError.message}</div> : "";
 
-    let button = "RUN";
-    if (playing) {
-      button = "HALT";
-    } else if (sourceToEdit.dirty) {
+    let button = "HALT";
+    if (composing && sourceToEdit.dirty) {
       button = "SAVE";
+    } else if (composing) {
+      button = "RUN";
     }
 
     const handleEditorChange = (editor: EditorState) => {

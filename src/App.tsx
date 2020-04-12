@@ -2,7 +2,6 @@ import React from "react";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 
-import { gameTriggers } from "./game/triggers";
 import { costumesLoaded } from "./images/costumes";
 import { rootReducer } from "./state/rootreducer";
 import { Actions } from "./state/actions";
@@ -21,12 +20,6 @@ setInterval(() => {
   });
 }, millisPerTick);
 
-store.subscribe(() => {
-  const state = store.getState();
-  gameTriggers(state, store.dispatch);
-});
-
-// TODO move to triggers.ts
 costumesLoaded.then(() => {
   store.dispatch({
     type: Actions.loaded

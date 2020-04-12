@@ -26,27 +26,45 @@ const state0 = {
   sourceLibrary: {}
 };
 
+describe("halt", () => {
+  const found = rootReducer(
+    {
+      ...state0,
+      cpu: {
+        ...state0.cpu,
+        stack: [{ kind: "jobframe", jobname: "testjob", index: 0 }]
+      }
+    },
+    { type: Actions.halt }
+  );
+
+  test("halt clears stack", () => {
+    expect(found.cpu.stack).toEqual([]);
+  });
+});
+
 describe("tick", () => {
-  test("stack and terminal clear together", () => {
-    const found = rootReducer(
-      {
-        ...state0,
-        terminalLine: "present",
-        cpu: {
-          ...state0.cpu,
-          stack: [{ kind: "jobframe", jobname: "haltjob", index: 0 }],
-          jobs: {
-            haltjob: {
-              jobname: "haltjob",
-              work: [{ kind: InstructionType.finish }]
-            }
+  const found = rootReducer(
+    {
+      ...state0,
+      terminalLine: "present",
+      game: { kind: GameStateKind.running },
+      cpu: {
+        ...state0.cpu,
+        stack: [{ kind: "jobframe", jobname: "haltjob", index: 0 }],
+        jobs: {
+          haltjob: {
+            jobname: "haltjob",
+            work: [{ kind: InstructionType.finish }]
           }
         }
-      },
-      { type: Actions.tick },
-      /* thisTick= */ 1000
-    );
+      }
+    },
+    { type: Actions.tick },
+    /* thisTick= */ 1000
+  );
 
+  test("stack and terminal clear together", () => {
     expect(found.terminalLine).toEqual("");
   });
 });

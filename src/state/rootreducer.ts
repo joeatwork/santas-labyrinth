@@ -9,6 +9,7 @@ import {
   halt
 } from "../game/commandshell";
 import { startGameState, GameStateKind } from "../game/gamestate";
+import { victory, running, halted } from "../game/triggers";
 import { hero } from "../levels/levelstate";
 import {
   createSource,
@@ -36,11 +37,32 @@ export function rootReducer(
 ) {
   let ret = reduction(state, action, thisTick);
 
-  // TODO - Should this be a stateful subscriber + an action?
-  if (ret.cpu.stack.length === 0 && state.cpu.stack.length > 0) {
+  if (ret.loaded && !state.loaded) {
     ret = {
       ...ret,
+      game: { kind: GameStateKind.composing }
+    };
+  }
+
+  if (running(state.cpu, ret.cpu)) {
+    ret = {
+      ...ret,
+      game: { kind: GameStateKind.running }
+    };
+  }
+
+  if (halted(state.cpu, ret.cpu)) {
+    ret = {
+      ...ret,
+      game: { kind: GameStateKind.composing },
       terminalLine: ""
+    };
+  }
+
+  if (victory(ret.level)) {
+    ret = {
+      ...ret,
+      game: { kind: GameStateKind.cutscene }
     };
   }
 
@@ -56,11 +78,11 @@ function reduction(
     case Actions.loaded:
       return {
         ...state,
-        game: { kind: GameStateKind.level },
+        game: { kind: GameStateKind.composing },
         loaded: true
       };
     case Actions.tick:
-      if (state.game.kind !== GameStateKind.level) {
+      if (state.game.kind !== GameStateKind.running) {
         return state;
       }
       thisTick = thisTick || Date.now();
@@ -76,10 +98,9 @@ function reduction(
         ...up
       };
     case Actions.halt:
-      const halted = halt(state.cpu);
       return {
         ...state,
-        ...halted
+        ...halt(state.cpu)
       };
     case Actions.newCommand:
       const ran = runCommand(

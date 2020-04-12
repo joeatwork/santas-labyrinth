@@ -6,13 +6,14 @@ import classNames from "classnames/bind";
 import { AllState } from "../state/states";
 import { Actions } from "../state/actions";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
+import { GameStateKind } from "../game/gamestate";
 import { Parser } from "../grammar/parser";
 import { LargeTooltip } from "../components/LargeTooltip";
 
 import "./Terminal.css";
 
 export interface TerminalProps {
-  playing: boolean;
+  composing: boolean;
   terminalLine: string;
   commandError: CommandError | null;
   completeCommand: (s: string) => string[];
@@ -23,7 +24,7 @@ export interface TerminalProps {
 
 export const Terminal = connect(
   (state: AllState) => ({
-    playing: state.cpu.stack.length !== 0,
+    composing: state.game.kind === GameStateKind.composing,
     terminalLine: state.terminalLine,
     commandError: state.commandError,
     completeCommand: (txt: string) => {
@@ -54,7 +55,7 @@ export const Terminal = connect(
   })
 )(
   ({
-    playing,
+    composing,
     terminalLine,
     commandError,
     completeCommand,
@@ -63,19 +64,19 @@ export const Terminal = connect(
     onHalt
   }: TerminalProps) => {
     const [focused, setFocused] = useState(false);
-    const [wasPlaying, setWasPlaying] = useState(false);
+    const [wasComposing, setWasComposing] = useState(false);
     const fieldRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-      if (playing && focused && fieldRef.current) {
+      if (!composing && focused && fieldRef.current) {
         fieldRef.current.blur();
       }
 
-      if (!playing && wasPlaying && fieldRef.current) {
+      if (composing && !wasComposing && fieldRef.current) {
         fieldRef.current.focus();
       }
-      setWasPlaying(playing);
-    }, [playing, focused, wasPlaying]);
+      setWasComposing(composing);
+    }, [composing, focused, wasComposing]);
 
     const paletteClick = (completion: string) => {
       if (completion[completion.length - 1] === "\n") {
@@ -89,7 +90,7 @@ export const Terminal = connect(
     };
 
     const writeLine = (toWrite: string) => {
-      if (!playing) {
+      if (composing) {
         onRun(toWrite);
       }
     };
@@ -120,7 +121,7 @@ export const Terminal = connect(
     const tooltip = commandError ? errorMessage : palette;
     const showError =
       commandError && commandError.site === CommandErrorSite.command;
-    const show = focused && !playing && (showError || completions.length);
+    const show = focused && composing && (showError || completions.length);
 
     return (
       <div className="Terminal">
@@ -129,7 +130,7 @@ export const Terminal = connect(
             <div className="Terminal-inputbox Controls-inputbox">
               <input
                 autoComplete="off"
-                disabled={playing}
+                disabled={!composing}
                 className="Terminal-inputfield Controls-inputfield"
                 name="Terminal-inputfield"
                 type="text"
@@ -150,19 +151,20 @@ export const Terminal = connect(
                   setFocused(false);
                 }}
               />{" "}
-              {playing ? (
-                <button
-                  className="Terminal-button Terminal-haltButton"
-                  onClick={() => onHalt()}
-                >
-                  Halt
-                </button>
-              ) : (
+              {composing ? (
                 <button
                   className="Terminal-button Terminal-runButton"
                   onClick={() => writeLine(terminalLine + "\n")}
                 >
                   Run
+                </button>
+              ) : (
+                /* TODO halt should only be visible if we're RUNNING */
+                <button
+                  className="Terminal-button Terminal-haltButton"
+                  onClick={() => onHalt()}
+                >
+                  Halt
                 </button>
               )}
             </div>

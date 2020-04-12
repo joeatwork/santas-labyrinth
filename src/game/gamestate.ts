@@ -1,7 +1,8 @@
 
 export enum GameStateKind {
   "start",
-  "level",
+  "composing",
+  "running",
   "cutscene"
 }
 
@@ -13,12 +14,16 @@ export interface StartGameState {
   readonly kind: GameStateKind.start
 }
 
-export interface LevelGameState {
-  readonly kind: GameStateKind.level;
+export interface ComposingGameState {
+  readonly kind: GameStateKind.composing
+}
+
+export interface RunningGameState {
+  readonly kind: GameStateKind.running
 }
 
 export interface CutsceneGameState {
   readonly kind: GameStateKind.cutscene;
 }
 
-export type GameState = StartGameState | LevelGameState | CutsceneGameState;
+export type GameState = StartGameState | ComposingGameState | RunningGameState | CutsceneGameState;
