@@ -13,7 +13,7 @@ import { LargeTooltip } from "../components/LargeTooltip";
 import "./Terminal.css";
 
 export interface TerminalProps {
-  composing: boolean;
+  gameState: GameStateKind;
   terminalLine: string;
   commandError: CommandError | null;
   completeCommand: (s: string) => string[];
@@ -24,7 +24,7 @@ export interface TerminalProps {
 
 export const Terminal = connect(
   (state: AllState) => ({
-    composing: state.game.kind === GameStateKind.composing,
+    gameState: state.game.kind,
     terminalLine: state.terminalLine,
     commandError: state.commandError,
     completeCommand: (txt: string) => {
@@ -55,7 +55,7 @@ export const Terminal = connect(
   })
 )(
   ({
-    composing,
+    gameState,
     terminalLine,
     commandError,
     completeCommand,
@@ -66,6 +66,7 @@ export const Terminal = connect(
     const [focused, setFocused] = useState(false);
     const [wasComposing, setWasComposing] = useState(false);
     const fieldRef = useRef<HTMLInputElement>(null);
+    const composing = gameState === GameStateKind.composing;
 
     useEffect(() => {
       if (!composing && focused && fieldRef.current) {
@@ -151,22 +152,31 @@ export const Terminal = connect(
                   setFocused(false);
                 }}
               />{" "}
-              {composing ? (
-                <button
-                  className="Terminal-button Terminal-runButton"
-                  onClick={() => writeLine(terminalLine + "\n")}
-                >
-                  Run
-                </button>
-              ) : (
-                /* TODO halt should only be visible if we're RUNNING */
-                <button
-                  className="Terminal-button Terminal-haltButton"
-                  onClick={() => onHalt()}
-                >
-                  Halt
-                </button>
-              )}
+              {(() => {
+                switch (gameState) {
+                  case GameStateKind.composing:
+                    return (
+                      <button
+                        className="Terminal-button Terminal-runButton"
+                        onClick={() => writeLine(terminalLine + "\n")}
+                      >
+                        Run
+                      </button>
+                    );
+                  case GameStateKind.running:
+                    return (
+                      <button
+                        className="Terminal-button Terminal-haltButton"
+                        onClick={() => onHalt()}
+                      >
+                        Halt
+                      </button>
+                    );
+                  case GameStateKind.start:
+                  case GameStateKind.cutscene:
+                    return "";
+                }
+              })()}
             </div>
           </LargeTooltip>
         </div>

@@ -12,7 +12,7 @@ import { LargeTooltip } from "../components/LargeTooltip";
 import "./JobEditor.css";
 
 export type JobEditorParams = {
-  composing: boolean;
+  gameState: GameStateKind;
   sourceToEdit: SourceCode;
   commandError: CommandError | null;
   onEdit: (ed: SourceCode) => void;
@@ -23,7 +23,7 @@ export type JobEditorParams = {
 
 export const JobEditor = connect(
   (state: AllState) => ({
-    composing: state.game.kind === GameStateKind.composing,
+    gameState: state.game.kind,
     cpu: state.cpu,
     commandError: state.commandError,
     sourceToEdit: state.sourceToEdit!
@@ -55,7 +55,7 @@ export const JobEditor = connect(
   })
 )(
   ({
-    composing,
+    gameState,
     sourceToEdit,
     commandError,
     onEdit,
@@ -77,13 +77,6 @@ export const JobEditor = connect(
 
     const tooltip = commandError ? <div>{commandError.message}</div> : "";
 
-    let button = "HALT";
-    if (composing && sourceToEdit.dirty) {
-      button = "SAVE";
-    } else if (composing) {
-      button = "RUN";
-    }
-
     const handleEditorChange = (editor: EditorState) => {
       const contentSame = sourceToEdit.editor
         .getCurrentContent()
@@ -103,26 +96,28 @@ export const JobEditor = connect(
             {sourceToEdit.jobname} {sourceToEdit.dirty ? "*" : ""}
           </div>
           {(() => {
-            switch (button) {
-              case "SAVE":
-                return (
-                  <button
-                    className="JobEditor-button JobEditor-savebutton"
-                    onClick={() => onBuild(sourceToEdit)}
-                  >
-                    Save
-                  </button>
-                );
-              case "RUN":
-                return (
-                  <button
-                    className="JobEditor-button JobEditor-runbutton"
-                    onClick={() => onPlay(sourceToEdit)}
-                  >
-                    Run
-                  </button>
-                );
-              case "HALT":
+            switch (gameState) {
+              case GameStateKind.composing:
+                if (sourceToEdit.dirty) {
+                  return (
+                    <button
+                      className="JobEditor-button JobEditor-savebutton"
+                      onClick={() => onBuild(sourceToEdit)}
+                    >
+                      Save
+                    </button>
+                  );
+                } else {
+                  return (
+                    <button
+                      className="JobEditor-button JobEditor-runbutton"
+                      onClick={() => onPlay(sourceToEdit)}
+                    >
+                      Run
+                    </button>
+                  );
+                }
+              case GameStateKind.running:
                 return (
                   <button
                     className="JobEditor-button JobEditor-haltbutton"
@@ -131,6 +126,9 @@ export const JobEditor = connect(
                     Halt
                   </button>
                 );
+              case GameStateKind.start:
+              case GameStateKind.cutscene:
+                return "";
             }
           })()}
         </div>
