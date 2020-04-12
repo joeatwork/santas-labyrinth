@@ -29,7 +29,6 @@ export function gameSenses(level: LevelState, robot: Actor) {
       return robot.orientation;
     },
     look: (delta: Point) => {
-      // Look and touch the midpoint of the tile
       const check = {
         x: robot.position.left + delta.x,
         y: robot.position.top + delta.y
