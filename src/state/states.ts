@@ -5,7 +5,7 @@ import { SourceCode } from "../editor/sourcecode";
 
 export interface AllState {
   loaded: boolean;
-  game: LevelState;
+  level: LevelState;
   cpu: Processor;
   lastTick: number;
   terminalLine: string;

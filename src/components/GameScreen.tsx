@@ -97,21 +97,21 @@ function drawActors(
 }
 
 type GameScreenProps = {
-  game: LevelState;
+  level: LevelState;
   loaded: boolean;
 };
 
 export const GameScreen = connect((state: AllState) => ({
-  game: state.game,
+  level: state.level,
   loaded: state.loaded
-}))(({ loaded, game }: GameScreenProps) => {
+}))(({ loaded, level }: GameScreenProps) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-  const you = hero(game)!;
+  const you = hero(level)!;
 
-  const maxTop = game.terrain.furniture.length - 10;
+  const maxTop = level.terrain.furniture.length - 10;
   const maxLeft =
-    Math.max(...game.terrain.furniture.map(row => row.length)) - 12;
+    Math.max(...level.terrain.furniture.map(row => row.length)) - 12;
   const mapViewport = {
     top: Math.min(maxTop, Math.max(0, you.position.top - 4)),
     left: Math.min(maxLeft, Math.max(0, you.position.left - 5)),
@@ -126,11 +126,11 @@ export const GameScreen = connect((state: AllState) => ({
     }
     const ctx = canvas.getContext("2d")!;
     ctx.save();
-    drawRoom(mapViewport, game.terrain, ctx);
-    drawMarks(mapViewport, game.marks, ctx);
-    drawActors(mapViewport, game.actors, ctx);
+    drawRoom(mapViewport, level.terrain, ctx);
+    drawMarks(mapViewport, level.marks, ctx);
+    drawActors(mapViewport, level.actors, ctx);
     ctx.restore();
-  }, [loaded, mapViewport, game]);
+  }, [loaded, mapViewport, level]);
 
   return (
     <div className="GameScreen-container">

@@ -29,29 +29,29 @@ export function continueExecution(
   thisTick: number,
   robot: Actor,
   cpu: Processor,
-  game: LevelState
+  level: LevelState
 ) {
   if (thisTick < 0) {
-    return { lastTick: thisTick, cpu, game };
+    return { lastTick: thisTick, cpu, level };
   }
 
   if (thisTick - lastTick < minMillisPerCycle) {
-    return { lastTick, cpu, game };
+    return { lastTick, cpu, level };
   }
 
   if (cpu.stack.length === 0) {
-    return { lastTick: thisTick, cpu, game };
+    return { lastTick: thisTick, cpu, level };
   }
 
-  const senses = gameSenses(game, robot);
-  const actuators = gameActuators(game, robot);
+  const senses = gameSenses(level, robot);
+  const actuators = gameActuators(level, robot);
   const newCpu = cycle(cpu, senses, actuators);
-  const newGame = actuators.newgame;
+  const newLevel = actuators.newlevel;
 
   return {
     lastTick: thisTick,
     cpu: newCpu,
-    game: newGame
+    level: newLevel
   };
 }
 
@@ -117,7 +117,7 @@ export function runCommand(
   cmdText: string,
   robot: Actor,
   cpu: Processor,
-  game: LevelState
+  level: LevelState
 ) {
   const parser = new Parser(_.keys(cpu.jobs));
   const cmd = parser.parseInstruction(cmdText);

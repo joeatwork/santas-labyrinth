@@ -61,7 +61,7 @@ function stripTerrain(furniture: Tile[][]): Tile[][] {
 }
 
 export const GameMap = connect((state: AllState) => ({
-  terrain: state.game.terrain
+  terrain: state.level.terrain
 }))(({ width, terrain }: { width: number; terrain: Terrain }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const stripped = stripTerrain(terrain.furniture);

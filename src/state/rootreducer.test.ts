@@ -6,7 +6,7 @@ import { createSource } from "../editor/sourcecode";
 import { rootReducer } from "../state/rootreducer";
 
 const state0 = {
-  game: simpleLevel(),
+  level: simpleLevel(),
   cpu: {
     ...newProcessor,
     jobs: {

@@ -23,7 +23,7 @@ function characterToProp(c: CharacterType): Prop {
   }
 }
 
-export function gameSenses(game: LevelState, robot: Actor) {
+export function gameSenses(level: LevelState, robot: Actor) {
   return {
     orientation: () => {
       return robot.orientation;
@@ -35,7 +35,7 @@ export function gameSenses(game: LevelState, robot: Actor) {
         y: robot.position.top + delta.y
       };
       for (let i = 0; i < visionDistance; i++) {
-        const stuff = stuffAt(game, check);
+        const stuff = stuffAt(level, check);
         if (!stuff) {
           break;
         }
@@ -63,15 +63,15 @@ export function gameSenses(game: LevelState, robot: Actor) {
 }
 
 class GameActuators {
-  readonly game: LevelState;
+  readonly level: LevelState;
   readonly robot: Actor;
   issues: string | null;
-  newgame: LevelState;
+  newlevel: LevelState;
 
-  constructor(game: LevelState, robot: Actor) {
-    this.game = game;
+  constructor(level: LevelState, robot: Actor) {
+    this.level = level;
     this.robot = robot;
-    this.newgame = game;
+    this.newlevel = level;
     this.issues = null;
   }
 
@@ -93,35 +93,35 @@ class GameActuators {
   }
 
   turn(ot: Orientation) {
-    this.newgame = turn(this.game, this.robot, ot);
+    this.newlevel = turn(this.level, this.robot, ot);
   }
 
   go(delta: Point) {
     const pt = this.newpt(delta);
-    if (inbounds(this.game.terrain, pt.x, pt.y)) {
-      this.newgame = relocate(this.game, this.robot, pt);
+    if (inbounds(this.level.terrain, pt.x, pt.y)) {
+      this.newlevel = relocate(this.level, this.robot, pt);
     } else {
       this.issues = "move out of bounds";
     }
   }
 
   setmark() {
-    this.newgame = setMark(
-      this.game,
+    this.newlevel = setMark(
+      this.level,
       this.robot.position.left,
       this.robot.position.top
     );
   }
 
   erase() {
-    this.newgame = eraseMark(
-      this.game,
+    this.newlevel = eraseMark(
+      this.level,
       this.robot.position.left,
       this.robot.position.top
     );
   }
 }
 
-export function gameActuators(game: LevelState, robot: Actor) {
-  return new GameActuators(game, robot);
+export function gameActuators(level: LevelState, robot: Actor) {
+  return new GameActuators(level, robot);
 }

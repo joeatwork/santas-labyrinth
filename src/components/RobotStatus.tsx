@@ -17,7 +17,7 @@ interface RobotStatusParams {
 
 export const RobotStatus = connect((s: AllState) => ({
   cpu: s.cpu,
-  robot: hero(s.game)
+  robot: hero(s.level)
 }))(({ cpu, robot }: RobotStatusParams) => {
   const depth = cpu.stack.length;
   let job = "(idle)";

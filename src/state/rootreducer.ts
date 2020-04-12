@@ -17,7 +17,7 @@ import {
 
 const initialState: AllState = {
   loaded: false,
-  game: levelGen(),
+  level: levelGen(),
   cpu: newProcessor,
   lastTick: -1,
   terminalLine: "",
@@ -60,9 +60,9 @@ function reduction(
       const up = continueExecution(
         state.lastTick,
         thisTick,
-        hero(state.game),
+        hero(state.level),
         state.cpu,
-        state.game
+        state.level
       );
       return {
         ...state,
@@ -77,9 +77,9 @@ function reduction(
     case Actions.newCommand:
       const ran = runCommand(
         action.command,
-        hero(state.game),
+        hero(state.level),
         state.cpu,
-        state.game
+        state.level
       );
       return {
         ...state,

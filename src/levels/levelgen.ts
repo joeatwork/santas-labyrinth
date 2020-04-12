@@ -76,8 +76,8 @@ export function levelGen() {
         ctype: CharacterType.heart,
         orientation: Orientation.south,
         position: {
-          top: exit.y,
-          left: exit.x,
+          top: entrance.y, // exit.y,
+          left: entrance.x + 2, // exit.x,
           width: 1,
           height: 1
         }
