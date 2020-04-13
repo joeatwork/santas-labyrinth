@@ -8,7 +8,8 @@ import {
   continueExecution,
   halt
 } from "../game/commandshell";
-import { startGameState, GameStateKind } from "../game/gamestate";
+import { GameStateKind } from "../game/gamestate";
+import { advanceScript, startGameState } from "../game/script";
 import { victory, running, halted } from "../game/triggers";
 import { hero } from "../levels/levelstate";
 import {
@@ -39,10 +40,7 @@ export function rootReducer(
   if (ret.loaded && !state.loaded) {
     ret = {
       ...ret,
-      game: {
-        kind: GameStateKind.composing,
-        level: levelGen() // TODO not a long term solution
-      }
+      game: advanceScript(ret.game)
     };
   }
 
@@ -78,10 +76,7 @@ export function rootReducer(
   if ("level" in ret.game && victory(ret.game.level)) {
     ret = {
       ...ret,
-      game: {
-        kind: GameStateKind.cutscene,
-        level: ret.game.level
-      }
+      game: advanceScript(ret.game)
     };
   }
 
