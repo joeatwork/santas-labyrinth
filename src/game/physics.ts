@@ -88,7 +88,7 @@ class GameActuators {
 
   punch(delta: Point) {
     const pt = this.newpt(delta);
-    console.log(`eat ${pt.x}, ${pt.y}`);
+    console.log(`punch ${pt.x}, ${pt.y}`);
   }
 
   turn(ot: Orientation) {

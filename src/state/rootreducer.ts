@@ -1,7 +1,6 @@
 import { newProcessor } from "../robot/processor";
 import { Actions, AllActions } from "./actions";
 import { AllState } from "./states";
-import { levelGen } from "../levels/levelgen";
 import {
   runCommand,
   defineJob,

@@ -6,7 +6,6 @@ export const startGameState: StartGameState = {
 };
 
 export function advanceScript(state: GameState): GameState {
-  console.log("Advancing script ${state.kind} => ");
   switch (state.kind) {
     case GameStateKind.start:
     case GameStateKind.cutscene:

@@ -7,8 +7,6 @@ import { rootReducer } from "./state/rootreducer";
 import { Actions } from "./state/actions";
 import { Controls } from "./components/Controls";
 import { Feedback } from "./components/Feedback";
-import { RobotStatus } from "./components/RobotStatus";
-import { GameScreen } from "./components/GameScreen";
 
 import "./App.css";
 
