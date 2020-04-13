@@ -1,4 +1,5 @@
 import { simpleLevel } from "../levels/levelgen";
+import { hero } from "../levels/levelstate";
 import { InstructionType } from "../robot/instructions";
 import { newProcessor } from "../robot/processor";
 import { Actions } from "../state/actions";
@@ -7,7 +8,6 @@ import { rootReducer } from "../state/rootreducer";
 import { GameStateKind } from "../game/gamestate";
 
 const state0 = {
-  level: simpleLevel(),
   cpu: {
     ...newProcessor,
     jobs: {
@@ -17,7 +17,10 @@ const state0 = {
       }
     }
   },
-  game: { kind: GameStateKind.level },
+  game: {
+    kind: GameStateKind.composing,
+    level: simpleLevel()
+  },
   lastTick: 10,
   terminalLine: "",
   commandError: null,
@@ -27,45 +30,88 @@ const state0 = {
 };
 
 describe("halt", () => {
-  const found = rootReducer(
-    {
-      ...state0,
-      cpu: {
-        ...state0.cpu,
-        stack: [{ kind: "jobframe", jobname: "testjob", index: 0 }]
-      }
+  const before = {
+    ...state0,
+    game: {
+      kind: GameStateKind.running,
+      level: state0.game.level
     },
-    { type: Actions.halt }
-  );
+    cpu: {
+      ...state0.cpu,
+      stack: [{ kind: "jobframe", jobname: "testjob", index: 0 }]
+    }
+  };
+
+  const found = rootReducer(before, { type: Actions.halt });
 
   test("halt clears stack", () => {
     expect(found.cpu.stack).toEqual([]);
   });
+
+  test("halt preserves level", () => {
+    expect(found.game.level).toEqual(before.game.level);
+  });
 });
 
 describe("tick", () => {
-  const found = rootReducer(
-    {
-      ...state0,
-      terminalLine: "present",
-      game: { kind: GameStateKind.running },
-      cpu: {
-        ...state0.cpu,
-        stack: [{ kind: "jobframe", jobname: "haltjob", index: 0 }],
-        jobs: {
-          haltjob: {
-            jobname: "haltjob",
-            work: [{ kind: InstructionType.finish }]
-          }
+  const state = {
+    ...state0,
+    terminalLine: "present",
+    game: {
+      kind: GameStateKind.running,
+      level: state0.game.level
+    },
+    cpu: {
+      ...state0.cpu,
+      stack: [{ kind: "jobframe", jobname: "haltjob", index: 0 }],
+      jobs: {
+        haltjob: {
+          jobname: "haltjob",
+          work: [{ kind: InstructionType.finish }]
+        },
+        advance: {
+          jobname: "advance",
+          work: [{ kind: InstructionType.forward }]
         }
       }
-    },
-    { type: Actions.tick },
-    /* thisTick= */ 1000
-  );
+    }
+  };
 
-  test("stack and terminal clear together", () => {
+  test("terminal line clear", () => {
+    const found = rootReducer(
+      {
+        ...state,
+        cpu: {
+          ...state.cpu,
+          stack: [{ kind: "jobframe", jobname: "haltjob", index: 0 }]
+        }
+      },
+      { type: Actions.tick },
+      /* thisTick= */ 1000
+    );
+
     expect(found.terminalLine).toEqual("");
+  });
+
+  test("instruction updates world", () => {
+    const found = rootReducer(
+      {
+        ...state,
+        cpu: {
+          ...state.cpu,
+          stack: [{ kind: "jobframe", jobname: "advance", index: 0 }]
+        }
+      },
+      { type: Actions.tick },
+      /* thisTick= */ 1000
+    );
+
+    expect(hero(found.game.level).position).toEqual({
+      top: 2,
+      left: 3,
+      width: 1,
+      height: 1
+    });
   });
 });
 
@@ -83,17 +129,21 @@ describe("buildJob", () => {
 });
 
 describe("newCommand", () => {
+  const before = {
+    ...state0,
+    game: {
+      kind: GameStateKind.composing,
+      level: state0.game.level
+    },
+    terminalLine: "exists"
+  };
+
+  const found = rootReducer(before, {
+    type: Actions.newCommand,
+    command: "forward\n"
+  });
+
   test("simple task pushes stack", () => {
-    const found = rootReducer(
-      {
-        ...state0,
-        terminalLine: "exists"
-      },
-      {
-        type: Actions.newCommand,
-        command: "forward\n"
-      }
-    );
     expect(found.cpu.stack).toEqual([
       {
         kind: "immediate",
@@ -102,5 +152,9 @@ describe("newCommand", () => {
         }
       }
     ]);
+  });
+
+  test("transition from composing to running", () => {
+    expect(found.game.kind).toEqual(GameStateKind.running);
   });
 });

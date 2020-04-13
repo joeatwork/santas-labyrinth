@@ -9,6 +9,7 @@ import {
   cycle
 } from "../robot/processor";
 import { gameActuators, gameSenses } from "../game/physics";
+import { GameStateKind } from "../game/gamestate";
 
 const minMillisPerCycle = 50;
 
@@ -51,7 +52,10 @@ export function continueExecution(
   return {
     lastTick: thisTick,
     cpu: newCpu,
-    level: newLevel
+    game: {
+      kind: GameStateKind.running,
+      level: newLevel
+    }
   };
 }
 

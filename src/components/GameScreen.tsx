@@ -97,14 +97,18 @@ function drawActors(
 }
 
 type GameScreenProps = {
-  level: LevelState;
+  level?: LevelState;
   loaded: boolean;
 };
 
 export const GameScreen = connect((state: AllState) => ({
-  level: state.level,
+  level: "level" in state.game ? state.game.level : undefined,
   loaded: state.loaded
 }))(({ loaded, level }: GameScreenProps) => {
+  if (!level) {
+    return null;
+  }
+
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const you = hero(level)!;

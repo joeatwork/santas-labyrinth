@@ -12,9 +12,9 @@ export function victory(level: LevelState) {
 }
 
 export function running(before: Processor, after: Processor) {
-  return before.stack.length === 0 && after.stack.length > 0;
+  return (before.stack.length === 0 && after.stack.length > 0);
 }
 
 export function halted(before: Processor, after: Processor) {
-  return before.stack.length > 0 && after.stack.length === 0;
+  return (before.stack.length > 0 && after.stack.length === 0);
 }

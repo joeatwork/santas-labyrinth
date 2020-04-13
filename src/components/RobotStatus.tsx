@@ -12,13 +12,17 @@ import "./RobotStatus.css";
 
 interface RobotStatusParams {
   cpu: Processor;
-  robot: Actor;
+  robot?: Actor;
 }
 
 export const RobotStatus = connect((s: AllState) => ({
   cpu: s.cpu,
-  robot: hero(s.level)
+  robot: "level" in s.game ? hero(s.game.level) : undefined
 }))(({ cpu, robot }: RobotStatusParams) => {
+  if (!robot) {
+    return null;
+  }
+
   const depth = cpu.stack.length;
   let job = "(idle)";
   if (depth) {

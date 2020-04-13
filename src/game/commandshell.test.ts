@@ -35,7 +35,7 @@ test("look fail", () => {
 test("forward", () => {
   const {cpu} = runCommand("forward\n", robot, newProcessor, level0);
   const found = continueExecution(10, 1000, robot, cpu, level0);
-  const foundHero = hero(found.level);
+  const foundHero = hero(found.game.level);
   expect(foundHero.position).toEqual({ top: 2, left: 3, width: 1, height: 1 });
 });
 

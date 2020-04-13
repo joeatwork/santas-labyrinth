@@ -19,7 +19,6 @@ import {
 
 const initialState: AllState = {
   loaded: false,
-  level: levelGen(),
   cpu: newProcessor,
   lastTick: -1,
   game: startGameState,
@@ -40,29 +39,49 @@ export function rootReducer(
   if (ret.loaded && !state.loaded) {
     ret = {
       ...ret,
-      game: { kind: GameStateKind.composing }
+      game: {
+        kind: GameStateKind.composing,
+        level: levelGen() // TODO not a long term solution
+      }
     };
   }
 
   if (running(state.cpu, ret.cpu)) {
+    if (!("level" in state.game)) {
+      throw Error(`illegal transition, from ${state.game.kind} to running`);
+    }
     ret = {
       ...ret,
-      game: { kind: GameStateKind.running }
+      game: {
+        kind: GameStateKind.running,
+        level: state.game.level
+      }
     };
   }
 
   if (halted(state.cpu, ret.cpu)) {
+    if (!("level" in ret.game)) {
+      throw Error(
+        `illegal transition, from ${state.game.kind} to composing via halt`
+      );
+    }
     ret = {
       ...ret,
-      game: { kind: GameStateKind.composing },
+      game: {
+        kind: GameStateKind.composing,
+        level: ret.game.level
+      },
       terminalLine: ""
     };
   }
 
-  if (victory(ret.level)) {
+  if ("level" in ret.game && victory(ret.game.level)) {
     ret = {
       ...ret,
-      game: { kind: GameStateKind.cutscene }
+      game: {
+        kind: GameStateKind.cutscene,
+        level: ret.game.level
+      }
     };
   }
 
@@ -78,7 +97,6 @@ function reduction(
     case Actions.loaded:
       return {
         ...state,
-        game: { kind: GameStateKind.composing },
         loaded: true
       };
     case Actions.tick:
@@ -89,25 +107,32 @@ function reduction(
       const up = continueExecution(
         state.lastTick,
         thisTick,
-        hero(state.level),
+        hero(state.game.level),
         state.cpu,
-        state.level
+        state.game.level
       );
-      return {
+      const tickRet = {
         ...state,
         ...up
       };
+      return tickRet;
     case Actions.halt:
+      if (state.game.kind !== GameStateKind.running) {
+        return state;
+      }
       return {
         ...state,
         ...halt(state.cpu)
       };
     case Actions.newCommand:
+      if (state.game.kind !== GameStateKind.composing) {
+        return state;
+      }
       const ran = runCommand(
         action.command,
-        hero(state.level),
+        hero(state.game.level),
         state.cpu,
-        state.level
+        state.game.level
       );
       return {
         ...state,
@@ -178,11 +203,6 @@ function reduction(
         },
         undefined
       );
-    case Actions.victoryTrigger:
-      return {
-        ...reduction(state, { type: Actions.halt }, undefined),
-        game: { kind: GameStateKind.cutscene }
-      };
   }
 
   return state;

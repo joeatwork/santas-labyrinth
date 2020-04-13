@@ -60,9 +60,18 @@ function stripTerrain(furniture: Tile[][]): Tile[][] {
   return furniture.slice(lowY, highY + 1).map(r => r.slice(lowX, highX + 1));
 }
 
+interface GameMapProps {
+  width: number;
+  terrain?: Terrain;
+}
+
 export const GameMap = connect((state: AllState) => ({
-  terrain: state.level.terrain
-}))(({ width, terrain }: { width: number; terrain: Terrain }) => {
+  terrain: "level" in state.game ? state.game.level.terrain : undefined
+}))(({ width, terrain }: GameMapProps) => {
+  if (!terrain) {
+    return null;
+  }
+
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const stripped = stripTerrain(terrain.furniture);
 

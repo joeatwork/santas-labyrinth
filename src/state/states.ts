@@ -9,7 +9,6 @@ export interface AllState {
   loaded: boolean; // TODO move to GameState
 
   // Game world
-  level: LevelState;
   cpu: Processor;
   lastTick: number;
 
