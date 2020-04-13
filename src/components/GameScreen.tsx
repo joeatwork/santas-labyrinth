@@ -98,13 +98,11 @@ function drawActors(
 
 type GameScreenProps = {
   level?: LevelState;
-  loaded: boolean;
 };
 
 export const GameScreen = connect((state: AllState) => ({
-  level: "level" in state.game ? state.game.level : undefined,
-  loaded: state.loaded
-}))(({ loaded, level }: GameScreenProps) => {
+  level: "level" in state.game ? state.game.level : undefined
+}))(({ level }: GameScreenProps) => {
   if (!level) {
     return null;
   }
@@ -134,7 +132,7 @@ export const GameScreen = connect((state: AllState) => ({
     drawMarks(mapViewport, level.marks, ctx);
     drawActors(mapViewport, level.actors, ctx);
     ctx.restore();
-  }, [loaded, mapViewport, level]);
+  }, [mapViewport, level]);
 
   return (
     <div className="GameScreen-container">

@@ -12,6 +12,7 @@ export enum Actions {
   editTerminalLine = "editTerminalLine",
   tick = "tick",
   halt = "halt",
+  cutsceneComplete = "cutsceneComplete"
 }
 
 export interface TickAction {
@@ -29,7 +30,11 @@ export interface EditJobAction {
 }
 
 export interface NoContextAction {
-  type: Actions.halt | Actions.pickCreateNewJob | Actions.loaded;
+  type:
+    | Actions.halt
+    | Actions.pickCreateNewJob
+    | Actions.loaded
+    | Actions.cutsceneComplete;
 }
 
 export interface CreateNewJobAction {

@@ -5,9 +5,6 @@ import { GameState } from "../game/gamestate";
 import { SourceCode } from "../editor/sourcecode";
 
 export interface AllState {
-  // Meta
-  loaded: boolean; // TODO move to GameState
-
   // Game world
   cpu: Processor;
   lastTick: number;

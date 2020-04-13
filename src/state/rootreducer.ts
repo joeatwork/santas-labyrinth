@@ -19,7 +19,6 @@ import {
 } from "../editor/sourcecode";
 
 const initialState: AllState = {
-  loaded: false,
   cpu: newProcessor,
   lastTick: -1,
   game: startGameState,
@@ -36,13 +35,6 @@ export function rootReducer(
   thisTick: number | undefined = undefined
 ) {
   let ret = reduction(state, action, thisTick);
-
-  if (ret.loaded && !state.loaded) {
-    ret = {
-      ...ret,
-      game: advanceScript(ret.game)
-    };
-  }
 
   if (running(state.cpu, ret.cpu)) {
     if (!("level" in state.game)) {
@@ -73,9 +65,10 @@ export function rootReducer(
     };
   }
 
-  if ("level" in ret.game && victory(ret.game.level)) {
+  if (victory(ret.game)) {
     ret = {
       ...ret,
+      ...halt(ret.cpu), // TODO script should own CPU
       game: advanceScript(ret.game)
     };
   }
@@ -90,9 +83,10 @@ function reduction(
 ): AllState {
   switch (action.type) {
     case Actions.loaded:
+    case Actions.cutsceneComplete:
       return {
         ...state,
-        loaded: true
+        game: advanceScript(state.game)
       };
     case Actions.tick:
       if (state.game.kind !== GameStateKind.running) {

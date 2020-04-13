@@ -1,10 +1,15 @@
 import { rectIntersect } from "../utils/geometry";
-import { hero, CharacterType, LevelState } from "../levels/levelstate";
+import { hero, CharacterType } from "../levels/levelstate";
 import { Processor } from "../robot/processor";
+import { GameState, GameStateKind } from "../game/gamestate";
 
-export function victory(level: LevelState) {
-  const you = hero(level);
-  const collisions = level.actors.filter(
+export function victory(game: GameState) {
+  if (game.kind !== GameStateKind.running && game.kind !== GameStateKind.composing) {
+    return false;
+  }
+
+  const you = hero(game.level);
+  const collisions = game.level.actors.filter(
     a => a !== you && rectIntersect(you.position, a.position)
   );
 

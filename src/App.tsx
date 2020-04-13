@@ -6,6 +6,7 @@ import { costumesLoaded } from "./images/costumes";
 import { rootReducer } from "./state/rootreducer";
 import { Actions } from "./state/actions";
 import { Controls } from "./components/Controls";
+import { Feedback } from "./components/Feedback";
 import { RobotStatus } from "./components/RobotStatus";
 import { GameScreen } from "./components/GameScreen";
 
@@ -39,8 +40,7 @@ function App() {
               <Controls />
             </div>
             <div className="App-feedback App-window">
-              <GameScreen />
-              <RobotStatus />
+              <Feedback />
             </div>
           </div>
         </main>

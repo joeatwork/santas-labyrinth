@@ -1,0 +1,26 @@
+.Cutscene-container {
+  width: 384px;
+  height: 320px;
+  background-color: black;
+  color: white;
+  font-family: "chicagoflfregular", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Cutscene-greatjob {
+  font-size: 32px;
+}
+
+.Cutscene-refresh {
+  cursor: pointer;
+}
+
+.Cutscene-refresh__icon .RefreshIcon-path {
+  fill: white;
+}
+
+.Cutscene-refresh__icon {
+  vertical-align: -6px;
+}
