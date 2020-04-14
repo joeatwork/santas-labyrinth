@@ -15,25 +15,25 @@ test("look treasure", () => {
     ...level0,
     actors: [heart, newRobot]
   };
-  const {cpu} = runCommand("look treasure\n", newRobot, newProcessor, level);
+  const { cpu } = runCommand("look treasure\n", newRobot, newProcessor, level);
   const found = continueExecution(10, 1000, newRobot, cpu, level);
   expect(found.cpu.registers.yes).toBeTruthy();
 });
 
 test("look wall", () => {
-  const {cpu} = runCommand("look wall\n", robot, newProcessor, level0);
+  const { cpu } = runCommand("look wall\n", robot, newProcessor, level0);
   const found = continueExecution(10, 1000, robot, cpu, level0);
   expect(found.cpu.registers.yes).toBeTruthy();
 });
 
 test("look fail", () => {
-  const {cpu} = runCommand("look treasure\n", robot, newProcessor, level0);
+  const { cpu } = runCommand("look treasure\n", robot, newProcessor, level0);
   const found = continueExecution(10, 1000, robot, cpu, level0);
   expect(found.cpu.registers.yes).toBeFalsy();
 });
 
 test("forward", () => {
-  const {cpu} = runCommand("forward\n", robot, newProcessor, level0);
+  const { cpu } = runCommand("forward\n", robot, newProcessor, level0);
   const found = continueExecution(10, 1000, robot, cpu, level0);
   const foundHero = hero(found.game.level);
   expect(foundHero.position).toEqual({ top: 2, left: 3, width: 1, height: 1 });
@@ -44,7 +44,7 @@ test("do job", () => {
     jobname: "testjob",
     work: [{ kind: InstructionType.punch }]
   });
-  const {cpu} = runCommand("do testjob\n", robot, proc, level0);
+  const { cpu } = runCommand("do testjob\n", robot, proc, level0);
   const found = continueExecution(10, 1000, robot, cpu, level0);
   expect(found.cpu.stack).toEqual([
     {
@@ -55,24 +55,55 @@ test("do job", () => {
   ]);
 });
 
-test("define job", () => {
-  const found = defineJob(
-    newProcessor,
-    "newjob",
-    `
+describe("defineJob", () => {
+  test("simple case", () => {
+    const found = defineJob(
+      newProcessor,
+      "newjob",
+      `
    punch
    do newjob
 eat
 `
-  );
+    );
 
-  expect(found.cpu.jobs["newjob"]).toEqual({
-    jobname: "newjob",
-    work: [
-      { kind: InstructionType.punch },
-      { kind: InstructionType.doit, jobname: "newjob" },
-      { kind: InstructionType.eat }
-    ]
+    expect(found.cpu.jobs["newjob"]).toEqual({
+      jobname: "newjob",
+      work: [
+        { kind: InstructionType.punch },
+        { kind: InstructionType.doit, jobname: "newjob" },
+        { kind: InstructionType.eat }
+      ]
+    });
+  });
+
+  test("redefine job", () => {
+    const found = defineJob(
+      {
+        ...newProcessor,
+        jobs: {
+          newjob: {
+            jobname: "newjob",
+            work: [{ kind: InstructionType.forward }]
+          }
+        }
+      },
+      "newjob",
+      `
+punch
+do newjob
+eat
+`
+    );
+
+    expect(found.cpu.jobs["newjob"]).toEqual({
+      jobname: "newjob",
+      work: [
+        { kind: InstructionType.punch },
+        { kind: InstructionType.doit, jobname: "newjob" },
+        { kind: InstructionType.eat }
+      ]
+    });
   });
 });
 

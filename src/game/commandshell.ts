@@ -81,7 +81,12 @@ export function defineJob(cpu: Processor, jobname: string, jobtext: string) {
     };
   }
 
-  const parser = new Parser(_.keys(cpu.jobs).concat([jobname]));
+  const jobnames = _.keys(cpu.jobs);
+  if (!(jobname in cpu.jobs)) {
+    jobnames.push(jobname);
+  }
+
+  const parser = new Parser(jobnames);
   const jobbody = parser.parseInstructionList(jobtext);
   if (jobbody.kind === "fail") {
     return {
