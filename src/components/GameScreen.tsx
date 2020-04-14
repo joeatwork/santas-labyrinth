@@ -19,8 +19,8 @@ export const GameScreen = connect((state: AllState) => ({
   }
 
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const viewport = new Viewport(level, 12, 10);
-  const renderSize = viewport.renderSize();
+  const checkPort = new Viewport(level, 12, 10);
+  const renderSize = checkPort.renderSize();
 
   React.useEffect(() => {
     const canvas = canvasRef.current;

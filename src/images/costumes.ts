@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Rect, Orientation } from "../utils/geometry";
-import { Terrain, Tile } from "../levels/terrain";
+import { Tile } from "../levels/terrain";
 import { CharacterType } from "../levels/levelstate";
 
 import nothing from "./rltiles/nh-dngn_dark_part_of_a_room.png";
@@ -71,69 +71,81 @@ export interface ImageSprite {
   sprite: Rect;
 }
 
-export function furniture(terrain: Terrain): ImageSprite[][] {
-  return terrain.furniture.map((row, y) =>
-    row.map((t, x) => {
-      switch (t) {
-        case Tile.nothing:
-          return nothingSprite;
-        case Tile.floor:
-          return floorSprite;
-        case Tile.surroundedWall:
-          return surroundedWall;
-        case Tile.northwestCornerWall:
-          return northwestCornerWall;
-        case Tile.northeastCornerWall:
-          return northeastCornerWall;
-        case Tile.southwestCornerWall:
-          return southwestCornerWall;
-        case Tile.southeastCornerWall:
-          return southeastCornerWall;
-        case Tile.northWall:
-          return northWall;
-        case Tile.eastWall:
-          return eastWall;
-        case Tile.southWall:
-          return southWall;
-        case Tile.westWall:
-          return westWall;
-        case Tile.northDoorway:
-          return northDoorway;
-        case Tile.eastDoorway:
-          return eastDoorway;
-        case Tile.southDoorway:
-          return southDoorway;
-        case Tile.westDoorway:
-          return westDoorway;
-        case Tile.northDoorWest:
-          return northDoorWest;
-        case Tile.northDoorEast:
-          return northDoorEast;
-        case Tile.southDoorWest:
-          return southDoorWest;
-        case Tile.southDoorEast:
-          return southDoorEast;
-        case Tile.eastDoorNorth:
-          return eastDoorNorth;
-        case Tile.eastDoorSouth:
-          return eastDoorSouth;
-        case Tile.westDoorNorth:
-          return westDoorNorth;
-        case Tile.westDoorSouth:
-          return westDoorSouth;
-        case Tile.northwestPointWall:
-          return northwestPointWall;
-        case Tile.northeastPointWall:
-          return northeastPointWall;
-        case Tile.southwestPointWall:
-          return southwestPointWall;
-        case Tile.southeastPointWall:
-          return southeastPointWall;
-      }
+export function setting(t: Tile): ImageSprite {
+  switch (t) {
+    case Tile.nothing:
+      return nothingSprite;
+    case Tile.floor:
+      return floorSprite;
+    case Tile.surroundedWall:
+      return surroundedWall;
+    case Tile.northwestCornerWall:
+      return northwestCornerWall;
+    case Tile.northeastCornerWall:
+      return northeastCornerWall;
+    case Tile.southwestCornerWall:
+      return southwestCornerWall;
+    case Tile.southeastCornerWall:
+      return southeastCornerWall;
+    case Tile.northWall:
+      return northWall;
+    case Tile.eastWall:
+      return eastWall;
+    case Tile.southWall:
+      return southWall;
+    case Tile.westWall:
+      return westWall;
+    case Tile.northDoorway:
+      return northDoorway;
+    case Tile.eastDoorway:
+      return eastDoorway;
+    case Tile.southDoorway:
+      return southDoorway;
+    case Tile.westDoorway:
+      return westDoorway;
+    case Tile.northDoorWest:
+      return northDoorWest;
+    case Tile.northDoorEast:
+      return northDoorEast;
+    case Tile.southDoorWest:
+      return southDoorWest;
+    case Tile.southDoorEast:
+      return southDoorEast;
+    case Tile.eastDoorNorth:
+      return eastDoorNorth;
+    case Tile.eastDoorSouth:
+      return eastDoorSouth;
+    case Tile.westDoorNorth:
+      return westDoorNorth;
+    case Tile.westDoorSouth:
+      return westDoorSouth;
+    case Tile.northDoorframeWest:
+      return northDoorframeWest;
+    case Tile.northDoorframeEast:
+      return northDoorframeEast;
+    case Tile.southDoorframeWest:
+      return southDoorframeWest;
+    case Tile.southDoorframeEast:
+      return southDoorframeEast;
+    case Tile.eastDoorframeNorth:
+      return eastDoorframeNorth;
+    case Tile.eastDoorframeSouth:
+      return eastDoorframeSouth;
+    case Tile.westDoorframeNorth:
+      return westDoorframeNorth;
+    case Tile.westDoorframeSouth:
+      return westDoorframeSouth;
+    case Tile.northwestPointWall:
+      return northwestPointWall;
+    case Tile.northeastPointWall:
+      return northeastPointWall;
+    case Tile.southwestPointWall:
+      return southwestPointWall;
+    case Tile.southeastPointWall:
+      return southeastPointWall;
+  }
 
-      throw Error(`unknown tile type ${t} at ${x}, ${y}`);
-    })
-  );
+  throw Error(`unknown tile type ${t}`);
 }
 
 export function character(c: CharacterType, ot: Orientation) {
@@ -258,6 +270,26 @@ const southDoorframeWest = {
 const southDoorframeEast = {
   image: deathMountainImage,
   sprite: { top: 640, left: 64, width: 64, height: 64 }
+};
+
+const westDoorframeNorth = {
+  image: deathMountainImage,
+  sprite: { top: 256, left: 640, width: 64, height: 64 }
+};
+
+const westDoorframeSouth = {
+  image: deathMountainImage,
+  sprite: { top: 320, left: 640, width: 64, height: 64 }
+};
+
+const eastDoorframeNorth = {
+  image: deathMountainImage,
+  sprite: { top: 0, left: 640, width: 64, height: 64 }
+};
+
+const eastDoorframeSouth = {
+  image: deathMountainImage,
+  sprite: { top: 64, left: 640, width: 64, height: 64 }
 };
 
 const northDoorWest = {

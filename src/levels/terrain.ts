@@ -22,6 +22,14 @@ export enum Tile {
   westDoorSouth = "westDoorSouth",
   eastDoorNorth = "eastDoorNorth",
   eastDoorSouth = "eastDoorSouth",
+  northDoorframeWest = "northDoorframeWest",
+  northDoorframeEast = "northDoorframeEast",
+  southDoorframeWest = "southDoorframeWest",
+  southDoorframeEast = "southDoorframeEast",
+  westDoorframeNorth = "westDoorframeNorth",
+  westDoorframeSouth = "westDoorframeSouth",
+  eastDoorframeNorth = "eastDoorframeNorth",
+  eastDoorframeSouth = "eastDoorframeSouth",
   northwestPointWall = "northwestPointWall",
   northeastPointWall = "northeastPointWall",
   southwestPointWall = "southwestPointWall",
@@ -30,6 +38,7 @@ export enum Tile {
 
 export interface Terrain {
   furniture: Tile[][]; // [row y][column x]
+  foreground: Tile[][];
 }
 
 export function inbounds(terr: Terrain, x: number, y: number) {

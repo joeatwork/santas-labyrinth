@@ -87,7 +87,9 @@ function deathMountainRoom(
   eastDoor: boolean,
   southDoor: boolean,
   westDoor: boolean
-): Tile[][] {
+): { furniture: Tile[][]; foreground: Tile[][] } {
+  const x = Tile.nothing;
+
   const nw = Tile.northWall;
   const ew = Tile.eastWall;
   const sw = Tile.southWall;
@@ -117,7 +119,7 @@ function deathMountainRoom(
   const wds = westDoor ? Tile.westDoorSouth : ww;
 
   // prettier-ignore
-  return [
+  const furniture = [
     [nwc, nw, nw, nw, ndw, nd, nd, nde, nw, nw, nw, nec],
     [ ww,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f,  ew],
     [ ww,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f,  ew],
@@ -129,6 +131,32 @@ function deathMountainRoom(
     [ ww,  f,  f,  f,   f,  f,  f,   f,  f,  f,  f,  ew],
     [swc, sw, sw, sw, sdw, sd, sd, sde, sw, sw, sw, sec]
   ];
+
+  const ndfw = northDoor ? Tile.northDoorframeWest : x;
+  const ndfe = northDoor ? Tile.northDoorframeEast : x;
+  const edfn = eastDoor ? Tile.eastDoorframeNorth : x;
+  const edfs = eastDoor ? Tile.eastDoorframeSouth : x;
+  const sdfw = southDoor ? Tile.southDoorframeWest : x;
+  const sdfe = southDoor ? Tile.southDoorframeEast : x;
+  const wdfn = westDoor ? Tile.westDoorframeNorth : x;
+  const wdfs = westDoor ? Tile.westDoorframeSouth : x;
+
+  // prettier-ignore
+  const foreground = [
+    [   x, x, x, x, x, ndfw, ndfe, x, x, x, x,    x],
+    [   x, x, x, x, x,    x,    x, x, x, x, x,    x],
+    [   x, x, x, x, x,    x,    x, x, x, x, x,    x],
+    [   x, x, x, x, x,    x,    x, x, x, x, x,    x],
+    [wdfn, x, x, x, x,    x,    x, x, x, x, x, edfn],
+    [wdfs, x, x, x, x,    x,    x, x, x, x, x, edfs],
+    [   x, x, x, x, x,    x,    x, x, x, x, x,    x],
+    [   x, x, x, x, x,    x,    x, x, x, x, x,    x],
+    [   x, x, x, x, x,    x,    x, x, x, x, x,    x],
+    [   x, x, x, x, x, sdfw, sdfe, x, x, x, x,    x]
+  ];
+
+  console.dir(foreground);
+  return { furniture, foreground };
 }
 
 function spliceInto<T>(dest: T[][], src: T[][], offset: Point) {
@@ -148,7 +176,10 @@ export interface DeathMountainLevel {
 // Death Mountain levels are a grid of
 // uniformly sized rooms, with doors connecting
 // them.
-export function deathMountain(mapWidth: number, mapHeight: number) {
+export function deathMountain(
+  mapWidth: number,
+  mapHeight: number
+): DeathMountainLevel {
   const allDoors = roomGrid(mapWidth, mapHeight);
 
   const start = _.random(allDoors.length - 1);
@@ -159,9 +190,11 @@ export function deathMountain(mapWidth: number, mapHeight: number) {
 
   const mazeDoors = maze(start, end, allDoors);
 
-  const retTiles: Tile[][] = _.range(mapHeight * roomHeight).map(y => {
+  const furniture: Tile[][] = _.range(mapHeight * roomHeight).map(y => {
     return _.range(mapWidth * roomWidth).map(x => Tile.nothing);
   });
+
+  const foreground: Tile[][] = furniture.map(row => [...row]);
 
   _.range(mapWidth * mapHeight).forEach(ix => {
     const doors = mazeDoors[ix];
@@ -186,7 +219,14 @@ export function deathMountain(mapWidth: number, mapHeight: number) {
     });
 
     const room = deathMountainRoom(northDoor, eastDoor, southDoor, westDoor);
-    spliceInto(retTiles, room, { x: roomX * roomWidth, y: roomY * roomHeight });
+    spliceInto(furniture, room.furniture, {
+      x: roomX * roomWidth,
+      y: roomY * roomHeight
+    });
+    spliceInto(foreground, room.foreground, {
+      x: roomX * roomWidth,
+      y: roomY * roomHeight
+    });
   });
 
   const startRoomY = Math.floor(start / mapWidth);
@@ -205,7 +245,8 @@ export function deathMountain(mapWidth: number, mapHeight: number) {
       y: endRoomY * roomHeight + 3
     },
     terrain: {
-      furniture: retTiles
+      furniture,
+      foreground
     }
   };
 }
