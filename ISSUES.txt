@@ -58,7 +58,7 @@ Redesign room (isometric)?
 
 Monsters and combat
 
-Treasure and points
+lil treasures, points and scoring
 
 Story and dialog blocks
 
@@ -71,3 +71,5 @@ Analytics
 itch.io availability
 
 Use per-subject register (wall, monster, mark) rather than yes/no registers, spell them "if monster ..."
+
+Instant replay for boards that take a long time

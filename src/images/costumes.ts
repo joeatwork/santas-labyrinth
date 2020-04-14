@@ -240,6 +240,26 @@ const westDoorway = {
   sprite: { top: 128, left: 640, width: 64, height: 64 }
 };
 
+const northDoorframeWest = {
+  image: deathMountainImage,
+  sprite: { top: 640, left: 256, width: 64, height: 64 }
+};
+
+const northDoorframeEast = {
+  image: deathMountainImage,
+  sprite: { top: 640, left: 320, width: 64, height: 64 }
+};
+
+const southDoorframeWest = {
+  image: deathMountainImage,
+  sprite: { top: 640, left: 0, width: 64, height: 64 }
+};
+
+const southDoorframeEast = {
+  image: deathMountainImage,
+  sprite: { top: 640, left: 64, width: 64, height: 64 }
+};
+
 const northDoorWest = {
   image: deathMountainImage,
   sprite: { top: 0, left: 192, width: 64, height: 64 }
