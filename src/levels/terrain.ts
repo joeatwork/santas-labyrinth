@@ -1,6 +1,10 @@
 export enum Tile {
   nothing = "nothing",
   floor = "floor",
+  northDoorway = "northDoorway",
+  southDoorway = "southDoorway",
+  eastDoorway = "eastDoorway",
+  westDoorway = "westDoorway",
   surroundedWall = "surroundedWall",
   northwestCornerWall = "northwestCornerWall",
   northeastCornerWall = "northeastCornerWall",
@@ -10,6 +14,14 @@ export enum Tile {
   eastWall = "eastWall",
   southWall = "southWall",
   westWall = "westWall",
+  northDoorWest = "northDoorWest",
+  northDoorEast = "northDoorEast",
+  southDoorWest = "southDoorWest",
+  southDoorEast = "southDoorEast",
+  westDoorNorth = "westDoorNorth",
+  westDoorSouth = "westDoorSouth",
+  eastDoorNorth = "eastDoorNorth",
+  eastDoorSouth = "eastDoorSouth",
   northwestPointWall = "northwestPointWall",
   northeastPointWall = "northeastPointWall",
   southwestPointWall = "southwestPointWall",
@@ -30,23 +42,14 @@ export function inbounds(terr: Terrain, x: number, y: number) {
   );
 }
 
-const impassable = {
-  nothing: true,
-  surroundedWall: true,
-  northwestCornerWall: true,
-  northeastCornerWall: true,
-  southwestCornerWall: true,
-  southeastCornerWall: true,
-  northWall: true,
-  eastWall: true,
-  southWall: true,
-  westWall: true,
-  northwestPointWall: true,
-  northeastPointWall: true,
-  southwestPointWall: true,
-  southeastPointWall: true
+const passableTiles = {
+  floor: true,
+  northDoorway: true,
+  southDoorway: true,
+  eastDoorway: true,
+  westDoorway: true
 };
 
 export function passable(t: Tile) {
-  return !(t in impassable);
+  return t in passableTiles;
 }

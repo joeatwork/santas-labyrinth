@@ -98,28 +98,23 @@ function deathMountainRoom(
   const sec = Tile.southeastCornerWall;
   const swc = Tile.southwestCornerWall;
 
-  const nwp = Tile.northwestPointWall;
-  const nep = Tile.northeastPointWall;
-  const sep = Tile.southeastPointWall;
-  const swp = Tile.southwestPointWall;
-
   const f = Tile.floor;
 
-  const nd = northDoor ? f : nw;
-  const ndw = northDoor ? nwp : nw;
-  const nde = northDoor ? nep : nw;
+  const nd = northDoor ? Tile.northDoorway : nw;
+  const ndw = northDoor ? Tile.northDoorWest : nw;
+  const nde = northDoor ? Tile.northDoorEast : nw;
 
-  const ed = eastDoor ? f : ew;
-  const edn = eastDoor ? nep : ew;
-  const eds = eastDoor ? sep : ew;
+  const ed = eastDoor ? Tile.eastDoorway : ew;
+  const edn = eastDoor ? Tile.eastDoorNorth : ew;
+  const eds = eastDoor ? Tile.eastDoorSouth : ew;
 
-  const sd = southDoor ? f : sw;
-  const sdw = southDoor ? swp : sw;
-  const sde = southDoor ? sep : sw;
+  const sd = southDoor ? Tile.southDoorway : sw;
+  const sdw = southDoor ? Tile.southDoorWest : sw;
+  const sde = southDoor ? Tile.southDoorEast : sw;
 
-  const wd = westDoor ? f : ww;
-  const wdn = westDoor ? nwp : ww;
-  const wds = westDoor ? swp : ww;
+  const wd = westDoor ? Tile.westDoorway : ww;
+  const wdn = westDoor ? Tile.westDoorNorth : ww;
+  const wds = westDoor ? Tile.westDoorSouth : ww;
 
   // prettier-ignore
   return [

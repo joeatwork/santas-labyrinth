@@ -97,6 +97,30 @@ export function furniture(terrain: Terrain): ImageSprite[][] {
           return southWall;
         case Tile.westWall:
           return westWall;
+        case Tile.northDoorway:
+          return northDoorway;
+        case Tile.eastDoorway:
+          return eastDoorway;
+        case Tile.southDoorway:
+          return southDoorway;
+        case Tile.westDoorway:
+          return westDoorway;
+        case Tile.northDoorWest:
+          return northDoorWest;
+        case Tile.northDoorEast:
+          return northDoorEast;
+        case Tile.southDoorWest:
+          return southDoorWest;
+        case Tile.southDoorEast:
+          return southDoorEast;
+        case Tile.eastDoorNorth:
+          return eastDoorNorth;
+        case Tile.eastDoorSouth:
+          return eastDoorSouth;
+        case Tile.westDoorNorth:
+          return westDoorNorth;
+        case Tile.westDoorSouth:
+          return westDoorSouth;
         case Tile.northwestPointWall:
           return northwestPointWall;
         case Tile.northeastPointWall:
@@ -196,24 +220,84 @@ const eastWall = {
   sprite: { top: 64, left: 576, width: 64, height: 64 }
 };
 
-const northwestPointWall = {
+const northDoorway = {
+  image: deathMountainImage,
+  sprite: { top: 640, left: 192, width: 64, height: 64 }
+};
+
+const eastDoorway = {
+  image: deathMountainImage,
+  sprite: { top: 192, left: 640, width: 64, height: 64 }
+};
+
+const southDoorway = {
+  image: deathMountainImage,
+  sprite: { top: 640, left: 128, width: 64, height: 64 }
+};
+
+const westDoorway = {
+  image: deathMountainImage,
+  sprite: { top: 128, left: 640, width: 64, height: 64 }
+};
+
+const northDoorWest = {
   image: deathMountainImage,
   sprite: { top: 0, left: 192, width: 64, height: 64 }
 };
 
-const northeastPointWall = {
+const northDoorEast = {
   image: deathMountainImage,
   sprite: { top: 0, left: 384, width: 64, height: 64 }
 };
 
-const southwestPointWall = {
+const southDoorWest = {
   image: deathMountainImage,
   sprite: { top: 576, left: 192, width: 64, height: 64 }
 };
 
-const southeastPointWall = {
+const southDoorEast = {
   image: deathMountainImage,
   sprite: { top: 576, left: 384, width: 64, height: 64 }
+};
+
+const westDoorNorth = {
+  image: deathMountainImage,
+  sprite: { top: 192, left: 0, width: 64, height: 64 }
+};
+
+const westDoorSouth = {
+  image: deathMountainImage,
+  sprite: { top: 384, left: 0, width: 64, height: 64 }
+};
+
+const eastDoorNorth = {
+  image: deathMountainImage,
+  sprite: { top: 192, left: 576, width: 64, height: 64 }
+};
+
+const eastDoorSouth = {
+  image: deathMountainImage,
+  sprite: { top: 384, left: 576, width: 64, height: 64 }
+};
+
+const northwestPointWall = {
+  image: deathMountainImage,
+  sprite: { top: 256, left: 256, width: 64, height: 64 }
+};
+
+const northeastPointWall = {
+  image: deathMountainImage,
+  sprite: { top: 256, left: 128, width: 64, height: 64 }
+};
+
+const southwestPointWall = {
+  image: deathMountainImage,
+  sprite: { top: 128, left: 256, width: 64, height: 64 }
+};
+
+const southeastPointWall = {
+  image: deathMountainImage,
+  sprite: { top: 128, left: 128, width: 64, height: 64 }
 };
 
 export const costumesLoaded = loader.promise();
