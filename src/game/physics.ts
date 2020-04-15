@@ -28,35 +28,37 @@ export function gameSenses(level: LevelState, robot: Actor) {
     orientation: () => {
       return robot.orientation;
     },
-    look: (delta: Point) => {
+    look: (delta: Point, target: Prop) => {
       const check = {
         x: robot.position.left + delta.x,
         y: robot.position.top + delta.y
       };
       for (let i = 0; i < visionDistance; i++) {
+        const distance = i + 1;
         const stuff = stuffAt(level, check);
         if (!stuff) {
           break;
         }
         const { actors, furniture, mark } = stuff;
+
+        // marks don't obscure other things you're looking at.
+        if (mark && target === Prop.mark) {
+          return { what: Prop.mark, where: distance };
+        }
+
         if (actors.length > 0) {
           return {
             what: characterToProp(actors[0].ctype),
-            where: i
+            where: distance
           };
         }
 
-        // TODO allow doorways to be marked!
-        if (mark) {
-          return { what: Prop.mark, where: i };
+        if (doorway(furniture)) {
+          return { what: Prop.doorway, where: distance };
         }
 
         if (wall(furniture)) {
-          return { what: Prop.wall, where: i };
-        }
-
-        if (doorway(furniture)) {
-          return { what: Prop.doorway, where: i };
+          return { what: Prop.wall, where: distance };
         }
 
         check.x += delta.x;

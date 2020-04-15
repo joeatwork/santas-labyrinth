@@ -43,7 +43,7 @@ export function addJob(cpu: Processor, job: Job): Processor {
 }
 
 export interface Senses {
-  look: (delta: Point) => { what: Prop; where: number } | undefined;
+  look: (delta: Point, target: Prop) => { what: Prop; where: number } | undefined;
   orientation: () => Orientation;
 }
 
@@ -138,7 +138,7 @@ export function cycle(
     // Senses
     case InstructionType.look:
       {
-        const saw = senses.look(toDelta(senses.orientation()));
+        const saw = senses.look(toDelta(senses.orientation()), instr.prop);
         const yes = saw && saw.what === instr.prop;
         nextReg.yes = !!yes;
         nextReg.no = !yes;

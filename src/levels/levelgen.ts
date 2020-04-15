@@ -18,7 +18,7 @@ export function simpleLevel() {
           Tile.nothing
         ],
         [Tile.westWall, Tile.floor, Tile.floor, Tile.floor, Tile.eastWall],
-        [Tile.westWall, Tile.floor, Tile.floor, Tile.floor, Tile.eastWall],
+        [Tile.eastDoorway, Tile.floor, Tile.floor, Tile.floor, Tile.eastWall],
         [Tile.westWall, Tile.floor, Tile.floor, Tile.floor, Tile.eastWall],
         [
           Tile.nothing,
