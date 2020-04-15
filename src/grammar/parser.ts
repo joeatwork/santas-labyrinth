@@ -361,24 +361,28 @@ export class Parser {
 }
 
 // Reserved words are associated with a suggested alternative.
-// If things change here, they'll need to change in
-// commandlanguage.pegjs
 export const reservedWords: { [key: string]: string } = {
+  and: "also",
   backward: "behind",
   create: "make",
   do: "perform",
+  doorway: "gate",
   eat: "munch",
   end: "terminate",
   erase: "remove",
   finish: "complete",
   forward: "ahead",
   if: "on",
+  job: "task",
   left: "sinister",
   look: "see",
   mark: "spot",
   monster: "beast",
   no: "false",
+  or: "oneof",
+  pop: "remove",
   punch: "hit",
+  push: "shove",
   repeat: "again",
   right: "correct",
   setmark: "makemark",

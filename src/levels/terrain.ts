@@ -51,8 +51,7 @@ export function inbounds(terr: Terrain, x: number, y: number) {
   );
 }
 
-const passableTiles = {
-  floor: true,
+const doorwayTiles = {
   northDoorway: true,
   southDoorway: true,
   eastDoorway: true,
@@ -60,5 +59,13 @@ const passableTiles = {
 };
 
 export function passable(t: Tile) {
-  return t in passableTiles;
+  return doorway(t) || t === Tile.floor;
+}
+
+export function wall(t: Tile) {
+  return !passable(t);
+}
+
+export function doorway(t: Tile) {
+  return t in doorwayTiles;
 }

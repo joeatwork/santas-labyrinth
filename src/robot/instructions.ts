@@ -6,6 +6,7 @@ export enum Register {
 export enum Prop {
   hero = "hero",
   wall = "wall",
+  doorway = "doorway",
   monster = "monster",
   treasure = "treasure",
   mark = "mark"

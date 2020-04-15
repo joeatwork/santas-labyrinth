@@ -10,9 +10,9 @@ import {
 } from "../levels/levelstate";
 import { Prop } from "../robot/instructions";
 import { CharacterType } from "../levels/levelstate";
-import { inbounds, passable } from "../levels/terrain";
+import { inbounds, wall, doorway } from "../levels/terrain";
 
-const visionDistance = 10;
+const visionDistance = 24;
 
 function characterToProp(c: CharacterType): Prop {
   switch (c) {
@@ -46,12 +46,17 @@ export function gameSenses(level: LevelState, robot: Actor) {
           };
         }
 
-        if (!passable(furniture)) {
+        // TODO allow doorways to be marked!
+        if (mark) {
+          return { what: Prop.mark, where: i };
+        }
+
+        if (wall(furniture)) {
           return { what: Prop.wall, where: i };
         }
 
-        if (mark) {
-          return { what: Prop.mark, where: i };
+        if (doorway(furniture)) {
+          return { what: Prop.doorway, where: i };
         }
 
         check.x += delta.x;

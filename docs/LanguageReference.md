@@ -40,7 +40,7 @@ robot can `touch wall`, but it can't `touch yes`. The sorts of arguments that
 fit together are called a *type*. The argument types that work with robot
 instructions are:
 
-- **props**: `wall`, `mark`, `monster`, `treasure` are all props that exist in
+- **props**: `wall`, `doorway`, `mark`, `monster`, `treasure` are all props that exist in
   the world, that the robot can sense.
 - **registers**: `yes` and `no`, corresponding to the yes and no registers.
 - **jobs names**: You can define job names for the robot, and then execute those jobs with the `do` command.
