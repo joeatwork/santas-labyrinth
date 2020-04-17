@@ -51,6 +51,12 @@ export function inbounds(terr: Terrain, x: number, y: number) {
   );
 }
 
+export function terrainSize(tr: Terrain) {
+  return {
+    width: Math.max(...tr.furniture.map(row => row.length)),
+    height: tr.furniture.length
+  };
+}
 const doorwayTiles = {
   northDoorway: true,
   southDoorway: true,
