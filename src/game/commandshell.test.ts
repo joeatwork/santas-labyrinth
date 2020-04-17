@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 import { simpleLevel } from "../levels/levelgen";
 import { Orientation } from "../utils/geometry";
 import { runCommand, defineJob, continueExecution } from "./commandshell";
@@ -23,6 +25,13 @@ test("look treasure", () => {
 test("look wall", () => {
   const { cpu } = runCommand("look wall\n", robot, newProcessor, level0);
   const found = continueExecution(10, 1000, robot, cpu, level0);
+  expect(found.cpu.registers.yes).toBeTruthy();
+});
+
+test("touch mark", () => {
+  const level = _.set(simpleLevel(), ["marks", 2, 3], true);
+  const { cpu } = runCommand("touch mark\n", robot, newProcessor, level);
+  const found = continueExecution(10, 1000, robot, cpu, level);
   expect(found.cpu.registers.yes).toBeTruthy();
 });
 

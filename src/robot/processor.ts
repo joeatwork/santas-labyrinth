@@ -150,7 +150,7 @@ export function cycle(
     case InstructionType.touch:
       {
         const saw = senses.look(toDelta(senses.orientation()), instr.prop);
-        const yes = saw && saw.what === instr.prop && saw.where === 0;
+        const yes = saw && saw.what === instr.prop && saw.where === 1;
         nextReg.yes = !!yes;
         nextReg.no = !yes;
         if (nextFrame) {

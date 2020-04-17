@@ -367,7 +367,7 @@ describe("cycle changes", () => {
       jobname: "test job",
       index: 9
     };
-    mock.saw = { what: Prop.treasure, where: 0 };
+    mock.saw = { what: Prop.treasure, where: 1 };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
@@ -380,7 +380,7 @@ describe("cycle changes", () => {
       jobname: "test job",
       index: 9
     };
-    mock.saw = { what: Prop.wall, where: 0 };
+    mock.saw = { what: Prop.wall, where: 1 };
 
     expect(cycle(pr, mock, mock)).toEqual({
       ...pr,
