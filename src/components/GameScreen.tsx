@@ -24,7 +24,6 @@ export const GameScreen = connect((state: AllState) => ({
     return null;
   }
 
-  console.log("prerendering!");
   return <EachRender prerendered={prerender(terrain)} />;
 });
 
@@ -45,8 +44,6 @@ const EachRender = connect((state: AllState) => ({
       return;
     }
     const usePort = new Viewport(level, 12, 10);
-    console.log("VIEWPORT");
-    console.dir(usePort);
     const ctx = canvas.getContext("2d")!;
     prerendered.render(usePort, level.marks, level.actors, ctx);
   }, [level, prerendered]);

@@ -155,7 +155,6 @@ function deathMountainRoom(
     [   x, x, x, x, x, sdfw, sdfe, x, x, x, x,    x]
   ];
 
-  console.dir(foreground);
   return { furniture, foreground };
 }
 

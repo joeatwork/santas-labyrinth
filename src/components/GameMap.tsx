@@ -2,21 +2,31 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AllState } from "../state/states";
-import { Terrain, Tile, passable } from "../levels/terrain";
+import { LevelState } from "../levels/levelstate";
+import { Tile, passable } from "../levels/terrain";
+import { Rect } from "../utils/geometry";
 
 function drawMap(
   mapScale: number,
-  furniture: Tile[][],
+  level: LevelState,
+  renderRect: Rect,
   ctx: CanvasRenderingContext2D
 ) {
-  const iHeight = furniture.length * mapScale;
-  const iWidth = Math.max(...furniture.map(row => row.length)) * mapScale;
-  const image = ctx.createImageData(iWidth, iHeight);
+  const scanlineWidth = renderRect.width * mapScale;
+  const image = ctx.createImageData(
+    scanlineWidth,
+    renderRect.height * mapScale
+  );
 
-  furniture.forEach((row, tileY) => {
-    row.forEach((tile, tileX) => {
+  for (let offY = 0; offY < renderRect.height; offY++) {
+    for (let offX = 0; offX < renderRect.width; offX++) {
+      const tileX = offX + renderRect.left;
+      const tileY = offY + renderRect.top;
+      const tile = level.terrain.furniture[tileY][tileX];
+      const mark = level.marks[tileY][tileX];
+
       if (!passable(tile)) {
-        return;
+        continue;
       }
 
       const baseImageX = tileX * mapScale;
@@ -27,17 +37,17 @@ function drawMap(
           const imageX = baseImageX + dx;
           const imageY = baseImageY + dy;
 
-          const imageSpot = imageY * iWidth + imageX;
+          const imageSpot = imageY * scanlineWidth + imageX;
           const pixel = imageSpot * 4;
           image.data[pixel + 3] = 255; // alpha channel
         }
       }
-    });
-  });
+    }
+  }
   ctx.putImageData(image, 0, 0);
 }
 
-function stripTerrain(furniture: Tile[][]): Tile[][] {
+function interestingRect(furniture: Tile[][]): Rect {
   const renderRows = furniture
     .map(row => row.some(t => t !== Tile.nothing))
     .map((p, i) => ({ p, i }))
@@ -52,31 +62,34 @@ function stripTerrain(furniture: Tile[][]): Tile[][] {
     .filter(({ p }) => p)
     .map(({ i }) => i);
 
-  const lowY = Math.min(...renderRows);
-  const lowX = Math.min(...renderCols);
+  const top = Math.min(...renderRows);
+  const left = Math.min(...renderCols);
   const highY = Math.max(...renderRows);
   const highX = Math.max(...renderCols);
 
-  return furniture.slice(lowY, highY + 1).map(r => r.slice(lowX, highX + 1));
+  return {
+    top,
+    left,
+    width: highX - left,
+    height: highY - top
+  };
 }
 
 interface GameMapProps {
   width: number;
-  terrain?: Terrain;
+  level?: LevelState;
 }
 
-export const GameMap = connect((state: AllState) => ({
-  terrain: "level" in state.game ? state.game.level.terrain : undefined
-}))(({ width, terrain }: GameMapProps) => {
-  if (!terrain) {
+export const GameMap = connect(({ game }: AllState) => ({
+  level: "level" in game ? game.level : undefined
+}))(({ width, level }: GameMapProps) => {
+  if (!level) {
     return null;
   }
 
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const stripped = stripTerrain(terrain.furniture);
-
-  const tileCount = Math.max(...stripped.map(row => row.length));
-  const mapScale = Math.floor(width / tileCount) || 1;
+  const renderRect = interestingRect(level.terrain.furniture);
+  const mapScale = Math.floor(width / renderRect.width) || 1;
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -86,16 +99,15 @@ export const GameMap = connect((state: AllState) => ({
 
     const ctx = canvas.getContext("2d")!;
     ctx.save();
-    drawMap(mapScale, stripped, ctx);
+    drawMap(mapScale, level, renderRect, ctx);
     ctx.restore();
-  }, [mapScale, stripped]);
+  }, [mapScale, renderRect, level]);
 
-  const lheight = stripped.length;
   return (
     <div id="game_map">
       <canvas
-        width={tileCount * mapScale}
-        height={lheight * mapScale}
+        width={renderRect.width * mapScale}
+        height={renderRect.height * mapScale}
         ref={canvasRef}
       />
     </div>
