@@ -23,12 +23,14 @@ function drawMap(
       const tileX = offX + renderRect.left;
       const tileY = offY + renderRect.top;
       const tile = level.terrain.furniture[tileY][tileX];
-      const mark = level.marks[tileY][tileX];
 
       if (!passable(tile)) {
         continue;
       }
 
+      const color = level.marks[tileY][tileX]
+        ? [255, 0, 0, 255]
+        : [0, 0, 0, 255];
       const baseImageX = tileX * mapScale;
       const baseImageY = tileY * mapScale;
 
@@ -39,7 +41,9 @@ function drawMap(
 
           const imageSpot = imageY * scanlineWidth + imageX;
           const pixel = imageSpot * 4;
-          image.data[pixel + 3] = 255; // alpha channel
+          for (let b = 0; b < 4; b++) {
+            image.data[pixel + b] = color[b];
+          }
         }
       }
     }
