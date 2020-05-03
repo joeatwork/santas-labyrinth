@@ -15,7 +15,7 @@ export const rightEdge = (bounds: Rect) => ({
 
 export const below = (bounds: Rect) => ({
   top: bounds.top + bounds.height,
-  left: bounds.left
+  left: bounds.left + 8
 });
 
 export interface LargeTooltipParams {
