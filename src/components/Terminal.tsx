@@ -8,7 +8,7 @@ import { Actions } from "../state/actions";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
 import { GameStateKind } from "../game/gamestate";
 import { Parser } from "../grammar/parser";
-import { LargeTooltip } from "../components/LargeTooltip";
+import { LargeTooltip, below } from "../components/LargeTooltip";
 
 import "./Terminal.css";
 
@@ -127,7 +127,7 @@ export const Terminal = connect(
     return (
       <div className="Terminal">
         <div className="Terminal-inputline">
-          <LargeTooltip show={!!show} tip={tooltip}>
+          <LargeTooltip show={!!show} tip={tooltip} offset={below}>
             <div className="Terminal-inputbox Controls-inputbox">
               <input
                 autoComplete="off"

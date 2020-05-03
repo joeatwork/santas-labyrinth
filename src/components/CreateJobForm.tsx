@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { Actions } from "../state/actions";
 import { AllState } from "../state/states";
-import { LargeTooltip } from "../components/LargeTooltip";
+import { LargeTooltip, rightEdge } from "../components/LargeTooltip";
 import { validateJobName } from "../grammar/parser";
 
 import "./CreateJobForm.css";
@@ -47,7 +47,7 @@ export const CreateJobForm = connect(
 
   return (
     <div className="CreateJobForm-container">
-      <LargeTooltip show={error !== ""} tip={tooltip}>
+      <LargeTooltip show={error !== ""} tip={tooltip} offset={rightEdge}>
         <div className="Controls-inputbox CreateJobForm-inputbox">
           <input
             className="JobEditor-inputfield Controls-inputfield"

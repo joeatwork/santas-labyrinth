@@ -7,7 +7,7 @@ import { AllState } from "../state/states";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
 import { GameStateKind } from "../game/gamestate";
 import { SourceCode } from "../editor/sourcecode";
-import { LargeTooltip } from "../components/LargeTooltip";
+import { LargeTooltip, rightEdge } from "../components/LargeTooltip";
 
 import "./JobEditor.css";
 
@@ -132,7 +132,7 @@ export const JobEditor = connect(
             }
           })()}
         </div>
-        <LargeTooltip show={!!showTip} tip={tooltip}>
+        <LargeTooltip show={!!showTip} tip={tooltip} offset={rightEdge}>
           <div className="JobEditor-body">
             <Editor
               editorState={sourceToEdit.editor}
