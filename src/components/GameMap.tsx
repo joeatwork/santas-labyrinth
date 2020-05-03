@@ -31,8 +31,8 @@ function drawMap(
       const color = level.marks[tileY][tileX]
         ? [255, 0, 0, 255]
         : [0, 0, 0, 255];
-      const baseImageX = tileX * mapScale;
-      const baseImageY = tileY * mapScale;
+      const baseImageX = offX * mapScale;
+      const baseImageY = offY * mapScale;
 
       for (let dy = 0; dy < mapScale; dy++) {
         for (let dx = 0; dx < mapScale; dx++) {
