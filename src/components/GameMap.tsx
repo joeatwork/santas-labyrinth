@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { WorldState } from "../state/world";
+import { AllState } from "../state/state";
 import { LevelState } from "../levels/levelstate";
 import { Tile, passable } from "../levels/terrain";
 import { Rect } from "../utils/geometry";
@@ -84,8 +84,8 @@ interface GameMapProps {
   level?: LevelState;
 }
 
-export const GameMap = connect(({ game }: WorldState) => ({
-  level: "level" in game ? game.level : undefined
+export const GameMap = connect(({ world }: AllState) => ({
+  level: "level" in world.game ? world.game.level : undefined
 }))(({ width, level }: GameMapProps) => {
   if (!level) {
     return null;

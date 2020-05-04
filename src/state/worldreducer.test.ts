@@ -4,7 +4,7 @@ import { InstructionType } from "../robot/instructions";
 import { newProcessor } from "../robot/processor";
 import { Actions } from "../state/actions";
 import { createSource } from "../editor/sourcecode";
-import { rootReducer } from "../state/rootreducer";
+import { worldReducer } from "../state/worldreducer";
 import { GameStateKind } from "../game/gamestate";
 
 const state0 = {
@@ -42,7 +42,7 @@ describe("halt", () => {
     }
   };
 
-  const found = rootReducer(before, { type: Actions.halt });
+  const found = worldReducer(before, { type: Actions.halt });
 
   test("halt clears stack", () => {
     expect(found.cpu.stack).toEqual([]);
@@ -78,7 +78,7 @@ describe("tick", () => {
   };
 
   test("terminal line clear", () => {
-    const found = rootReducer(
+    const found = worldReducer(
       {
         ...state,
         cpu: {
@@ -94,7 +94,7 @@ describe("tick", () => {
   });
 
   test("instruction updates world", () => {
-    const found = rootReducer(
+    const found = worldReducer(
       {
         ...state,
         cpu: {
@@ -117,7 +117,7 @@ describe("tick", () => {
 
 describe("buildJob", () => {
   test("job gets built", () => {
-    const found = rootReducer(state0, {
+    const found = worldReducer(state0, {
       type: Actions.buildJob,
       source: createSource("newjob", "forward\n")
     });
@@ -138,7 +138,7 @@ describe("newCommand", () => {
     terminalLine: "exists"
   };
 
-  const found = rootReducer(before, {
+  const found = worldReducer(before, {
     type: Actions.newCommand,
     command: "forward\n"
   });

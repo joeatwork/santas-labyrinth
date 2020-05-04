@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import classNames from "classnames/bind";
 
 import { Actions } from "../state/actions";
-import { WorldState } from "../state/world";
+import { AllState } from "../state/state";
 import { SourceCode } from "../editor/sourcecode";
 
 import "./JobTabs.css";
@@ -17,9 +17,9 @@ interface JobTabsParams {
 }
 
 export const JobTabs = connect(
-  (s: WorldState) => ({
-    sources: _.values(s.sourceLibrary),
-    sourceToEdit: s.sourceToEdit
+  ({ world }: AllState) => ({
+    sources: _.values(world.sourceLibrary),
+    sourceToEdit: world.sourceToEdit
   }),
   dispatch => ({
     onTabClicked: (source: SourceCode) =>

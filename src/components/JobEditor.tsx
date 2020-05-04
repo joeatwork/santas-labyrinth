@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Editor, EditorState } from "draft-js";
 
 import { Actions } from "../state/actions";
-import { WorldState } from "../state/world";
+import { AllState } from "../state/state";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
 import { GameStateKind } from "../game/gamestate";
 import { SourceCode } from "../editor/sourcecode";
@@ -22,11 +22,11 @@ export type JobEditorParams = {
 };
 
 export const JobEditor = connect(
-  (state: WorldState) => ({
-    gameState: state.game.kind,
-    cpu: state.cpu,
-    commandError: state.commandError,
-    sourceToEdit: state.sourceToEdit!
+  ({ world }: AllState) => ({
+    gameState: world.game.kind,
+    cpu: world.cpu,
+    commandError: world.commandError,
+    sourceToEdit: world.sourceToEdit!
   }),
   dispatch => ({
     onEdit: (source: SourceCode) => {

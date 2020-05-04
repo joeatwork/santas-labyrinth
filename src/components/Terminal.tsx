@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
 
-import { WorldState } from "../state/world";
+import { AllState } from "../state/state";
 import { Actions } from "../state/actions";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
 import { GameStateKind } from "../game/gamestate";
@@ -23,12 +23,12 @@ export interface TerminalProps {
 }
 
 export const Terminal = connect(
-  (state: WorldState) => ({
-    gameState: state.game.kind,
-    terminalLine: state.terminalLine,
-    commandError: state.commandError,
+  ({ world }: AllState) => ({
+    gameState: world.game.kind,
+    terminalLine: world.terminalLine,
+    commandError: world.commandError,
     completeCommand: (txt: string) => {
-      const parser = new Parser(_.keys(state.cpu.jobs));
+      const parser = new Parser(_.keys(world.cpu.jobs));
       const result = parser.parseInstruction(txt);
       if (result.kind === "continue") {
         return result.completions;

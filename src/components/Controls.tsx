@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { WorldState } from "../state/world";
+import { AllState } from "../state/state";
 import { Terminal } from "../components/Terminal";
 import { JobEditor } from "../components/JobEditor";
 import { JobTabs } from "../components/JobTabs";
@@ -13,8 +13,8 @@ interface ControlsParams {
   editing: boolean;
 }
 
-export const Controls = connect((s: WorldState) => ({
-  editing: s.sourceToEdit !== null
+export const Controls = connect(({ world }: AllState) => ({
+  editing: world.sourceToEdit !== null
 }))(({ editing }: ControlsParams) => {
   return (
     <div className="Controls-container">

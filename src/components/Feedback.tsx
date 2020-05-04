@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { WorldState } from "../state/world";
+import { AllState } from "../state/state";
 import { GameStateKind } from "../game/gamestate";
 import { RobotStatus } from "../components/RobotStatus";
 import { GameScreen } from "../components/GameScreen";
@@ -11,8 +11,8 @@ interface FeedbackProps {
   gameState: GameStateKind;
 }
 
-export const Feedback = connect((s: WorldState) => ({
-  gameState: s.game.kind
+export const Feedback = connect(({ world }: AllState) => ({
+  gameState: world.game.kind
 }))(({ gameState }: FeedbackProps) => {
   return (
     <div className="Feedback-container">

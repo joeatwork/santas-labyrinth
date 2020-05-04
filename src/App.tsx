@@ -5,8 +5,7 @@ import { Provider } from "react-redux";
 import { costumesLoaded } from "./images/costumes";
 import { rootReducer } from "./state/rootreducer";
 import { Actions } from "./state/actions";
-import { Controls } from "./components/Controls";
-import { Feedback } from "./components/Feedback";
+import { Stage } from "./components/Stage";
 
 import "./App.css";
 
@@ -33,14 +32,7 @@ function App() {
           <h1 className="App-header">Santa's Labyrinth</h1>
         </header>
         <main>
-          <div className="App-universe">
-            <div className="App-controls App-window">
-              <Controls />
-            </div>
-            <div className="App-feedback App-window">
-              <Feedback />
-            </div>
-          </div>
+          <Stage />
         </main>
       </Provider>
     </div>
