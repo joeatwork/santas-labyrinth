@@ -20,14 +20,6 @@
   width: calc(386px + var(--default-spacing) + 386px);
 }
 
-.App-universe {
-  display: grid;
-  width: calc(386px + var(--default-spacing) + 386px);
-  grid-template-columns: [controls] 386px [feedback] 386px;
-  column-gap: var(--default-spacing);
-  margin: 0 auto;
-}
-
 .App-window {
   background-color: white;
   border: 1px solid black;

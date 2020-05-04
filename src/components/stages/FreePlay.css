@@ -1,0 +1,21 @@
+.FreePlay-container {
+    display: grid;
+    width: calc(386px + var(--default-spacing) + 386px);
+    grid-template-columns: [controls] 386px [feedback] 386px;
+    column-gap: var(--default-spacing);
+    margin: 0 auto;
+}
+
+.FreePlay-window {
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: 1px 2px 3px -2px #101010;
+}
+
+.FreePlay-controls {
+    --column-width: 384px;
+}
+
+.FreePlay-feedback {
+    --column-width: 384px;
+}

@@ -1,17 +1,11 @@
 import React from "react";
 
-import { Controls } from "../components/Controls";
-import { Feedback } from "../components/Feedback";
+import { FreePlay } from "../components/stages/FreePlay";
 
 export const Stage = () => {
   return (
-    <div className="App-universe">
-      <div className="App-controls App-window">
-        <Controls />
-      </div>
-      <div className="App-feedback App-window">
-        <Feedback />
-      </div>
+    <div className="Stage-container">
+      <FreePlay />
     </div>
   );
 };
