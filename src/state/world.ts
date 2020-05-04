@@ -4,7 +4,7 @@ import { CommandError } from "../game/commandshell";
 import { GameState } from "../game/gamestate";
 import { SourceCode } from "../editor/sourcecode";
 
-export interface AllState {
+export interface WorldState {
   // Game world
   cpu: Processor;
   lastTick: number;

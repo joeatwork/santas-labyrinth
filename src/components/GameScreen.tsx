@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { AllState } from "../state/states";
+import { WorldState } from "../state/world";
 import { Terrain } from "../levels/terrain";
 import { LevelState } from "../levels/levelstate";
 import { Viewport, Prerender, prerender } from "../renderer/renderer";
@@ -17,7 +17,7 @@ type GameScreenProps = {
   level?: LevelState;
 };
 
-export const GameScreen = connect((state: AllState) => ({
+export const GameScreen = connect((state: WorldState) => ({
   terrain: "level" in state.game ? state.game.level.terrain : undefined
 }))(({ terrain }: PrerendererProps) => {
   if (!terrain) {
@@ -27,7 +27,7 @@ export const GameScreen = connect((state: AllState) => ({
   return <EachRender prerendered={prerender(terrain)} />;
 });
 
-const EachRender = connect((state: AllState) => ({
+const EachRender = connect((state: WorldState) => ({
   level: "level" in state.game ? state.game.level : undefined
 }))(({ level, prerendered }: GameScreenProps) => {
   if (!level) {

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 
 import { Actions } from "../state/actions";
-import { AllState } from "../state/states";
+import { WorldState } from "../state/world";
 import { LargeTooltip, rightEdge } from "../components/LargeTooltip";
 import { validateJobName } from "../grammar/parser";
 
@@ -15,7 +15,7 @@ interface CreateJobFormParams {
 }
 
 export const CreateJobForm = connect(
-  (state: AllState) => _.pick(state, "sourceLibrary"),
+  (state: WorldState) => _.pick(state, "sourceLibrary"),
   dispatch => ({
     onCreateJob: (jobname: string) =>
       dispatch({

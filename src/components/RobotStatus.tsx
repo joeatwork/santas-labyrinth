@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
 
-import { AllState } from "../state/states";
+import { WorldState } from "../state/world";
 import { Processor } from "../robot/processor";
 import { Actor, hero } from "../levels/levelstate";
 import { GameMap } from "../components/GameMap";
@@ -15,7 +15,7 @@ interface RobotStatusParams {
   robot?: Actor;
 }
 
-export const RobotStatus = connect((s: AllState) => ({
+export const RobotStatus = connect((s: WorldState) => ({
   cpu: s.cpu,
   robot: "level" in s.game ? hero(s.game.level) : undefined
 }))(({ cpu, robot }: RobotStatusParams) => {

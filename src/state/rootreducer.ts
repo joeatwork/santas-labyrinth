@@ -1,6 +1,6 @@
 import { newProcessor } from "../robot/processor";
 import { Actions, AllActions } from "./actions";
-import { AllState } from "./states";
+import { WorldState } from "./world";
 import {
   runCommand,
   defineJob,
@@ -17,7 +17,7 @@ import {
   annotateErrors
 } from "../editor/sourcecode";
 
-const initialState: AllState = {
+const initialState: WorldState = {
   cpu: newProcessor,
   lastTick: -1,
   game: startGameState,
@@ -29,7 +29,7 @@ const initialState: AllState = {
 };
 
 export function rootReducer(
-  state: AllState = initialState,
+  state: WorldState = initialState,
   action: AllActions,
   thisTick: number | undefined = undefined
 ) {
@@ -76,10 +76,10 @@ export function rootReducer(
 }
 
 function reduction(
-  state: AllState,
+  state: WorldState,
   action: AllActions,
   thisTick: number | undefined
-): AllState {
+): WorldState {
   switch (action.type) {
     case Actions.loaded:
     case Actions.cutsceneComplete:

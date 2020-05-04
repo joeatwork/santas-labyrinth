@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
 
-import { AllState } from "../state/states";
+import { WorldState } from "../state/world";
 import { Actions } from "../state/actions";
 import { CommandError, CommandErrorSite } from "../game/commandshell";
 import { GameStateKind } from "../game/gamestate";
@@ -23,7 +23,7 @@ export interface TerminalProps {
 }
 
 export const Terminal = connect(
-  (state: AllState) => ({
+  (state: WorldState) => ({
     gameState: state.game.kind,
     terminalLine: state.terminalLine,
     commandError: state.commandError,
