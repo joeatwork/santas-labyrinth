@@ -84,8 +84,8 @@ to cooperate to find their way through an enormous subterranian maze.
 
 A hunky android escapes his evil creators and is pursued by a less attractive
 but much more evil counterpart. Rough around the edges, but capable martial arts
-fight choreography and a high suspense a third act game of cat and mouse in an
-is makes this a solid b-movie.
+fight choreography and a high suspense third act game of cat and mouse in an
+abandoned warehouse makes this a solid b-movie.
 
 **E-lated** (1998) * * *
 
