@@ -9,7 +9,7 @@ adventure film.
 **The Mechanical Marvel** (1959) * * * *
 
 Alan Adaire and Farrah Wells dance, sing, and smile in this delightful musical
-about a quack traveling professor at the turn of the century and his "100%
+about a quack traveling professor at the turn of the century and his "completely
 mechanical, fully programmable, (slightly inflammible) singsong machine" that is
 really a disgraced opera singer in disguise. Classic songs including "Find
 my Way" and "Grandpa's Watching", big dance production numbers, beautiful sets
